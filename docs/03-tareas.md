@@ -1,0 +1,107 @@
+# 03 · Lista de tareas
+
+Orden de ejecución. Cada tarea tiene qué hacer y cómo comprobar que está hecha.
+Marcar con `[x]` al terminar y anotar fecha. No pasar a la siguiente fase sin cerrar la anterior.
+Si una tarea obliga a cambiar el diseño, se cambia primero `01-diseno.md` y se anota el porqué.
+
+## Fase 0 · Proyecto propio
+- [x] 0.1 (29-10-2026) Mover el proyecto de `RESEARCHIA/.../assets/prototipo-unity` a `C:\AreaDeTrabajo\JUEGOS\orkhold` y crear repo git privado en GitHub (Dasge97). `.gitignore` de Unity. Dejar en la investigación un enlace y marcarla `graduada`.
+  Comprobar: `git status` limpio; Unity abre el proyecto desde la ruta nueva sin errores.
+- [x] 0.2 Nombre decidido: **Orkhold** (29-10-2026). Subdominio propuesto `orkhold.code-hive.space`; confirmar con Daniel al desplegar (fase 8).
+- [x] 0.3 (29-10-2026) README.md y README.es.md según las reglas globales (cabecera, chips, secciones, huecos para capturas).
+- [x] 0.4 (29-10-2026) Reorganizar `Assets/Scripts/` en las subcarpetas de `02-arquitectura.md` §2.1. Sin cambiar lógica.
+  Comprobar: compila sin avisos nuevos; `Prototipo > Revisar` sigue funcionando.
+
+## Fase 1 · Mapas en texto y transiciones
+Leer antes: `01-diseno.md` §4.1, §4.3; `02-arquitectura.md` §2.2, §2.3.
+- [ ] 1.1 `PaletaMapa` (ScriptableObject letra → prefab/acción) y `CargadorMapa` que lee `Assets/Mapas/*.txt` (cabecera + rejilla).
+- [ ] 1.2 Reescribir `MontarEscenaPvE` para que use `CargadorMapa` con `pueblo.txt`. Flores aleatorias como relleno opcional (`relleno: flores` en la cabecera).
+- [ ] 1.3 Escribir `pueblo.txt` (48x48): plaza con fogata, cofre PvP y tablón; calles; 6 casas; río con puente; bosque en bordes; puerta de mazmorra al norte; hueco del fuerte 16x16 al este; 8 orcos; monedas.
+- [ ] 1.4 Escribir `catacumbas.txt` (20x30): entrada, pasillo, sala de trampas, sala del jefe con `J`.
+- [ ] 1.5 Escribir `fuerte-base.txt` (16x16): suelo, valla exterior con entrada al oeste, cofre del tesoro `K` en el centro.
+- [ ] 1.6 `Transicion`: fundido a negro, carga de escena, fundido de vuelta. Escenas separadas Pueblo, Mazmorra1, Fuerte, Asalto. `Puerta` que llama a la transición y recuerda a dónde volver.
+- [ ] 1.7 Un collider por fila de muros contiguos en vez de uno por casilla (rendimiento).
+  Comprobar: las cuatro escenas se montan desde texto; se entra y sale de la mazmorra y del fuerte con transición; fotos de `Revisar`; 60 fps en el emulador.
+
+## Fase 2 · Jugador y combate pulidos
+Leer antes: `01-diseno.md` §4.4, §4.5.
+- [ ] 2.1 Vida que se regenera (1 cada 10 s fuera de combate) y curación total en la fogata.
+- [ ] 2.2 Golpear árboles y rocas con el botón de atacar: 3 golpes → suelta madera o piedra. Temblor del modelo en cada golpe. El árbol o roca "se agota" 60 s.
+- [ ] 2.3 Daño visible: el golpeado parpadea en rojo 0,15 s y recibe empujón; número de daño flotante.
+- [ ] 2.4 Muerte del jugador: pantalla oscura 1 s, reaparece en la fogata (o sale de la mazmorra con la mitad de lo recogido).
+- [ ] 2.5 Botón de interactuar con contexto: cambia de icono según lo que haya cerca (recoger, puerta, cofre, tablón, construir).
+- [ ] 2.6 Sonidos básicos (pasos, golpe, recoger, morir, romper muro) de Kenney "RPG Audio" o "Impact Sounds" (CC0).
+  Comprobar: `Revisar` ampliado con "golpear árbol" que acaba con 1 madera en el inventario.
+
+## Fase 3 · Enemigos y mazmorra
+Leer antes: `01-diseno.md` §4.2, §4.3.
+- [ ] 3.1 `Enemigo` base con estados: quieto, patrulla (2 puntos), persigue, ataca, muere. Reaparece a los 60 s.
+- [ ] 3.2 `EnemigoArquero`: mantiene 4 m, lanza proyectil (`weapon-spear` pequeño) cada 2 s, huye a 2 m.
+- [ ] 3.3 Esqueleto: lento y fuerte (vida 4, daño 2). Misma clase que orco con otros números y color.
+- [ ] 3.4 `Jefe` (orco jefe): vida 15, golpe en área cada 6 s con aviso de 1 s (círculo rojo). Barra de vida arriba.
+- [ ] 3.5 Trampas (`X`): pinchos que suben cada 2 s, 1 de daño.
+- [ ] 3.6 Botín del jefe: la primera vez una unidad "Orco jefe defensor"; después 3 huesos. Vuelta al pueblo con transición.
+  Comprobar: `Revisar` con un caso "matar jefe" (vida infinita en modo prueba) que acaba con la unidad en el inventario.
+
+## Fase 4 · Inventario, fuerte y guardado local
+Leer antes: `01-diseno.md` §5.1, §6; `02-arquitectura.md` §2.5.
+- [ ] 4.1 `Inventario` con recursos (moneda, madera, piedra, hierro, hueso) y unidades defensoras con mejoras.
+- [ ] 4.2 `CatalogoPiezas` (ScriptableObject) con las piezas del fuerte de `01-diseno.md` §5.1: modelo, coste, vida, límite.
+- [ ] 4.3 `DisenoFuerte` (datos serializables) y `EditorFuerte`: modo construir en la escena Fuerte, barra inferior con piezas y coste, tocar casilla para poner o quitar, validación de límites, "Listo".
+- [ ] 4.4 `PiezaFuerte`: muros con vida que se rompen a golpes, puerta que el dueño abre, trampa oculta, defensor = `Enemigo` con sus números.
+- [ ] 4.5 Guardado local en JSON (`persistentDataPath/partida.json`) con versión: inventario, fuerte, progreso. Se guarda al cambiar; se carga al arrancar.
+- [ ] 4.6 Menú: ajustes (sonido, vibración), reiniciar partida con confirmación.
+  Comprobar: construir 5 muros, cerrar la app, abrir: siguen ahí y el inventario descontado.
+
+## Fase 5 · Asalto sencillo (sin servidor todavía)
+Leer antes: `01-diseno.md` §5.2, §8.
+- [ ] 5.1 Escena Asalto: carga `fuerte-base.txt` + un `DisenoFuerte` y coloca piezas con colliders y defensores vivos. Apareces en la entrada.
+- [ ] 5.2 Reglas: 90 s de cuenta atrás, ganar al tocar el cofre `K`, perder al morir o agotar tiempo. Barra "distancia al cofre".
+- [ ] 5.3 Pantalla de resultado: ganado/perdido, segundos, muros rotos, recompensas (provisionales en local).
+- [ ] 5.4 Tres fuertes de prueba del sistema (fácil, medio, difícil) en `Assets/Mapas/fuertes-prueba/*.json` para asaltar sin servidor.
+- [ ] 5.5 **Probar con Daniel** 10 asaltos contra los tres fuertes y ajustar vida de muros, daño de trampas y tiempo. Anotar en `docs/04-pruebas-asalto.md`.
+  Comprobar: el fuerte difícil se gana en ~60 s con buen juego y se pierde jugando mal.
+
+## Fase 6 · API y cuentas
+Leer antes: `02-arquitectura.md` §1, §4, §4.1, §2.6.
+- [ ] 6.1 Carpeta `api/`: Node 22 + Fastify + Zod + pg. `docker-compose.yml` con postgres. Migraciones SQL numeradas.
+- [ ] 6.2 Tablas de `02-arquitectura.md` §4.1.
+- [ ] 6.3 `POST /sesion` con token de dispositivo; `GET /jugador`; `PUT /jugador/personaje`.
+- [ ] 6.4 `GET/PUT /fuerte`, `GET /catalogo`, `POST /mazmorra/resultado`: validación de límites y coste.
+- [ ] 6.5 `POST /asalto/buscar` (rival ±100 o fuerte del sistema; 10 al día) y `POST /asalto/resultado` (5-90 s, Elo, recompensas).
+- [ ] 6.6 `GET /ranking`, `GET /asaltos/historial`, `GET /salud`.
+- [ ] 6.7 Tests de todas las rutas con base de datos de prueba.
+- [ ] 6.8 Cliente: `ApiCliente` + `Sesion`; el guardado local pasa a ser caché y la API manda. Pantalla de arranque con crear personaje.
+- [ ] 6.9 Asalto real: buscar rival, cargar su diseño, jugar, mandar resultado. Pantallas Ranking e Historial.
+  Comprobar: dos emuladores con dos cuentas; uno construye su fuerte, el otro lo asalta y gana; el ranking cambia; el primero ve el asalto en su historial.
+
+## Fase 7 · Pueblo online
+Leer antes: `02-arquitectura.md` §1, §2.6, §3. Es la fase más difícil: si una tarea se atasca dos veces, preguntar.
+- [ ] 7.1 Instalar Netcode for GameObjects 2.x y Unity Transport. `NetworkManager` solo en la escena Pueblo.
+- [ ] 7.2 Jugador como `NetworkObject` con autoridad del servidor: el cliente manda entrada, el servidor mueve. Predicción local y corrección suave.
+- [ ] 7.3 Otros jugadores visibles con su modelo, nombre encima y animación sincronizada.
+- [ ] 7.4 Enemigos del pueblo solo en el servidor; estado replicado. Daño y botín se deciden en el servidor y van a la API (`POST /inventario/sumar` con clave de servidor).
+- [ ] 7.5 Puertas (mazmorra, fuerte, asalto) desconectan del pueblo con transición y reconectan al volver.
+- [ ] 7.6 Modo sin conexión: NGO en modo host local y aviso en pantalla; fuerte y asalto bloqueados.
+- [ ] 7.7 Build "Dedicated Server" Linux; Dockerfile; `docker-compose` junto a la API; UDP 7777.
+- [ ] 7.8 Script de prueba: servidor local + 2 clientes en editor (ParrelSync) se ven y se mueven.
+  Comprobar: dos emuladores conectados al servidor de codehive se ven moverse; matar un orco en uno suma monedas en la API.
+
+## Fase 8 · Despliegue y avisos
+Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóveda, ntfy y Kit.
+- [ ] 8.1 Desplegar `postgres`, `api` y `mundo` en codehive con el proxy existente. Credenciales en la bóveda.
+- [ ] 8.2 `kit-estado` para `juego-api` y `juego-mundo`; añadirlos a `kit-codehive/kit.json` e importar.
+- [ ] 8.3 Copia de seguridad diaria de PostgreSQL (cron) con aviso si falla.
+  Comprobar: el Kit muestra los dos servicios en verde; apagar la API lo pone en rojo y llega el aviso.
+
+## Fase 9 · Pulido para enseñar
+- [ ] 9.1 Icono de la app y pantalla de carga.
+- [ ] 9.2 Tutorial de 1 minuto: 5 carteles en el pueblo (moverse, atacar, recoger, mazmorra, fuerte).
+- [ ] 9.3 Rendimiento en móvil gama media: menos sombras, LOD en árboles, 60 fps en emulador y en el móvil de Daniel.
+- [ ] 9.4 Capturas reales para los README (`docs/img/`).
+- [ ] 9.5 APK firmado con keystore propio (guardado en la bóveda) e instalado en el móvil de Daniel.
+  Comprobar: una persona que no ha visto el juego lo entiende en 2 minutos sin ayuda.
+
+## Después de la primera versión (no empezar)
+Herramientas de asalto, repeticiones, tiempos de construcción, segunda mazmorra, más piezas y
+defensores, nivel de personaje, equipo, chat, iOS, tienda, más zonas del pueblo.

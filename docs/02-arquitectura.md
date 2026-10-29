@@ -1,0 +1,169 @@
+# 02 · Arquitectura técnica
+
+## 1. Piezas
+
+```
+┌──────────────────────┐    UDP (Netcode for GameObjects)    ┌──────────────────────────┐
+│  Cliente Unity       │◄───────────────────────────────────►│  Servidor de mundo       │
+│  (Android)           │                                      │  Unity headless, Linux   │
+│                      │    HTTPS (JSON)                      │  contenedor en codehive  │
+│                      │◄─────────────┐                       └───────────┬──────────────┘
+└──────────────────────┘              │                                   │ HTTPS interno
+                                      ▼                                   ▼
+                          ┌──────────────────────────┐        ┌──────────────────────────┐
+                          │  API (Node + Fastify)     │◄──────►│  PostgreSQL              │
+                          │  cuentas, inventario,     │        │  contenedor en codehive  │
+                          │  fuertes, asaltos, ranking│        └──────────────────────────┘
+                          └──────────────────────────┘
+```
+
+| Pieza | Tecnología | Dónde corre | Para qué |
+|---|---|---|---|
+| Cliente | Unity 6, C#, render built-in, uGUI, entrada clásica | Móvil | Todo lo que se ve y se toca |
+| Servidor de mundo | Unity 6 build "Dedicated Server" Linux + Netcode for GameObjects 2.x + Unity Transport | Docker en codehive | Solo el **pueblo**: posición de jugadores y enemigos, combate, quién recoge qué |
+| API | Node 22 + Fastify + Zod | Docker en codehive | Cuentas, guardado, fuertes, elegir rival, resultado de asaltos, ranking |
+| Base de datos | PostgreSQL 16 | Docker en codehive | Persistencia |
+| Avisos | ntfy vía `kit-avisar` | codehive | Avisar al móvil de Daniel si algo cae |
+
+**Qué corre dónde.** Solo el pueblo es compartido y pasa por el servidor de mundo. La mazmorra, el
+fuerte propio y el asalto son **escenas locales** en el móvil (nadie más está dentro): se cargan con
+transición y hablan solo con la API (cargar el diseño del fuerte, guardar botín y resultado).
+Así el servidor de mundo es pequeño y la mayor parte del juego funciona aunque esté caído.
+
+Por qué Netcode for GameObjects y no Mirror: es el oficial de Unity 6, va con Unity Transport y tiene
+modo servidor dedicado. Esta primera versión tendrá decenas de jugadores, no miles.
+
+Por qué una API aparte: acceder a PostgreSQL desde Unity es incómodo, y cuentas, fuertes y ranking
+se prueban mejor en Node con tests normales. El servidor de mundo no guarda nada: avisa a la API.
+
+## 2. Cliente
+
+### 2.1 Carpetas
+```
+Assets/
+  Kenney/            modelos y sprites (no tocar, CC0)
+  Scripts/
+    Entrada/         EntradaJuego, JoystickVirtual, BotonAccion
+    Jugador/         ControlJugador, Vida, Inventario
+    Enemigos/        Enemigo, EnemigoArquero, Jefe
+    Mundo/           CargadorMapa, PaletaMapa, Recogible, Puerta, Fogata, Transicion
+    Fuerte/          EditorFuerte, PiezaFuerte, DisenoFuerte (datos), Asalto
+    Red/             ClienteRed (NGO), ApiCliente (HTTPS), Sesion
+    UI/              HUD, PantallaConstruir, PantallaAsalto, PantallaRanking, Menu
+  Editor/            MontarEscenaPvE, ImportadorKenney, RevisionPrototipo, CompilarAndroid
+  Mapas/             pueblo.txt, catacumbas.txt, fuerte-base.txt
+  Scenes/            Arranque, Pueblo, Mazmorra1, Fuerte, Asalto
+  Animacion/         controladores generados
+docs/                estos documentos
+Builds/              APK (fuera de git)
+```
+
+### 2.2 Mapas en texto
+Un fichero por mapa en `Assets/Mapas/`. Cada línea es una fila, cada letra una casilla de 1 m.
+Cabecera `clave: valor`, luego `---`, luego la rejilla. Ejemplo:
+
+```
+nombre: pueblo
+tipo: exterior
+aparicion: F
+---
+TTTTTTTTTTTTTTTTTTTT
+T........=.........T
+T..r.....=....o....T
+T........=.........T
+T...F....+----B....T
+T........=....C....T
+T........=.........T
+T........D....[]...T
+TTTTTTTTTTTTTTTTTTTT
+```
+
+| Letra | Casilla |
+|---|---|
+| `.` | hierba (exterior) / suelo (mazmorra y fuerte) |
+| `=` camino vertical, `-` horizontal, `+` cruce, `~` río, `_` puente |
+| `#` muro, `T` árbol, `r` roca, `f` flor o hierba decorativa, `h` casa (bloque 2x2) |
+| `F` fogata (aparición), `C` cofre PvP, `B` tablón, `D` puerta de mazmorra, `E` salida |
+| `[` `]` esquinas del hueco del fuerte (se rellena con el fuerte del jugador) |
+| `o` orco, `a` arquero, `e` esqueleto, `J` jefe, `$` moneda, `p` poción, `X` trampa |
+| `K` cofre del tesoro (solo en el fuerte) |
+
+`CargadorMapa` lee el fichero y coloca las piezas según `PaletaMapa` (un `ScriptableObject` letra →
+prefab). En el cliente coloca lo visual; en el servidor de mundo coloca colliders y enemigos. Los
+dos leen el mismo fichero. Las piezas del **fuerte** no vienen del texto sino de `DisenoFuerte`
+(§2.5), que se pinta encima de `fuerte-base.txt`.
+
+### 2.3 Transiciones
+`Transicion.Ir("Mazmorra1")`: fundido a negro 0,5 s, `SceneManager.LoadSceneAsync`, fundido de
+vuelta. El jugador guarda a qué puerta volver. Pueblo, Mazmorra1, Fuerte y Asalto son escenas
+separadas; solo Pueblo lleva `NetworkManager`.
+
+### 2.4 Animación
+Un AnimatorController por modelo con un estado por clip, sin transiciones. El código elige el
+estado por nombre con `CrossFadeInFixedTime`. Clips en bucle: idle, walk, sprint.
+
+### 2.5 Diseño del fuerte (datos)
+```json
+{ "version": 1, "piezas": [ { "x": 3, "z": 7, "tipo": "muro_madera", "vida_extra": 0 }, ... ] }
+```
+`DisenoFuerte` es una clase serializable. Se guarda en la API y se carga para el propio fuerte y
+para el asalto. `EditorFuerte` lo edita (poner, quitar, validar límites y coste). `Asalto` lo
+instancia con colliders y con `Enemigo` en los defensores.
+
+### 2.6 Red en el cliente
+- `ClienteRed`: conecta con NGO al servidor de mundo en la escena Pueblo. El jugador es un
+  `NetworkObject` con autoridad del servidor: el cliente manda la entrada, el servidor mueve.
+  Predicción local del propio movimiento y corrección suave.
+- `ApiCliente`: `UnityWebRequest`, JSON con `JsonUtility`, token en cabecera.
+- `Sesion`: token de dispositivo en `PlayerPrefs`. Sin contraseña en la primera versión.
+- Sin conexión: el pueblo arranca en modo host local (NGO) y se avisa en pantalla; mazmorra sí,
+  fuerte y asalto no (necesitan la API).
+
+## 3. Servidor de mundo
+- Mismo proyecto Unity, build "Dedicated Server" Linux x86_64. Solo carga la escena Pueblo.
+- Enemigos solo en el servidor; el cliente recibe posición, animación y vida.
+- Cuando un jugador recoge o mata, el servidor llama a la API (`POST /inventario/sumar`) con una
+  clave de servidor; el cliente nunca suma inventario por su cuenta en el pueblo.
+- Cada 30 s manda `kit-estado` con jugadores conectados.
+- Docker: puerto UDP 7777; reinicio automático.
+
+## 4. API
+- Node 22 + Fastify. Validación con Zod. Tests con `node:test`.
+
+| Método y ruta | Qué hace |
+|---|---|
+| `POST /sesion` | Crea o recupera cuenta por token de dispositivo. Devuelve token de sesión. |
+| `GET /jugador` | Personaje, inventario, puntuación, progreso. |
+| `PUT /jugador/personaje` | Nombre y modelo elegido. |
+| `POST /inventario/sumar` | Solo servidor de mundo (clave de servidor): `{jugador, recurso, cantidad, origen}`. |
+| `POST /mazmorra/resultado` | Cliente: botín de una entrada a la mazmorra (`{jefe_muerto, recursos}`). Validado contra límites por entrada. |
+| `GET /fuerte` · `PUT /fuerte` | Diseño del fuerte propio. `PUT` valida límites, coste y que las piezas sean suyas; descuenta recursos. |
+| `GET /catalogo` | Piezas del fuerte con coste y vida. |
+| `POST /asalto/buscar` | Elige rival ±100 puntos (o un fuerte del sistema si no hay), devuelve `{asalto_id, rival, diseño}`. Máximo 10 al día. |
+| `POST /asalto/resultado` | `{asalto_id, ganado, segundos, muros_rotos}`. Comprueba 5-90 s, aplica Elo y recompensas, guarda. |
+| `GET /asaltos/historial` | Últimos 10 hechos y recibidos. |
+| `GET /ranking` | 50 mejores y tu puesto. |
+| `GET /salud` | Para el Kit. |
+
+### 4.1 Tablas
+```
+jugadores(id, token_dispositivo, nombre, modelo, puntuacion, creado, ultimo_acceso)
+inventario(jugador_id, recurso, cantidad)            -- moneda|madera|piedra|hierro|hueso
+fuertes(jugador_id, diseno_json, actualizado)
+asaltos(id, atacante_id, defensor_id, diseno_defensor_json, ganado, segundos, muros_rotos,
+        puntos_atacante_antes, puntos_atacante_despues, creado)
+progreso(jugador_id, clave, valor)                   -- ej. "jefe1_muerto" = "1"
+```
+
+## 5. Despliegue en codehive
+- Carpeta `deployment/` con `docker-compose.yml`: `postgres`, `api`, `mundo`. Red interna; la API
+  sale por el proxy existente (443) y el mundo por UDP 7777.
+- Credenciales en la bóveda Vaultwarden (`juego - postgres`, `juego - api secreto`, `juego - clave servidor mundo`).
+- `kit-estado juego-api` y `kit-estado juego-mundo`; añadir los dos al paquete `kit-codehive`.
+- Subdominio *propuesta*: `orkhold.code-hive.space` para la API (y el mismo host para UDP 7777). Dominio propio `orkhold.app` cuando se publique.
+
+## 6. Pruebas
+- Cliente: `RevisionPrototipo` (fotos + Play automático) se amplía con un caso por pantalla.
+- API: tests de cada ruta con base de datos de prueba.
+- Red: servidor local + 2 clientes en editor (ParrelSync) o 2 emuladores.
+- APK: `CompilarAndroid` + emulador Medium Phone con `adb`.
