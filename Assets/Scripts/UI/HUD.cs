@@ -10,6 +10,12 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
+        var j = FindAnyObjectByType<ControlJugador>();
+        if (j)
+        {
+            if (!vida) vida = j.GetComponent<Vida>();
+            if (!inventario) inventario = j.GetComponent<Inventario>();
+        }
         if (vida) { vida.AlCambiar += Refrescar; vida.AlMorir += Refrescar; }
         if (inventario) inventario.AlCambiar += Refrescar;
         Refrescar();

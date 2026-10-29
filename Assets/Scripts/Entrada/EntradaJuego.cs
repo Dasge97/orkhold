@@ -23,7 +23,7 @@ public static class EntradaJuego
     public static bool Interactuar => InteractuarPantalla || Input.GetKeyDown(KeyCode.E);
     public static bool Correr => CorrerPantalla || Input.GetKey(KeyCode.LeftShift);
 
-    /// Se llama al final de cada frame para que los pulsos de botón duren un solo frame.
+    /// La llama el jugador justo después de leer los pulsos, para que cada toque cuente una vez.
     public static void LimpiarPulsos()
     {
         AtaquePantalla = false;

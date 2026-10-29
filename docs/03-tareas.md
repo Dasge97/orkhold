@@ -14,13 +14,13 @@ Si una tarea obliga a cambiar el diseño, se cambia primero `01-diseno.md` y se 
 
 ## Fase 1 · Mapas en texto y transiciones
 Leer antes: `01-diseno.md` §4.1, §4.3; `02-arquitectura.md` §2.2, §2.3.
-- [ ] 1.1 `PaletaMapa` (ScriptableObject letra → prefab/acción) y `CargadorMapa` que lee `Assets/Mapas/*.txt` (cabecera + rejilla).
-- [ ] 1.2 Reescribir `MontarEscenaPvE` para que use `CargadorMapa` con `pueblo.txt`. Flores aleatorias como relleno opcional (`relleno: flores` en la cabecera).
-- [ ] 1.3 Escribir `pueblo.txt` (48x48): plaza con fogata, cofre PvP y tablón; calles; 6 casas; río con puente; bosque en bordes; puerta de mazmorra al norte; hueco del fuerte 16x16 al este; 8 orcos; monedas.
-- [ ] 1.4 Escribir `catacumbas.txt` (20x30): entrada, pasillo, sala de trampas, sala del jefe con `J`.
-- [ ] 1.5 Escribir `fuerte-base.txt` (16x16): suelo, valla exterior con entrada al oeste, cofre del tesoro `K` en el centro.
-- [ ] 1.6 `Transicion`: fundido a negro, carga de escena, fundido de vuelta. Escenas separadas Pueblo, Mazmorra1, Fuerte, Asalto. `Puerta` que llama a la transición y recuerda a dónde volver.
-- [ ] 1.7 Un collider por fila de muros contiguos en vez de uno por casilla (rendimiento).
+- [x] 1.1 (29-10-2026) `PaletaMapa` (ScriptableObject letra → prefab/acción) y `CargadorMapa` que lee `Assets/Mapas/*.txt` (cabecera + rejilla).
+- [x] 1.2 (29-10-2026) Reescribir `MontarEscenaPvE` para que use `CargadorMapa` con `pueblo.txt`. Flores aleatorias como relleno opcional (`relleno: flores` en la cabecera).
+- [x] 1.3 (29-10-2026) Escribir `pueblo.txt` (48x48): plaza con fogata, cofre PvP y tablón; calles; 6 casas; río con puente; bosque en bordes; puerta de mazmorra al norte; hueco del fuerte 16x16 al este; 8 orcos; monedas.
+- [x] 1.4 (29-10-2026) Escribir `catacumbas.txt` (20x30): entrada, pasillo, sala de trampas, sala del jefe con `J`.
+- [x] 1.5 (29-10-2026) Escribir `fuerte-base.txt` (16x16): suelo, valla exterior con entrada al oeste, cofre del tesoro `K` en el centro.
+- [x] 1.6 (29-10-2026) `Transicion`: fundido a negro, carga de escena, fundido de vuelta. Escenas separadas Pueblo, Mazmorra1, Fuerte, Asalto. `Puerta` que llama a la transición y recuerda a dónde volver.
+- [x] 1.7 (29-10-2026) Un collider por fila de muros contiguos en vez de uno por casilla (rendimiento).
   Comprobar: las cuatro escenas se montan desde texto; se entra y sale de la mazmorra y del fuerte con transición; fotos de `Revisar`; 60 fps en el emulador.
 
 ## Fase 2 · Jugador y combate pulidos

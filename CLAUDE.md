@@ -30,7 +30,7 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
   APIs de Unity en su idioma original.
 - Un script por clase, en la subcarpeta de `Assets/Scripts/` que le toca.
 - No tocar `Assets/Kenney/` (son packs CC0 tal cual).
-- No commit ni push sin que Daniel lo pida.
+- Commit y push al cerrar cada fase (pedido por Daniel el 29-10-2026).
 - Para comprobar algo visual: `Prototipo > Revisar` hace fotos en `Revision/`; **mirarlas** con la
   herramienta de leer imágenes y describir lo que se ve antes de dar la tarea por buena.
 - Para probar en el móvil: compilar APK, instalar en el emulador y hacer capturas con `adb`
@@ -41,18 +41,28 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 ## Herramientas que ya existen
 | Qué | Cómo |
 |---|---|
-| Montar la escena desde cero | Menú `Prototipo > Montar escena PvE` (o borrar `Assets/Scenes/PvE.unity` y dar foco a Unity) |
-| Revisión automática | Menú `Prototipo > Revisar`, o crear `Revision/pedir.txt` y dar foco a Unity. Deja fotos e `informe.txt` en `Revision/` |
+| Montar las escenas desde cero | Menú `Prototipo > Montar escenas` (o borrar `Assets/Scenes/Pueblo.unity`; se monta sola en 2 s). Las escenas y `Assets/Mapas/Mallas/` se generan desde `Assets/Mapas/*.txt` y no van en git |
+| Unity en batch (sin ventana) | `Unity.exe -batchmode -projectPath <proyecto> -logFile <log> -executeMethod <Clase.Metodo>`: `MontarEscenas.MontarTodas` (con `-quit`), `RevisionPrototipo.EnBatch`, `PruebaCargadorMapa.EnBatch`, `FotosModelos.EnBatch`, `CompilarAndroid.EnBatch` (con `-buildTarget Android`). No puede haber otro Unity con el proyecto abierto |
+| Tests | `Unity.exe -batchmode -projectPath <proyecto> -runTests -testPlatform PlayMode -testResults <xml>`. Están en `Assets/Tests/PlayMode` |
+| Ver forma de modelos | Rutas en `Revision/modelos.txt` y `FotosModelos.EnBatch`: hoja cenital (cubo rojo = norte), en perspectiva, y materiales |
+| Revisión automática | Menú `Prototipo > Revisar`, o crear `Revision/pedir.txt` (se atiende sola en 2 s). Deja fotos de las cuatro escenas e `informe.txt` en `Revision/` |
 | Compilar APK | Menú `Prototipo > Compilar APK`, o crear `Revision/compilar.txt`. Sale en `Builds/orkhold.apk` (IL2CPP, ARM64, OpenGL ES 3) |
 | Probar en emulador | `emulator -avd Medium_Phone_API_36.0 -gpu host`, luego `adb install -r Builds/orkhold.apk`, `adb shell monkey -p com.orkhold.game 1`, `adb exec-out screencap -p > foto.png` |
-| Registro de Unity | Unity escribe en `%LOCALAPPDATA%\Unity\Editor\Editor.log`; buscar `error CS`, `Exception`, `Escena PvE montada`, `APK: resultado` |
+| Registro de Unity | Unity escribe en `%LOCALAPPDATA%\Unity\Editor\Editor.log`; buscar `error CS`, `Exception`, `Escenas montadas`, `APK: resultado` |
+| FPS en el móvil | `adb logcat -s Unity` muestra `FPS media=... escena=...` cada 5 s (`MedidorFps`) |
 | MCP de Unity | Paquete `com.coplaydev.unity-mcp` instalado. Arrancar desde `Window > MCP For Unity`; Claude Code lo tiene registrado como `UnityMCP` (http://127.0.0.1:8080/mcp) |
 
 ## Cosas aprendidas (no volver a tropezar)
 - Unity no abre sin licencia activa; si falla en batchmode, abrir Unity Hub primero.
 - Unity Hub por línea de comandos: quitar la variable `ELECTRON_RUN_AS_NODE` antes de llamarlo.
-- Unity detecta cambios en los scripts solo cuando su ventana recibe el foco.
+- Unity detecta cambios en los scripts solo cuando su ventana recibe el foco. Por eso existe
+  `Assets/Editor/AutoRefrescar.cs`: cada 2 s mira si cambió algo y recarga solo, y atiende las
+  marcas `Revision/pedir.txt` y `Revision/compilar.txt` y la escena borrada. Nadie tiene que tocar la ventana.
 - Los FBX de Kenney traen los clips con nombre; el importador `ImportadorKenney` pone en bucle idle, walk y sprint.
 - Unity 6 no compila x86_64 para Android. El emulador ejecuta ARM64 por traducción. Usar OpenGL ES 3: con Vulkan el emulador se cae.
 - `adb` en Git Bash convierte `/sdcard/...` en una ruta de Windows; usar `exec-out` o `MSYS_NO_PATHCONV=1`.
 - Las monedas y pociones de Mini Dungeon son enormes a escala 1; se ponen a 0,35 y 0,6.
+- El emulador necesita 4 GB de RAM (`hw.ramSize` en `%USERPROFILE%\.android\avd\Medium_Phone.avd\config.ini`); con 2 GB va a 5-15 fps.
+- Cada compilación de Unity reinicia `adb`; esperar a que `adb get-state` diga `device` antes de instalar.
+- Las vallas del Nature Kit van en el borde de la casilla, no en el centro; el río y el puente, sin girar, van de norte a sur.
+- Decisiones tomadas sin Daniel: `docs/06-decisiones.md`.

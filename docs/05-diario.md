@@ -3,6 +3,31 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-29 — Fase 1 cerrada (tareas 1.2 a 1.7)
+- Hecho: `MontarEscenas` monta Pueblo, Mazmorra1, Fuerte y Asalto desde `pueblo.txt` (48x48),
+  `catacumbas.txt` (20x30) y `fuerte-base.txt` (16x16), con prefabs (`CrearPrefabs`), puertas con
+  `Transicion` y `GestorEscena`, colisiones unidas por fila y mallas fundidas por trozos (`CombinarMallas`).
+  Nature Kit completo y Mini Characters importados. Tests en Play Mode con Unity Test Framework 1.7.0.
+- Comprobado: 3 tests de transición OK (mazmorra, fuerte, asalto desde el cofre); fotos de `Revisar`
+  de las cuatro escenas; en el emulador se anda de la fogata a la mazmorra con el joystick y entra;
+  60 fps estables en Pueblo y en Mazmorra1.
+- Aprendido: el emulador tenía 2 GB de RAM e iba a 5-15 fps por memoria de intercambio, incluso con
+  una escena vacía a 28 fps; con 4 GB (`hw.ramSize` en `Medium_Phone.avd/config.ini`) da 60 fps.
+  Los pulsos de botón deben leerse y borrarse en el mismo `Update` del jugador o se pierden.
+
+## 2026-10-29 — Tarea 1.1: PaletaMapa y CargadorMapa
+- Hecho: `MapaTexto` (cabecera + rejilla), `PaletaMapa` (letra → modelos, colisión, bloque NxN, marca),
+  `CargadorMapa` (lee y coloca; las letras con lógica propia vuelven como marcas). La paleta se crea
+  con `Prototipo > Crear paleta de mapas` en `Assets/Mapas/PaletaMapa.asset`.
+- Comprobado: `Prototipo > Probar cargador de mapas` (o batch `PruebaCargadorMapa.EnBatch`) con el
+  mapa de ejemplo de la arquitectura y uno interior: 12 de 12 comprobaciones OK y fotos 20 y 21 bien.
+  De paso, Unity abre y compila desde la ruta nueva (solo avisos CS0618 que ya existían).
+- Añadido después, a petición de Daniel: 34 modelos de río, puente y cascada del Nature Kit 2.1
+  (zip de la investigación) en `Assets/Kenney/NatureKit/`. El río elige recto, curva, te, cruce o
+  final según sus vecinos; el puente pone el río debajo y se gira para cruzarlo. Prueba: 20 de 20 OK.
+- Aprendido: sin `Library`, el primer batch tarda varios minutos. A giro 0, las piezas de río del
+  Nature Kit unen: recto norte-sur, curva sur-este, final sur, split oeste-este-sur.
+
 ## 2026-10-29 — Fase 0 cerrada
 - Hecho: proyecto movido a `C:\AreaDeTrabajo\JUEGOS\orkhold` (sin `Library`, se regenera); repo git;
   README en inglés y español con capturas reales en `docs/img/`; scripts en subcarpetas

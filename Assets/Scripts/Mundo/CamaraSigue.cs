@@ -7,6 +7,24 @@ public class CamaraSigue : MonoBehaviour
     public Vector3 desplazamiento = new Vector3(0f, 5.5f, -6.5f);
     public float suavidad = 8f;
 
+    void Start()
+    {
+        if (!objetivo)
+        {
+            var j = FindAnyObjectByType<ControlJugador>();
+            if (j) objetivo = j.transform;
+        }
+        Saltar();
+    }
+
+    /// Coloca la cámara de golpe en su sitio (al aparecer o al cambiar de escena).
+    public void Saltar()
+    {
+        if (!objetivo) return;
+        transform.position = objetivo.position + desplazamiento;
+        transform.LookAt(objetivo.position + Vector3.up * 0.5f);
+    }
+
     void LateUpdate()
     {
         if (!objetivo) return;

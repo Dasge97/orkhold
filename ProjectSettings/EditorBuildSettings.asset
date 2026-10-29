@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PvE.unity
-    guid: 57d731188dd62a947a1e8b85d874b992
+    path: Assets/Scenes/Pueblo.unity
+    guid: e715ac4819e80dd4ab7d0a7301c13479
+  - enabled: 1
+    path: Assets/Scenes/Mazmorra1.unity
+    guid: 604c7e2c33f3bbf498f00afdf80b1346
+  - enabled: 1
+    path: Assets/Scenes/Fuerte.unity
+    guid: 10bc3319b952d394c984ba656068cc47
+  - enabled: 1
+    path: Assets/Scenes/Asalto.unity
+    guid: 832dbf4d3154d924697fb4483bf3f6d4
   m_configObjects: {}

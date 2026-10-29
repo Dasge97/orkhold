@@ -1,0 +1,23 @@
+# 06 · Decisiones tomadas al implementar
+
+Daniel pidió (29-10-2026) implementar todas las fases seguidas y tomar las decisiones sin parar.
+Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo más reciente abajo.
+
+## Fase 1
+| # | Decisión | Por qué |
+|---|---|---|
+| 1 | Se importa el Nature Kit completo (329 modelos) y los 12 personajes de Mini Characters. | Río, puente, vallas, cartel y personajes se repiten en todos los mapas. |
+| 2 | Letras nuevas: `v` valla y `,` casilla reservada del hueco del fuerte. | La valla del fuerte no tenía letra; el hueco necesita casillas sin hierba para pintar el fuerte encima. |
+| 3 | `[` es la esquina noroeste y `]` la sureste del hueco; dentro se pinta `fuerte-base.txt`. | Así el jugador ve su fuerte en el pueblo con su valla y su entrada. |
+| 4 | `E` no tiene modelo: es solo la puerta de salida (mazmorra) o de entrada (fuerte). | Un mismo modelo no sirve para la salida de la mazmorra y el hueco de la valla. |
+| 5 | Las puertas se cruzan andando (`D`, `E`, entrada al fuerte); el cofre PvP `C` se usa con el botón de interactuar. | El asalto es una decisión, no un paso. |
+| 6 | Zona de puerta cuadrada de 0,8 m; hay que alejarse 1,4 m para que vuelva a funcionar. | Con zona redonda pequeña, el jugador se queda pegado al muro junto a la puerta sin entrar. |
+| 7 | Casa 2x2 = 4 bloques `wall` con `wood-structure` encima y dos estandartes. | Mini Dungeon no trae casas; es lo que pide el diseño (`wall`, `wood-structure`). |
+| 8 | Vallas 1,8 veces más altas que el modelo del Nature Kit. | El original mide 0,35 m, menos de la mitad del personaje. |
+| 9 | Se mantienen los colores originales de Kenney (hierba turquesa). | Son los del pack; no es un fallo de importación. |
+| 10 | Las escenas y las mallas fundidas no van en git; se montan desde los mapas al abrir Unity o al compilar. | Las mallas ocupan 35 MB de texto y cambian en cada montaje. |
+| 11 | Todo lo fijo de un mapa se funde en mallas de 16x16 casillas; árboles y rocas del interior quedan sueltos; los árboles a menos de 3 casillas del borde se funden y no se pueden talar. | Rendimiento en móvil sin perder árboles y rocas que se golpean (fase 2). |
+| 12 | Sombras duras a 18 m, sin cascadas; plano lejano de la cámara donde acaba la niebla. | Coste en móvil. |
+| 13 | Emulador `Medium_Phone` con 4 GB de RAM (antes 2 GB; copia en `config.ini.original`). | Con 2 GB el emulador iba a 5-15 fps incluso con una escena vacía. |
+| 14 | Fuerte y Asalto llevan una pradera grande alrededor. | Que no se vea el vacío al borde del fuerte. |
+| 15 | Scripts, editor y tests en ensamblados propios (`Orkhold`, `Orkhold.Editor`, `Orkhold.Pruebas`). | Los tests no pueden ver el ensamblado por defecto de Unity. |

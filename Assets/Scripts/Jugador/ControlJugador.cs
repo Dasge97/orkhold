@@ -34,9 +34,13 @@ public class ControlJugador : MonoBehaviour
 
     void Update()
     {
-        if (_vida.Muerto) return;
+        if (_vida.Muerto) { EntradaJuego.LimpiarPulsos(); return; }
 
-        bool ocupado = Time.time < _ocupadoHasta;
+        // Los pulsos de botón se leen y se borran aquí, para no perder ninguno por el orden de ejecución.
+        bool pulsoAtaque = EntradaJuego.Ataque, pulsoInteractuar = EntradaJuego.Interactuar;
+        EntradaJuego.LimpiarPulsos();
+
+        bool ocupado = Time.time < _ocupadoHasta || Transicion.Ocupada;
         Vector2 entrada = ocupado ? Vector2.zero : EntradaJuego.Mover;
 
         // Dirección relativa a la cámara, aplanada sobre el suelo.
@@ -58,13 +62,11 @@ public class ControlJugador : MonoBehaviour
 
         if (!ocupado)
         {
-            if (EntradaJuego.Ataque) { Atacar(); return; }
-            if (EntradaJuego.Interactuar) { Interactuar(); return; }
+            if (pulsoAtaque) { Atacar(); return; }
+            if (pulsoInteractuar) { Interactuar(); return; }
             Animar(entrada.magnitude < 0.1f ? "idle" : corre ? "sprint" : "walk");
         }
     }
-
-    void LateUpdate() { EntradaJuego.LimpiarPulsos(); }
 
     void Atacar()
     {
@@ -85,23 +87,25 @@ public class ControlJugador : MonoBehaviour
 
     void Interactuar()
     {
-        Recogible mejor = null; float dMin = alcanceRecoger;
-        foreach (var r in FindObjectsByType<Recogible>(FindObjectsSortMode.None))
+        var cerca = Interactuable.MasCercano(transform.position);
+        if (cerca)
         {
-            float d = Vector3.Distance(r.transform.position, transform.position);
-            if (d < dMin) { dMin = d; mejor = r; }
-        }
-        if (mejor)
-        {
-            _ocupadoHasta = Time.time + 0.7f;
-            Animar("pick-up", true);
-            _inv.Sumar(mejor.clase);
-            Destroy(mejor.gameObject);
+            Vector3 a = cerca.transform.position - transform.position; a.y = 0f;
+            if (a.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(a);
+            cerca.Usar(this);
         }
         else if (_vida.actual < _vida.maxima && _inv.UsarPocion())
         {
             _vida.Curar(2);
         }
+    }
+
+    /// Lo llama un Recogible al usarlo: animación de recoger y suma al inventario.
+    public void Recoger(Recogible r)
+    {
+        _ocupadoHasta = Time.time + 0.7f;
+        Animar("pick-up", true);
+        _inv.Sumar(r.clase, r.cantidad);
     }
 
     public void RegistrarBaja() { _inv.SumarBaja(); }

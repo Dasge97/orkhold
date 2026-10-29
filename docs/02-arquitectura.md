@@ -50,9 +50,13 @@ Assets/
     Fuerte/          EditorFuerte, PiezaFuerte, DisenoFuerte (datos), Asalto
     Red/             ClienteRed (NGO), ApiCliente (HTTPS), Sesion
     UI/              HUD, PantallaConstruir, PantallaAsalto, PantallaRanking, Menu
-  Editor/            MontarEscenaPvE, ImportadorKenney, RevisionPrototipo, CompilarAndroid
-  Mapas/             pueblo.txt, catacumbas.txt, fuerte-base.txt
-  Scenes/            Arranque, Pueblo, Mazmorra1, Fuerte, Asalto
+  Editor/            MontarEscenas, CrearPrefabs, CrearPaletaMapa, CombinarMallas, ImportadorKenney,
+                     RevisionPrototipo, CompilarAndroid, PruebaCargadorMapa, FotosModelos, AutoRefrescar
+  Prefabs/           Jugador, Orco, Moneda, Pocion, Puerta, Casa, Interfaz (los genera CrearPrefabs)
+  Mapas/             pueblo.txt, catacumbas.txt, fuerte-base.txt, PaletaMapa.asset
+  Mapas/Mallas/      mallas fundidas de cada escena (generadas, fuera de git)
+  Scenes/            Arranque, Pueblo, Mazmorra1, Fuerte, Asalto (generadas desde los mapas, fuera de git)
+  Tests/PlayMode/    tests en Play Mode (Unity Test Framework)
   Animacion/         controladores generados
 docs/                estos documentos
 Builds/              APK (fuera de git)
@@ -82,20 +86,37 @@ TTTTTTTTTTTTTTTTTTTT
 |---|---|
 | `.` | hierba (exterior) / suelo (mazmorra y fuerte) |
 | `=` camino vertical, `-` horizontal, `+` cruce, `~` río, `_` puente |
-| `#` muro, `T` árbol, `r` roca, `f` flor o hierba decorativa, `h` casa (bloque 2x2) |
-| `F` fogata (aparición), `C` cofre PvP, `B` tablón, `D` puerta de mazmorra, `E` salida |
-| `[` `]` esquinas del hueco del fuerte (se rellena con el fuerte del jugador) |
+| `#` muro, `T` árbol, `r` roca, `f` flor o hierba decorativa, `h` casa (bloque 2x2), `v` valla |
+| `F` fogata (aparición), `C` cofre PvP, `B` tablón, `D` puerta de mazmorra, `E` salida o entrada (sin modelo) |
+| `[` `]` esquinas noroeste y sureste del hueco del fuerte; `,` casilla reservada del hueco (sin suelo) |
 | `o` orco, `a` arquero, `e` esqueleto, `J` jefe, `$` moneda, `p` poción, `X` trampa |
 | `K` cofre del tesoro (solo en el fuerte) |
 
 `CargadorMapa` lee el fichero y coloca las piezas según `PaletaMapa` (un `ScriptableObject` letra →
-prefab). En el cliente coloca lo visual; en el servidor de mundo coloca colliders y enemigos. Los
+modelos + prefab con lógica). En el cliente coloca lo visual; en el servidor de mundo coloca colliders y enemigos. Los
 dos leen el mismo fichero. Las piezas del **fuerte** no vienen del texto sino de `DisenoFuerte`
 (§2.5), que se pinta encima de `fuerte-base.txt`.
 
+Cabecera: `nombre`, `tipo` (`exterior` pone hierba; el resto, suelo de mazmorra), `aparicion` (letra
+donde aparece el jugador) y `relleno: flores` (flores al azar en las casillas vacías).
+
+Lo que sabe hacer la paleta, por letra:
+- **Modelos** con variantes al azar (azar fijo por mapa: cliente y servidor eligen lo mismo).
+- **Unión con vecinos**: el río elige recto, curva, te, cruce o final según las casillas de al lado;
+  la valla pone un tramo del centro a cada vecino. El puente pone el río debajo y se gira para cruzarlo.
+- **Entidad**: prefab con lógica (puerta, orco, moneda...) además del modelo.
+- **Colisión**: caja o cápsula; muros, río y valla comparten una caja por tramo de fila.
+- **Bloque**: `h` ocupa 2x2 y se pone una vez.
+
+`MontarEscenas` (editor) monta cada escena desde su mapa y funde en pocas mallas todo lo fijo
+(`CombinarMallas`, trozos de 16x16 casillas); árboles y rocas del interior quedan sueltos porque
+se golpean. Las puertas guardan su id, su escena de destino y su casilla de llegada.
+
 ### 2.3 Transiciones
 `Transicion.Ir("Mazmorra1")`: fundido a negro 0,5 s, `SceneManager.LoadSceneAsync`, fundido de
-vuelta. El jugador guarda a qué puerta volver. Pueblo, Mazmorra1, Fuerte y Asalto son escenas
+vuelta. Cada `Puerta` tiene `id`, `destino` y `llegarA` (id de la puerta de destino junto a la que
+se aparece); `GestorEscena` coloca al jugador al cargar. Puertas: pueblo `D` → Mazmorra1, hueco del
+fuerte → Fuerte, cofre `C` (botón) → Asalto; cada `E` vuelve al pueblo junto a su puerta. Pueblo, Mazmorra1, Fuerte y Asalto son escenas
 separadas; solo Pueblo lleva `NetworkManager`.
 
 ### 2.4 Animación

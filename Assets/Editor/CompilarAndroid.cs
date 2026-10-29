@@ -21,6 +21,16 @@ public static class CompilarAndroid
         };
     }
 
+    public static BuildResult UltimoResultado = BuildResult.Unknown;
+
+    /// Para la línea de órdenes (lanzar Unity con -buildTarget Android): sale con 0 si compila.
+    public static void EnBatch()
+    {
+        try { Compilar(); }
+        catch (System.Exception e) { Debug.LogException(e); }
+        EditorApplication.Exit(UltimoResultado == BuildResult.Succeeded ? 0 : 1);
+    }
+
     [MenuItem("Prototipo/Compilar APK")]
     public static void Compilar()
     {
@@ -33,6 +43,8 @@ public static class CompilarAndroid
             return;
         }
         if (File.Exists(Marca)) File.Delete(Marca);
+        // Las escenas no van en git: se montan desde los mapas de texto si faltan.
+        if (!File.Exists(MontarEscenas.CarpetaEscenas + "Pueblo.unity")) MontarEscenas.MontarTodas();
 
         PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
         // Solo ARM64: Unity 6 ya no compila x86_64 para Android. El emulador (x86_64) lo ejecuta
@@ -47,13 +59,14 @@ public static class CompilarAndroid
         Directory.CreateDirectory("Builds");
         var opciones = new BuildPlayerOptions
         {
-            scenes = new[] { "Assets/Scenes/PvE.unity" },
+            scenes = System.Array.ConvertAll(EditorBuildSettings.scenes, e => e.path),
             locationPathName = Salida,
             target = BuildTarget.Android,
             options = BuildOptions.None
         };
         var informe = BuildPipeline.BuildPlayer(opciones);
         var r = informe.summary;
+        UltimoResultado = r.result;
         Debug.Log($"APK: resultado={r.result} tamaño={r.totalSize / 1048576} MB errores={r.totalErrors} tiempo={r.totalTime.TotalSeconds:F0}s ruta={Salida}");
     }
 }

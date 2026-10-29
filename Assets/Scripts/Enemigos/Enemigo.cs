@@ -30,7 +30,7 @@ public class Enemigo : MonoBehaviour
 
     void Start()
     {
-        var j = FindFirstObjectByType<ControlJugador>();
+        var j = FindAnyObjectByType<ControlJugador>();
         if (j) { _jugador = j.transform; _vidaJugador = j.GetComponent<Vida>(); }
     }
 

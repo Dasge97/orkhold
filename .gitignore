@@ -14,3 +14,10 @@
 .vs/
 .idea/
 /Revision/
+
+# Generado por Prototipo > Montar escenas a partir de Assets/Mapas/*.txt
+/Assets/Scenes/*.unity
+/Assets/Scenes/*.unity.meta
+/Assets/Mapas/Mallas/
+/Assets/Mapas/Mallas.meta
+/.utmp/
