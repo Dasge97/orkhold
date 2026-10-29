@@ -87,12 +87,12 @@ public static class CrearPaletaMapa
         Agregar(p, '[', "esquina noroeste del hueco del fuerte", new GameObject[0], conSuelo: false, marca: true);
         Agregar(p, ']', "esquina sureste del hueco del fuerte", new GameObject[0], conSuelo: false, marca: true);
         Agregar(p, 'o', "orco", new GameObject[0], entidad: CrearPrefabs.Cargar("Orco"));
-        Agregar(p, 'a', "arquero", new GameObject[0], marca: true);
-        Agregar(p, 'e', "esqueleto", new GameObject[0], marca: true);
-        Agregar(p, 'J', "jefe", new GameObject[0], marca: true);
+        Agregar(p, 'a', "arquero", new GameObject[0], entidad: CrearPrefabs.Cargar("Arquero"));
+        Agregar(p, 'e', "esqueleto", new GameObject[0], entidad: CrearPrefabs.Cargar("Esqueleto"));
+        Agregar(p, 'J', "jefe", new GameObject[0], entidad: CrearPrefabs.Cargar("Jefe"));
         Agregar(p, '$', "moneda", new GameObject[0], entidad: CrearPrefabs.Cargar("Moneda"));
         Agregar(p, 'p', "poción", new GameObject[0], entidad: CrearPrefabs.Cargar("Pocion"));
-        Agregar(p, 'X', "trampa", Modelos(Dungeon, "trap"), marca: true);
+        Agregar(p, 'X', "trampa", new GameObject[0], entidad: CrearPrefabs.Cargar("Trampa"));
         Agregar(p, 'K', "cofre del tesoro", Modelos(Dungeon, "chest"), escala: 1.6f, marca: true,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.45f, 0.7f, 0f));
 

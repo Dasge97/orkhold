@@ -9,6 +9,7 @@ public class DatosPartida
     public int version = VersionActual;
     public DatosInventario inventario = new DatosInventario();
     public int bajas;
+    public List<DatosUnidad> unidades = new List<DatosUnidad>();
     /// Progreso como pares clave-valor (ej. "jefe1_muerto" = "1").
     public List<Par> progreso = new List<Par>();
 

@@ -34,3 +34,15 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 22 | Modelos de los recursos en el suelo: madera = `log`, piedra = `stone_smallA`, hierro = `rocks` (Mini Dungeon), hueso = `stone_smallFlatB`. | No hay modelos de hierro ni de hueso en los packs. |
 | 23 | Iconos del botón: mano (nada o recoger), llave (puerta), monedas (cofre PvP), estrella (tablón), llave inglesa (construir). | Son los iconos del pack Mobile Controls. |
 | 24 | Sonidos: Kenney RPG Audio e Impact Sounds (CC0), en `Assets/Kenney/Audio/Resources/Sonidos`. | Los pide la tarea 2.6. |
+
+## Fase 3
+| # | Decisión | Por qué |
+|---|---|---|
+| 25 | El enemigo deja de perseguir si se aleja 9 m de su sitio o el jugador se va a más de 1,6 veces su distancia de visión, y vuelve andando. | Que no persigan por todo el mapa. |
+| 26 | Solo los orcos del pueblo patrullan (3 casillas libres en línea recta, con 1,5 s de pausa en cada punta); los de la mazmorra esperan quietos. | El diseño pide patrulla de 2 puntos sin decir dónde. |
+| 27 | Los enemigos de la mazmorra también reaparecen a los 60 s; el jefe no reaparece. | La regla de 60 s es general; el jefe cierra la entrada. |
+| 28 | El arquero lleva la lanza en el brazo derecho y lanza otra lanza más pequeña (7 m/s); huye en la primera dirección libre. | El diseño dice `character-orc` + `weapon-spear`. |
+| 29 | Esqueleto = `character-human` con la textura teñida de azul grisáceo. | Propuesta del diseño ("color de mazmorra"). |
+| 30 | El jefe: golpe en área de radio 2,2 m; cuerpo a cuerpo 2 de daño cada 1,6 s; suelta 5 monedas además de su botín. | El diseño fija vida, daño y el intervalo de 6 s, no el radio ni la cadencia. |
+| 31 | Al matar al jefe, la unidad o los 3 huesos van directos al inventario y a los 4 s se vuelve al pueblo. | Que el botín no se pierda si el jugador no lo recoge antes de la transición. |
+| 32 | Trampas desfasadas según su posición (no suben todas a la vez); hacen daño una vez por subida. | Que la sala tenga un ritmo que se pueda leer. |

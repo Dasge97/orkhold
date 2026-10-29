@@ -3,6 +3,17 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 3 cerrada (tareas 3.1 a 3.6)
+- Hecho: `Enemigo` con estados (quieto, patrulla, persigue, ataca, vuelve, muerto), botín y
+  reaparición a los 60 s; `EnemigoArquero` + `Proyectil`; esqueleto (misma clase, otros números y
+  material oscuro); `Jefe` con golpe en área avisado (`AvisoArea`) y `BarraVidaJefe`; `Trampa` con
+  las animaciones show/hide del modelo; botín del jefe (unidad la primera vez, 3 huesos después).
+  Los orcos del pueblo patrullan 3 casillas.
+- Comprobado: 9 tests nuevos (19 de 19 OK), entre ellos "matar jefe" con vida infinita que acaba con
+  la unidad en el inventario y la vuelta al pueblo; fotos 43-45.
+- Aprendido: un arquero que huye en línea recta se queda pegado al muro en las esquinas; hay que
+  buscar una dirección libre (esfera lanzada a 1 m) antes de moverse.
+
 ## 2026-10-29 — Fase 2 cerrada (tareas 2.1 a 2.6)
 - Hecho: `Partida` (inventario que vive entre escenas, con moneda, madera, piedra, hierro, hueso y
   pociones), `Regeneracion`, `Fogata`, `FuenteRecurso` (árboles y rocas: 3 golpes, temblor, se agotan

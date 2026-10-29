@@ -42,6 +42,7 @@ public static class MontarEscenas
             Configurar(r, 'D', "mazmorra1", "Mazmorra1", "", true);
             Configurar(r, 'C', "asalto", "Asalto", "", false);
             PonerHuecoFuerte(r, paleta);
+            PonerPatrullas(r, paleta);
         });
         Montar("Mazmorra1", "catacumbas", Ambiente.Mazmorra, paleta, g =>
         {
@@ -239,6 +240,29 @@ public static class MontarEscenas
             pu.llegada = m.posicion + Vector3.left;
             m.entidad.name = "Puerta fuerte";
             EditorUtility.SetDirty(pu);
+        }
+    }
+
+    /// Los orcos del pueblo patrullan entre su sitio y un punto a 3 casillas libres en línea recta.
+    static void PonerPatrullas(CargadorMapa.Resultado r, PaletaMapa paleta)
+    {
+        var dirs = new[] { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
+        foreach (var m in r.marcas)
+        {
+            var en = m.entidad ? m.entidad.GetComponent<Enemigo>() : null;
+            if (!en) continue;
+            for (int k = 0; k < 4; k++)
+            {
+                var d = dirs[(m.columna + m.fila + k) % 4];
+                bool libre = true;
+                for (int i = 1; i <= 3 && libre; i++)
+                    libre = CargadorMapa.Transitable(r.mapa, paleta, m.columna + d.x * i, m.fila + d.y * i);
+                if (!libre) continue;
+                en.patrulla = true;
+                en.puntoPatrulla = r.raiz.transform.TransformPoint(CargadorMapa.Casilla(r.mapa, m.columna + d.x * 3, m.fila + d.y * 3));
+                EditorUtility.SetDirty(en);
+                break;
+            }
         }
     }
 

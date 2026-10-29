@@ -42,6 +42,8 @@ public static class FotosModelos
             foreach (var mat in rs.SelectMany(r => r.sharedMaterials).Where(x => x).Distinct())
                 info.AppendLine($"     material {mat.name} shader={mat.shader.name} color={mat.color} textura={(mat.mainTexture ? mat.mainTexture.name : "-")} " +
                                 $"emision={(mat.HasProperty("_EmissionColor") ? mat.GetColor("_EmissionColor").ToString() : "-")} brillo={(mat.HasProperty("_Glossiness") ? mat.GetFloat("_Glossiness") : -1f)}");
+            var clips = AssetDatabase.LoadAllAssetsAtPath(rutas[i]).OfType<AnimationClip>().Where(c => !c.name.StartsWith("__")).Select(c => $"{c.name}({c.length:F2}s)");
+            if (clips.Any()) info.AppendLine("     clips: " + string.Join(", ", clips));
             Object.DestroyImmediate(m); Object.DestroyImmediate(norte);
         }
         cenital.Apply(); lado.Apply();

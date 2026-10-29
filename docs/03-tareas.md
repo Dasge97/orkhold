@@ -35,12 +35,12 @@ Leer antes: `01-diseno.md` §4.4, §4.5.
 
 ## Fase 3 · Enemigos y mazmorra
 Leer antes: `01-diseno.md` §4.2, §4.3.
-- [ ] 3.1 `Enemigo` base con estados: quieto, patrulla (2 puntos), persigue, ataca, muere. Reaparece a los 60 s.
-- [ ] 3.2 `EnemigoArquero`: mantiene 4 m, lanza proyectil (`weapon-spear` pequeño) cada 2 s, huye a 2 m.
-- [ ] 3.3 Esqueleto: lento y fuerte (vida 4, daño 2). Misma clase que orco con otros números y color.
-- [ ] 3.4 `Jefe` (orco jefe): vida 15, golpe en área cada 6 s con aviso de 1 s (círculo rojo). Barra de vida arriba.
-- [ ] 3.5 Trampas (`X`): pinchos que suben cada 2 s, 1 de daño.
-- [ ] 3.6 Botín del jefe: la primera vez una unidad "Orco jefe defensor"; después 3 huesos. Vuelta al pueblo con transición.
+- [x] 3.1 (30-10-2026) `Enemigo` base con estados: quieto, patrulla (2 puntos), persigue, ataca, muere. Reaparece a los 60 s.
+- [x] 3.2 (30-10-2026) `EnemigoArquero`: mantiene 4 m, lanza proyectil (`weapon-spear` pequeño) cada 2 s, huye a 2 m.
+- [x] 3.3 (30-10-2026) Esqueleto: lento y fuerte (vida 4, daño 2). Misma clase que orco con otros números y color.
+- [x] 3.4 (30-10-2026) `Jefe` (orco jefe): vida 15, golpe en área cada 6 s con aviso de 1 s (círculo rojo). Barra de vida arriba.
+- [x] 3.5 (30-10-2026) Trampas (`X`): pinchos que suben cada 2 s, 1 de daño.
+- [x] 3.6 (30-10-2026) Botín del jefe: la primera vez una unidad "Orco jefe defensor"; después 3 huesos. Vuelta al pueblo con transición.
   Comprobar: `Revisar` con un caso "matar jefe" (vida infinita en modo prueba) que acaba con la unidad en el inventario.
 
 ## Fase 4 · Inventario, fuerte y guardado local

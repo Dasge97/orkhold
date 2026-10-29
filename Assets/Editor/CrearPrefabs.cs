@@ -31,7 +31,8 @@ public static class CrearPrefabs
         CrearCatalogo(moneda, madera, piedra, hierro, hueso, pocion);
         CrearFogata();
         CrearJugador();
-        CrearOrco(moneda);
+        CrearEnemigos();
+        CrearTrampa();
         CrearPuerta();
         CrearCasa();
         CrearInterfaz();
@@ -95,22 +96,105 @@ public static class CrearPrefabs
         Guardar(j, "Jugador");
     }
 
-    static void CrearOrco(GameObject moneda)
+    /// Los tres enemigos de 01-diseno.md §4.2 y el jefe de §4.3.
+    static void CrearEnemigos()
     {
-        var ctrl = CrearControlador(Dungeon + "character-orc.fbx", Anim + "orco.controller");
-        var e = new GameObject("Orco");
-        var v = Poner(Dungeon + "character-orc.fbx", e.transform, Vector3.zero, 0f);
+        var ctrlOrco = CrearControlador(Dungeon + "character-orc.fbx", Anim + "orco.controller");
+        var ctrlHumano = AssetDatabase.LoadAssetAtPath<AnimatorController>(Anim + "humano.controller");
+
+        // Orco: vida 3, daño 1, persigue a 5 m, pega a 1 m cada 1,3 s, suelta 1-2 monedas.
+        var orco = CrearEnemigo<Enemigo>("Orco", Dungeon + "character-orc.fbx", ctrlOrco, 1f, null, e =>
+        {
+            e.nombre = "Orco"; e.distanciaVer = 5f; e.distanciaPegar = 1f; e.velocidad = 2f; e.cadenciaAtaque = 1.3f; e.dano = 1;
+            e.monedasMin = 1; e.monedasMax = 2; e.probabilidadExtra = 0f;
+        }, 3);
+        Guardar(orco, "Orco");
+
+        // Arquero: vida 2, daño 1, se queda a 4 m y lanza cada 2 s, huye si te acercas; 1 moneda + 20 % hierro.
+        var proyectil = CrearProyectil();
+        var arquero = CrearEnemigo<EnemigoArquero>("Arquero", Dungeon + "character-orc.fbx", ctrlOrco, 1f, null, e =>
+        {
+            e.nombre = "Orco arquero"; e.distanciaVer = 7f; e.distanciaPegar = 1f; e.velocidad = 2f; e.dano = 1;
+            e.distanciaIdeal = 4f; e.distanciaHuir = 2f; e.cadenciaDisparo = 2f; e.proyectil = proyectil;
+            e.monedasMin = 1; e.monedasMax = 1; e.recursoExtra = Recurso.Hierro; e.probabilidadExtra = 0.2f;
+        }, 2);
+        var brazo = arquero.GetComponentsInChildren<Transform>().FirstOrDefault(t => t.name == "arm-right");
+        var lanza = Poner(Dungeon + "weapon-spear.fbx", brazo ? brazo : arquero.transform, brazo ? new Vector3(0f, -0.12f, 0.06f) : new Vector3(0.2f, 0.3f, 0.1f), 0f);
+        lanza.transform.localScale = Vector3.one * 0.85f;
+        Guardar(arquero, "Arquero");
+
+        // Esqueleto: humano oscuro, lento (1,5 m/s) y fuerte: vida 4, daño 2; 1 moneda + 30 % hueso.
+        var esqueleto = CrearEnemigo<Enemigo>("Esqueleto", Dungeon + "character-human.fbx", ctrlHumano, 1f, MaterialOscuro(), e =>
+        {
+            e.nombre = "Esqueleto"; e.distanciaVer = 5f; e.distanciaPegar = 1f; e.velocidad = 1.5f; e.cadenciaAtaque = 1.6f; e.dano = 2;
+            e.monedasMin = 1; e.monedasMax = 1; e.recursoExtra = Recurso.Hueso; e.probabilidadExtra = 0.3f;
+        }, 4);
+        Guardar(esqueleto, "Esqueleto");
+
+        // Jefe: orco al 150 %, vida 15, daño 2, golpe en área cada 6 s.
+        var jefe = CrearEnemigo<Jefe>("Jefe", Dungeon + "character-orc.fbx", ctrlOrco, 1.5f, null, e =>
+        {
+            e.nombre = "Orco jefe"; e.distanciaVer = 7f; e.distanciaPegar = 1.3f; e.velocidad = 1.8f; e.cadenciaAtaque = 1.6f; e.dano = 2;
+            e.distanciaPerder = 12f; e.reaparecerSegundos = 0f; e.monedasMin = 5; e.monedasMax = 5;
+        }, 15);
+        Guardar(jefe, "Jefe");
+    }
+
+    static GameObject CrearEnemigo<T>(string nombre, string fbx, RuntimeAnimatorController ctrl, float escala, Material material,
+                                       System.Action<T> numeros, int vida) where T : Enemigo
+    {
+        var e = new GameObject(nombre);
+        var v = Poner(fbx, e.transform, Vector3.zero, 0f);
         v.name = "Modelo";
+        v.transform.localScale = Vector3.one * escala;
+        if (material) foreach (var r in v.GetComponentsInChildren<Renderer>()) r.sharedMaterials = r.sharedMaterials.Select(_ => material).ToArray();
         var an = Animador(v);
         an.runtimeAnimatorController = ctrl;
         var cc = e.AddComponent<CharacterController>();
-        cc.center = new Vector3(0f, 0.4f, 0f); cc.height = 0.78f; cc.radius = 0.22f;
-        e.AddComponent<Vida>().maxima = 3;
-        var en = e.AddComponent<Enemigo>();
+        cc.center = new Vector3(0f, 0.4f * escala, 0f); cc.height = 0.78f * escala; cc.radius = 0.22f * escala;
+        e.AddComponent<Vida>().maxima = vida;
+        var en = e.AddComponent<T>();
         en.animador = an;
-        en.sueltaAlMorir = moneda;
-        e.AddComponent<EfectoDano>().alturaNumero = 1.05f;
-        Guardar(e, "Orco");
+        numeros(en);
+        e.AddComponent<EfectoDano>().alturaNumero = 1.05f * escala;
+        return e;
+    }
+
+    /// Material del esqueleto: la textura de Kenney con un tono azul grisáceo de mazmorra.
+    static Material MaterialOscuro()
+    {
+        const string ruta = Carpeta + "Materiales/Esqueleto.mat";
+        Directory.CreateDirectory(Carpeta + "Materiales");
+        var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
+        if (m) return m;
+        var original = AssetDatabase.LoadAssetAtPath<GameObject>(Dungeon + "character-human.fbx").GetComponentInChildren<Renderer>().sharedMaterial;
+        m = new Material(original) { color = new Color(0.55f, 0.6f, 0.78f) };
+        AssetDatabase.CreateAsset(m, ruta);
+        return m;
+    }
+
+    static GameObject CrearProyectil()
+    {
+        var g = new GameObject("Proyectil");
+        var l = Poner(Dungeon + "weapon-spear.fbx", g.transform, Vector3.zero, 0f);
+        // La lanza es vertical: se tumba para que la punta mire hacia delante (+Z).
+        l.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+        l.transform.localPosition = new Vector3(0f, 0f, -0.3f);
+        l.transform.localScale = Vector3.one * 0.7f;
+        g.AddComponent<Proyectil>();
+        return Guardar(g, "Proyectil");
+    }
+
+    static void CrearTrampa()
+    {
+        var ctrl = CrearControlador(Dungeon + "trap.fbx", Anim + "trampa.controller");
+        var g = new GameObject("Trampa");
+        var m = Poner(Dungeon + "trap.fbx", g.transform, Vector3.zero, 0f);
+        var an = Animador(m);
+        an.runtimeAnimatorController = ctrl;
+        an.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        g.AddComponent<Trampa>().animador = an;
+        Guardar(g, "Trampa");
     }
 
     static void CrearPuerta()

@@ -683,7 +683,7 @@ MonoBehaviour:
     colision: 0
     tamano: {x: 1, y: 1, z: 1}
     bloque: 1
-    marca: 1
+    marca: 0
     union:
       recto: {fileID: 0}
       curva: {fileID: 0}
@@ -696,7 +696,7 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 7059563415834266089, guid: ba922826be5b21a43b0164b59c1f8e01, type: 3}
     combinar: 1
     combinarEnBorde: 0
     esFuente: 0
@@ -714,7 +714,7 @@ MonoBehaviour:
     colision: 0
     tamano: {x: 1, y: 1, z: 1}
     bloque: 1
-    marca: 1
+    marca: 0
     union:
       recto: {fileID: 0}
       curva: {fileID: 0}
@@ -727,7 +727,7 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 8736837767045724462, guid: d2156333fd7ed2f4ab2cd555f668ac07, type: 3}
     combinar: 1
     combinarEnBorde: 0
     esFuente: 0
@@ -745,7 +745,7 @@ MonoBehaviour:
     colision: 0
     tamano: {x: 1, y: 1, z: 1}
     bloque: 1
-    marca: 1
+    marca: 0
     union:
       recto: {fileID: 0}
       curva: {fileID: 0}
@@ -758,7 +758,7 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 2048618985583718989, guid: 117bafb49c5f576438d4b2ad5602541d, type: 3}
     combinar: 1
     combinarEnBorde: 0
     esFuente: 0
@@ -829,8 +829,7 @@ MonoBehaviour:
     debajo: 0
   - letra: 88
     descripcion: trampa
-    modelos:
-    - {fileID: 919132149155446097, guid: f47778d283bc91d4197631f85ac16d46, type: 3}
+    modelos: []
     escala: 1
     altura: 0
     giroY: 0
@@ -839,7 +838,7 @@ MonoBehaviour:
     colision: 0
     tamano: {x: 1, y: 1, z: 1}
     bloque: 1
-    marca: 1
+    marca: 0
     union:
       recto: {fileID: 0}
       curva: {fileID: 0}
@@ -852,7 +851,7 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 7436285130485386343, guid: 6e5424b6165357c4fb67179ca3fcc5ea, type: 3}
     combinar: 1
     combinarEnBorde: 0
     esFuente: 0
