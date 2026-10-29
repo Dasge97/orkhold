@@ -33,6 +33,7 @@ public static class CrearPrefabs
         CrearJugador();
         CrearEnemigos();
         CrearTrampa();
+        CrearPiezasFuerte();
         CrearPuerta();
         CrearCasa();
         CrearInterfaz();
@@ -185,6 +186,44 @@ public static class CrearPrefabs
         return Guardar(g, "Proyectil");
     }
 
+    public const string RutaCatalogoPiezas = "Assets/Resources/CatalogoPiezas.asset";
+
+    /// Piezas del fuerte (01-diseno.md §5.1) y su catálogo.
+    static void CrearPiezasFuerte()
+    {
+        // Muro de madera: valla alta del Nature Kit, centrada en la casilla y más alta que el original.
+        var mm = new GameObject("PiezaMuroMadera");
+        var valla = Poner(Natura + "fence_simpleHigh.fbx", mm.transform, new Vector3(0f, 0f, -0.47f), 0f);
+        valla.transform.localScale = new Vector3(1f, 2.6f, 1f);
+        var muroMadera = Guardar(mm, "PiezaMuroMadera");
+
+        var mp = new GameObject("PiezaMuroPiedra");
+        Poner(Dungeon + "wall.fbx", mp.transform, Vector3.zero, 0f);
+        var muroPiedra = Guardar(mp, "PiezaMuroPiedra");
+
+        var pu = new GameObject("PiezaPuerta");
+        var gate = Poner(Dungeon + "gate.fbx", pu.transform, Vector3.zero, 0f);
+        gate.transform.localScale = new Vector3(1.25f, 1.4f, 1.25f);
+        var puerta = Guardar(pu, "PiezaPuerta");
+
+        Directory.CreateDirectory("Assets/Resources");
+        var c = AssetDatabase.LoadAssetAtPath<CatalogoPiezas>(RutaCatalogoPiezas);
+        if (!c) { c = ScriptableObject.CreateInstance<CatalogoPiezas>(); AssetDatabase.CreateAsset(c, RutaCatalogoPiezas); }
+        c.maxMuros = 40; c.maxTrampas = 6; c.maxDefensores = 4; c.huesosPorMejora = 2; c.mejoraMaxima = 3;
+        c.piezas.Clear();
+        CatalogoPiezas.Coste K(Recurso r, int n) => new CatalogoPiezas.Coste { recurso = r, cantidad = n };
+        void Pieza(string id, string nombre, CatalogoPiezas.Categoria cat, GameObject prefab, int vida, string unidad, params CatalogoPiezas.Coste[] costes)
+            => c.piezas.Add(new CatalogoPiezas.Pieza { id = id, nombre = nombre, categoria = cat, prefab = prefab, vida = vida, requiereUnidad = unidad, costes = costes.ToList() });
+        Pieza("muro_madera", "Muro de madera", CatalogoPiezas.Categoria.Muro, muroMadera, 3, "", K(Recurso.Madera, 2));
+        Pieza("muro_piedra", "Muro de piedra", CatalogoPiezas.Categoria.Muro, muroPiedra, 6, "", K(Recurso.Piedra, 3));
+        Pieza("puerta", "Puerta", CatalogoPiezas.Categoria.Muro, puerta, 4, "", K(Recurso.Madera, 2), K(Recurso.Hierro, 1));
+        Pieza("trampa", "Trampa", CatalogoPiezas.Categoria.Trampa, Cargar("Trampa"), 0, "", K(Recurso.Hierro, 2));
+        Pieza("orco_defensor", "Orco defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Orco"), 3, "", K(Recurso.Moneda, 10));
+        Pieza("esqueleto_defensor", "Esqueleto defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Esqueleto"), 4, "", K(Recurso.Moneda, 15));
+        Pieza("orco_jefe", "Orco jefe", CatalogoPiezas.Categoria.Defensor, Cargar("Jefe"), 15, Jefe.TipoUnidad);
+        EditorUtility.SetDirty(c);
+    }
+
     static void CrearTrampa()
     {
         var ctrl = CrearControlador(Dungeon + "trap.fbx", Anim + "trampa.controller");
@@ -257,6 +296,7 @@ public static class CrearPrefabs
         txt.horizontalOverflow = HorizontalWrapMode.Overflow;
         var sombra = hudGo.AddComponent<Shadow>(); sombra.effectDistance = new Vector2(2f, -2f);
         hudGo.AddComponent<HUD>().texto = txt;
+        canvasGo.AddComponent<Menu>().icono = AssetDatabase.LoadAssetAtPath<Sprite>(Controles + "icon_menu.png");
         Guardar(canvasGo, "Interfaz");
     }
 

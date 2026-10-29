@@ -17,6 +17,8 @@ public class Jefe : Enemigo
     public float distanciaCombate = 8f;
     public float segundosHastaSalir = 4f;
     public string puertaVuelta = "mazmorra1";
+    [Tooltip("Falso cuando defiende un fuerte: ni botín de mazmorra ni vuelta al pueblo.")]
+    public bool deMazmorra = true;
 
     float _siguienteArea;
     bool _enCombate;
@@ -65,6 +67,7 @@ public class Jefe : Enemigo
 
     protected override void SoltarBotin()
     {
+        if (!deMazmorra) return;
         base.SoltarBotin();
         var p = Partida.Actual;
         if (p.Progreso(ClaveProgreso) != "1")
@@ -85,7 +88,7 @@ public class Jefe : Enemigo
     {
         base.Morir();
         BarraVidaJefe.Ocultar();
-        StartCoroutine(Salir());
+        if (deMazmorra) StartCoroutine(Salir());
     }
 
     IEnumerator Salir()

@@ -110,6 +110,7 @@ MonoBehaviour:
   distanciaCombate: 8
   segundosHastaSalir: 4
   puertaVuelta: mazmorra1
+  deMazmorra: 1
 --- !u!114 &5370645803735512315
 MonoBehaviour:
   m_ObjectHideFlags: 0

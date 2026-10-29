@@ -45,12 +45,12 @@ Leer antes: `01-diseno.md` §4.2, §4.3.
 
 ## Fase 4 · Inventario, fuerte y guardado local
 Leer antes: `01-diseno.md` §5.1, §6; `02-arquitectura.md` §2.5.
-- [ ] 4.1 `Inventario` con recursos (moneda, madera, piedra, hierro, hueso) y unidades defensoras con mejoras.
-- [ ] 4.2 `CatalogoPiezas` (ScriptableObject) con las piezas del fuerte de `01-diseno.md` §5.1: modelo, coste, vida, límite.
-- [ ] 4.3 `DisenoFuerte` (datos serializables) y `EditorFuerte`: modo construir en la escena Fuerte, barra inferior con piezas y coste, tocar casilla para poner o quitar, validación de límites, "Listo".
-- [ ] 4.4 `PiezaFuerte`: muros con vida que se rompen a golpes, puerta que el dueño abre, trampa oculta, defensor = `Enemigo` con sus números.
-- [ ] 4.5 Guardado local en JSON (`persistentDataPath/partida.json`) con versión: inventario, fuerte, progreso. Se guarda al cambiar; se carga al arrancar.
-- [ ] 4.6 Menú: ajustes (sonido, vibración), reiniciar partida con confirmación.
+- [x] 4.1 (30-10-2026) `Inventario` con recursos (moneda, madera, piedra, hierro, hueso) y unidades defensoras con mejoras.
+- [x] 4.2 (30-10-2026) `CatalogoPiezas` (ScriptableObject) con las piezas del fuerte de `01-diseno.md` §5.1: modelo, coste, vida, límite.
+- [x] 4.3 (30-10-2026) `DisenoFuerte` (datos serializables) y `EditorFuerte`: modo construir en la escena Fuerte, barra inferior con piezas y coste, tocar casilla para poner o quitar, validación de límites, "Listo".
+- [x] 4.4 (30-10-2026) `PiezaFuerte`: muros con vida que se rompen a golpes, puerta que el dueño abre, trampa oculta, defensor = `Enemigo` con sus números.
+- [x] 4.5 (30-10-2026) Guardado local en JSON (`persistentDataPath/partida.json`) con versión: inventario, fuerte, progreso. Se guarda al cambiar; se carga al arrancar.
+- [x] 4.6 (30-10-2026) Menú: ajustes (sonido, vibración), reiniciar partida con confirmación.
   Comprobar: construir 5 muros, cerrar la app, abrir: siguen ahí y el inventario descontado.
 
 ## Fase 5 · Asalto sencillo (sin servidor todavía)

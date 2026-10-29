@@ -46,3 +46,19 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 30 | El jefe: golpe en área de radio 2,2 m; cuerpo a cuerpo 2 de daño cada 1,6 s; suelta 5 monedas además de su botín. | El diseño fija vida, daño y el intervalo de 6 s, no el radio ni la cadencia. |
 | 31 | Al matar al jefe, la unidad o los 3 huesos van directos al inventario y a los 4 s se vuelve al pueblo. | Que el botín no se pierda si el jugador no lo recoge antes de la transición. |
 | 32 | Trampas desfasadas según su posición (no suben todas a la vez); hacen daño una vez por subida. | Que la sala tenga un ritmo que se pueda leer. |
+
+## Fase 4
+| # | Decisión | Por qué |
+|---|---|---|
+| 33 | Coordenadas del diseño: x = columna de `fuerte-base.txt`, z = fila contada desde el sur. | Coinciden con las del mundo dentro del fuerte. |
+| 34 | Las puertas cuentan para el límite de 40 muros. | Bloquean el paso como un muro. |
+| 35 | No se construye en la casilla de llegada junto a la entrada (ahí aparece el atacante) ni sobre el cofre, la valla o la entrada. | Que el asalto siempre pueda empezar; los muros se rompen a golpes, así que no se exige camino libre (propuesta del diseño). |
+| 36 | Tocar una casilla ocupada la quita y devuelve el coste entero (las mejoras con hueso no se devuelven). Los recursos se descuentan al poner, no al pulsar "Listo". | Lo más claro en móvil; "Listo" solo guarda. |
+| 37 | Mejorar: herramienta "Mejorar" en la barra; cada toque sobre un defensor le da +1 vida por 2 huesos, hasta +3. | El diseño no dice dónde se mejora. |
+| 38 | El orco jefe no cuesta recursos: gasta la unidad del botín y al quitarlo vuelve al inventario con sus mejoras. | Es una unidad única conseguida en la mazmorra. |
+| 39 | En el fuerte propio la puerta se abre sola al acercarse el dueño; los defensores están quietos y las trampas se ven. En el asalto: puerta = muro de 4 de vida, trampas ocultas, defensores activos sin botín y sin reaparecer. | §5.1 y §5.2 del diseño. |
+| 40 | Muro de madera = `fence_simpleHigh` centrado y 2,6 veces más alto; puerta = `gate` al 125-140 %. | Modelos del diseño, a la escala del personaje. |
+| 41 | En el hueco del pueblo el fuerte se ve con sus piezas, sin colisiones ni defensores activos. | Solo es para verlo; se entra por la puerta a la escena Fuerte. |
+| 42 | Guardado medio segundo después de cada cambio, al pausar y al salir; fichero roto → partida nueva y copia `.roto`. | No perder partida si el móvil cierra la app. |
+| 43 | Ajustes (sonido, vibración) en PlayerPrefs, aparte de la partida; vibrar al recibir daño. | Reiniciar la partida no debe tocar los ajustes. |
+| 44 | El menú no pausa el juego. | El pueblo será online (fase 7). |

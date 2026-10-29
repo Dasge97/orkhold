@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9768ab4dbbeb7d0458e8226bfe3076e3, type: 3}
+  m_Name: CatalogoPiezas
+  m_EditorClassIdentifier: Orkhold::CatalogoPiezas
+  maxMuros: 40
+  maxTrampas: 6
+  maxDefensores: 4
+  huesosPorMejora: 2
+  mejoraMaxima: 3
+  piezas:
+  - id: muro_madera
+    nombre: Muro de madera
+    categoria: 0
+    prefab: {fileID: 8193344091975587642, guid: c270600b64c10894e923c96d34f6549e, type: 3}
+    costes:
+    - recurso: 1
+      cantidad: 2
+    vida: 3
+    requiereUnidad: 
+  - id: muro_piedra
+    nombre: Muro de piedra
+    categoria: 0
+    prefab: {fileID: 838996475805387656, guid: 9514ab6c7f327e54c9c5c3c40d364693, type: 3}
+    costes:
+    - recurso: 2
+      cantidad: 3
+    vida: 6
+    requiereUnidad: 
+  - id: puerta
+    nombre: Puerta
+    categoria: 0
+    prefab: {fileID: 608745799775061479, guid: b80b938c41ba9464bacde290468d0a4c, type: 3}
+    costes:
+    - recurso: 1
+      cantidad: 2
+    - recurso: 3
+      cantidad: 1
+    vida: 4
+    requiereUnidad: 
+  - id: trampa
+    nombre: Trampa
+    categoria: 1
+    prefab: {fileID: 7436285130485386343, guid: 6e5424b6165357c4fb67179ca3fcc5ea, type: 3}
+    costes:
+    - recurso: 3
+      cantidad: 2
+    vida: 0
+    requiereUnidad: 
+  - id: orco_defensor
+    nombre: Orco defensor
+    categoria: 2
+    prefab: {fileID: 222233470317050978, guid: c4d17555a09389041851bffb86ef2dac, type: 3}
+    costes:
+    - recurso: 0
+      cantidad: 10
+    vida: 3
+    requiereUnidad: 
+  - id: esqueleto_defensor
+    nombre: Esqueleto defensor
+    categoria: 2
+    prefab: {fileID: 8736837767045724462, guid: d2156333fd7ed2f4ab2cd555f668ac07, type: 3}
+    costes:
+    - recurso: 0
+      cantidad: 15
+    vida: 4
+    requiereUnidad: 
+  - id: orco_jefe
+    nombre: Orco jefe
+    categoria: 2
+    prefab: {fileID: 2048618985583718989, guid: 117bafb49c5f576438d4b2ad5602541d, type: 3}
+    costes: []
+    vida: 15
+    requiereUnidad: orco_jefe

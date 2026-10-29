@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-/// Todo lo que se guarda de una partida. Se amplía en la fase 4 (fuerte, unidades, ajustes).
+/// Todo lo que se guarda de una partida: inventario, unidades defensoras, fuerte y progreso.
 [Serializable]
 public class DatosPartida
 {
@@ -10,6 +10,7 @@ public class DatosPartida
     public DatosInventario inventario = new DatosInventario();
     public int bajas;
     public List<DatosUnidad> unidades = new List<DatosUnidad>();
+    public DisenoFuerte fuerte = new DisenoFuerte();
     /// Progreso como pares clave-valor (ej. "jefe1_muerto" = "1").
     public List<Par> progreso = new List<Par>();
 

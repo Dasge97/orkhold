@@ -42,6 +42,7 @@ public class ControlJugador : MonoBehaviour
         {
             UltimoCombate = Time.time;
             Sonidos.Tocar("dano");
+            Ajustes.Vibrar();
             Empujar(desde, 3f);
         };
     }

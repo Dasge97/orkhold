@@ -62,6 +62,7 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 - Unity 6 no compila x86_64 para Android. El emulador ejecuta ARM64 por traducción. Usar OpenGL ES 3: con Vulkan el emulador se cae.
 - `adb` en Git Bash convierte `/sdcard/...` en una ruta de Windows; usar `exec-out` o `MSYS_NO_PATHCONV=1`.
 - Las monedas y pociones de Mini Dungeon son enormes a escala 1; se ponen a 0,35 y 0,6.
+- Medir fps en el emulador tras arrancarlo en frío (`-no-snapshot-load`): tras un rato encendido se llena de servicios de Android y baja a 15-25 fps.
 - El emulador necesita 4 GB de RAM (`hw.ramSize` en `%USERPROFILE%\.android\avd\Medium_Phone.avd\config.ini`); con 2 GB va a 5-15 fps.
 - Cada compilación de Unity reinicia `adb`; esperar a que `adb get-state` diga `device` antes de instalar.
 - Las vallas del Nature Kit van en el borde de la casilla, no en el centro; el río y el puente, sin girar, van de norte a sur.

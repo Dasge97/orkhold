@@ -54,6 +54,7 @@ public static class MontarEscenas
         {
             Configurar(r, 'E', "salida", "Pueblo", "fuerte", true);
             PonerPradera(r);
+            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Propio).gameObject.AddComponent<EditorFuerte>();
         });
         Montar("Asalto", "fuerte-base", Ambiente.Exterior, paleta, g =>
         {
@@ -62,6 +63,7 @@ public static class MontarEscenas
         {
             Configurar(r, 'E', "salida", "Pueblo", "asalto", true);
             PonerPradera(r);
+            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Asalto);
         });
 
         if (File.Exists(CarpetaEscenas + "PvE.unity")) AssetDatabase.DeleteAsset(CarpetaEscenas + "PvE.unity");
@@ -232,6 +234,7 @@ public static class MontarEscenas
         hueco.transform.position = no.Value.posicion + new Vector3(0f, 0f, -(baseMapa.Alto - 1));
         var rb = CargadorMapa.Colocar(baseMapa, paleta, hueco.transform, Instanciar);
         foreach (var g in rb.sueltas) r.sueltas.Add(g);
+        PonerFuerte(rb.raiz.transform, PiezaFuerte.Modo.Vista);
         Object.DestroyImmediate(rb.raiz.transform.Find("Suelo").GetComponent<BoxCollider>());
         foreach (var m in rb.marcas.Where(m => m.letra == 'E' && m.entidad))
         {
@@ -264,6 +267,17 @@ public static class MontarEscenas
                 break;
             }
         }
+    }
+
+    /// Componente que levanta las piezas del diseño sobre el mapa fuerte-base.
+    static Fuerte PonerFuerte(Transform origen, PiezaFuerte.Modo modo)
+    {
+        var g = new GameObject(modo == PiezaFuerte.Modo.Vista ? "Fuerte (vista)" : "Fuerte");
+        var f = g.AddComponent<Fuerte>();
+        f.modo = modo;
+        f.origen = origen;
+        f.mapaBase = AssetDatabase.LoadAssetAtPath<TextAsset>(CarpetaMapas + "fuerte-base.txt");
+        return f;
     }
 
     /// Hierba alrededor del fuerte para que no se vea el vacío.

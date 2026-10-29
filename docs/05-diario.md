@@ -3,6 +3,18 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 4 cerrada (tareas 4.1 a 4.6)
+- Hecho: unidades defensoras en la partida; `CatalogoPiezas` (7 piezas con coste, vida y límites);
+  `DisenoFuerte`, `ReglasFuerte`, `ConstructorFuerte`, `Fuerte` (propio, asalto y vista en el hueco
+  del pueblo); `EditorFuerte` + `PantallaConstruir` (barra de piezas, quitar al tocar, mejorar con
+  hueso, Listo); `PiezaFuerte` (muros que se rompen, puerta que abre el dueño, trampa oculta,
+  defensores); `Guardado` en `partida.json`; `Menu` con sonido, vibración y reiniciar.
+- Comprobado: 10 tests nuevos (29 de 29 OK), entre ellos "5 muros, cerrar, abrir: siguen ahí y la
+  madera descontada"; en el emulador se anda hasta el fuerte, se entra a construir con un toque y la
+  partida se carga del disco al volver a abrir; 59 fps en el fuerte.
+- Aprendido: el emulador se degrada tras un rato encendido (memoria llena de servicios de Android,
+  14-24 fps en una escena sencilla); medir fps siempre tras un arranque en frío.
+
 ## 2026-10-30 — Fase 3 cerrada (tareas 3.1 a 3.6)
 - Hecho: `Enemigo` con estados (quieto, patrulla, persigue, ataca, vuelve, muerto), botín y
   reaparición a los 60 s; `EnemigoArquero` + `Proyectil`; esqueleto (misma clase, otros números y
