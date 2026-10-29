@@ -25,12 +25,12 @@ Leer antes: `01-diseno.md` §4.1, §4.3; `02-arquitectura.md` §2.2, §2.3.
 
 ## Fase 2 · Jugador y combate pulidos
 Leer antes: `01-diseno.md` §4.4, §4.5.
-- [ ] 2.1 Vida que se regenera (1 cada 10 s fuera de combate) y curación total en la fogata.
-- [ ] 2.2 Golpear árboles y rocas con el botón de atacar: 3 golpes → suelta madera o piedra. Temblor del modelo en cada golpe. El árbol o roca "se agota" 60 s.
-- [ ] 2.3 Daño visible: el golpeado parpadea en rojo 0,15 s y recibe empujón; número de daño flotante.
-- [ ] 2.4 Muerte del jugador: pantalla oscura 1 s, reaparece en la fogata (o sale de la mazmorra con la mitad de lo recogido).
-- [ ] 2.5 Botón de interactuar con contexto: cambia de icono según lo que haya cerca (recoger, puerta, cofre, tablón, construir).
-- [ ] 2.6 Sonidos básicos (pasos, golpe, recoger, morir, romper muro) de Kenney "RPG Audio" o "Impact Sounds" (CC0).
+- [x] 2.1 (29-10-2026) Vida que se regenera (1 cada 10 s fuera de combate) y curación total en la fogata.
+- [x] 2.2 (29-10-2026) Golpear árboles y rocas con el botón de atacar: 3 golpes → suelta madera o piedra. Temblor del modelo en cada golpe. El árbol o roca "se agota" 60 s.
+- [x] 2.3 (29-10-2026) Daño visible: el golpeado parpadea en rojo 0,15 s y recibe empujón; número de daño flotante.
+- [x] 2.4 (29-10-2026) Muerte del jugador: pantalla oscura 1 s, reaparece en la fogata (o sale de la mazmorra con la mitad de lo recogido).
+- [x] 2.5 (29-10-2026) Botón de interactuar con contexto: cambia de icono según lo que haya cerca (recoger, puerta, cofre, tablón, construir).
+- [x] 2.6 (29-10-2026) Sonidos básicos (pasos, golpe, recoger, morir, romper muro) de Kenney "RPG Audio" o "Impact Sounds" (CC0).
   Comprobar: `Revisar` ampliado con "golpear árbol" que acaba con 1 madera en el inventario.
 
 ## Fase 3 · Enemigos y mazmorra

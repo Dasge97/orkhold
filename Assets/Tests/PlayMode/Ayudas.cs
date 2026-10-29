@@ -52,5 +52,25 @@ public static class Ayudas
         Assert.IsFalse(Transicion.Ocupada, "La transición no terminó");
     }
 
+    /// Foto de lo que ve la cámara del juego (sin la interfaz) en Revision/<nombre>.png.
+    public static void Foto(string nombre)
+    {
+        var cam = Camera.main;
+        if (!cam) return;
+        System.IO.Directory.CreateDirectory("Revision");
+        var rt = new RenderTexture(1280, 720, 24);
+        var antes = cam.targetTexture;
+        cam.targetTexture = rt;
+        cam.Render();
+        cam.targetTexture = antes;
+        RenderTexture.active = rt;
+        var tex = new Texture2D(1280, 720, TextureFormat.RGB24, false);
+        tex.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0);
+        tex.Apply();
+        RenderTexture.active = null;
+        System.IO.File.WriteAllBytes($"Revision/{nombre}.png", tex.EncodeToPNG());
+        Object.Destroy(tex); Object.Destroy(rt);
+    }
+
     public static float DistanciaPlana(Vector3 a, Vector3 b) { a.y = 0f; b.y = 0f; return Vector3.Distance(a, b); }
 }

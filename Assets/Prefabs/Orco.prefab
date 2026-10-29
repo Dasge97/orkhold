@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2483139075927923157}
   - component: {fileID: 4308020611166078995}
   - component: {fileID: 5218442974084990741}
+  - component: {fileID: 7150942482799345115}
   m_Layer: 0
   m_Name: Orco
   m_TagString: Untagged
@@ -74,6 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Orkhold::Vida
   maxima: 3
   actual: 0
+  invulnerable: 0
 --- !u!114 &5218442974084990741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +95,19 @@ MonoBehaviour:
   dano: 1
   animador: {fileID: 2129104525195665289}
   sueltaAlMorir: {fileID: 3765521715804691772, guid: c3b6c00672e523543ab5026c21998ffd, type: 3}
+--- !u!114 &7150942482799345115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222233470317050978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5124bd0025d7c4e8effd0a4e478794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Orkhold::EfectoDano
+  alturaNumero: 1.05
 --- !u!1001 &3975183277745704083
 PrefabInstance:
   m_ObjectHideFlags: 0

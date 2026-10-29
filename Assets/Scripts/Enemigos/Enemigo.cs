@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// Enemigo básico: espera cerca de su sitio, persigue al jugador si se acerca, le pega si lo alcanza.
 [RequireComponent(typeof(CharacterController), typeof(Vida))]
-public class Enemigo : MonoBehaviour
+public class Enemigo : MonoBehaviour, IGolpeable
 {
     public float distanciaVer = 5f;
     public float distanciaPegar = 1.0f;
@@ -13,6 +13,8 @@ public class Enemigo : MonoBehaviour
     public GameObject sueltaAlMorir;    // prefab o modelo que deja en el suelo (moneda)
 
     public Vida Vida { get; private set; }
+    public bool PuedeRecibirGolpe => Vida && !Vida.Muerto;
+    public Transform Transform => transform;
     CharacterController _cc;
     Transform _jugador;
     Vida _vidaJugador;
@@ -71,16 +73,17 @@ public class Enemigo : MonoBehaviour
     {
         if (!_jugador || Vida.Muerto) return;
         if (Vector3.Distance(_jugador.position, transform.position) <= distanciaPegar + 0.3f)
-            _vidaJugador?.Danar(dano);
+            _vidaJugador?.Danar(dano, transform.position);
     }
 
-    public void RecibirGolpe(int cantidad, ControlJugador quien)
+    public void RecibirGolpe(int cantidad, Vector3 desde, ControlJugador quien)
     {
-        Vida.Danar(cantidad);
-        if (Vida.Muerto) { quien?.RegistrarBaja(); return; }
+        Vida.Danar(cantidad, desde);
+        Sonidos.Tocar("golpe", transform.position);
+        if (Vida.Muerto) { if (quien) quien.RegistrarBaja(); return; }
         _ocupadoHasta = Time.time + 0.3f;
         // Empujón hacia atrás al recibir el golpe.
-        Vector3 atras = (transform.position - quien.transform.position); atras.y = 0f;
+        Vector3 atras = transform.position - desde; atras.y = 0f;
         _cc.Move(atras.normalized * 0.4f);
     }
 

@@ -22,8 +22,14 @@ public static class CrearPrefabs
         foreach (var f in new[] { "character-human.fbx", "character-orc.fbx" })
             AssetDatabase.ImportAsset(Dungeon + f, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
 
-        var moneda = CrearRecogible("Moneda", Dungeon + "coin.fbx", 0.35f, 0.25f, Recogible.Clase.Moneda);
-        CrearRecogible("Pocion", Dungeon + "potion.fbx", 0.6f, 0f, Recogible.Clase.Pocion);
+        var moneda = CrearRecogible("Moneda", Dungeon + "coin.fbx", 0.35f, 0.25f, Recurso.Moneda);
+        var pocion = CrearRecogible("Pocion", Dungeon + "potion.fbx", 0.6f, 0f, Recurso.Pocion);
+        var madera = CrearRecogible("Madera", Natura + "log.fbx", 0.55f, 0.05f, Recurso.Madera);
+        var piedra = CrearRecogible("Piedra", Natura + "stone_smallA.fbx", 0.7f, 0.05f, Recurso.Piedra);
+        var hierro = CrearRecogible("Hierro", Dungeon + "rocks.fbx", 0.45f, 0.05f, Recurso.Hierro);
+        var hueso = CrearRecogible("Hueso", Natura + "stone_smallFlatB.fbx", 0.6f, 0.05f, Recurso.Hueso);
+        CrearCatalogo(moneda, madera, piedra, hierro, hueso, pocion);
+        CrearFogata();
         CrearJugador();
         CrearOrco(moneda);
         CrearPuerta();
@@ -44,13 +50,31 @@ public static class CrearPrefabs
 
     // ---------- prefabs ----------
 
-    static GameObject CrearRecogible(string nombre, string modelo, float escala, float altura, Recogible.Clase clase)
+    static GameObject CrearRecogible(string nombre, string modelo, float escala, float altura, Recurso recurso)
     {
         var g = new GameObject(nombre);
         var m = Poner(modelo, g.transform, new Vector3(0f, altura, 0f), 0f);
         m.transform.localScale = Vector3.one * escala;
-        g.AddComponent<Recogible>().clase = clase;
+        g.AddComponent<Recogible>().recurso = recurso;
         return Guardar(g, nombre);
+    }
+
+    public const string RutaCatalogo = "Assets/Resources/Catalogo.asset";
+
+    static void CrearCatalogo(GameObject moneda, GameObject madera, GameObject piedra, GameObject hierro, GameObject hueso, GameObject pocion)
+    {
+        Directory.CreateDirectory("Assets/Resources");
+        var c = AssetDatabase.LoadAssetAtPath<Catalogo>(RutaCatalogo);
+        if (!c) { c = ScriptableObject.CreateInstance<Catalogo>(); AssetDatabase.CreateAsset(c, RutaCatalogo); }
+        c.moneda = moneda; c.madera = madera; c.piedra = piedra; c.hierro = hierro; c.hueso = hueso; c.pocion = pocion;
+        EditorUtility.SetDirty(c);
+    }
+
+    static void CrearFogata()
+    {
+        var g = new GameObject("Fogata");
+        g.AddComponent<Fogata>();
+        Guardar(g, "Fogata");
     }
 
     static void CrearJugador()
@@ -66,6 +90,8 @@ public static class CrearPrefabs
         j.AddComponent<Vida>().maxima = 6;
         j.AddComponent<Inventario>();
         j.AddComponent<ControlJugador>().animador = an;
+        j.AddComponent<Regeneracion>();
+        j.AddComponent<EfectoDano>().alturaNumero = 1.05f;
         Guardar(j, "Jugador");
     }
 
@@ -83,6 +109,7 @@ public static class CrearPrefabs
         var en = e.AddComponent<Enemigo>();
         en.animador = an;
         en.sueltaAlMorir = moneda;
+        e.AddComponent<EfectoDano>().alturaNumero = 1.05f;
         Guardar(e, "Orco");
     }
 
@@ -127,7 +154,12 @@ public static class CrearPrefabs
         joy.radio = 110f;
 
         Boton("BotonAtaque", canvasGo.transform, new Vector2(-200f, 190f), "icon_sword.png", BotonAccion.Tipo.Ataque);
-        Boton("BotonInteractuar", canvasGo.transform, new Vector2(-380f, 150f), "icon_hand.png", BotonAccion.Tipo.Interactuar);
+        var inter = Boton("BotonInteractuar", canvasGo.transform, new Vector2(-380f, 150f), "icon_hand.png", BotonAccion.Tipo.Interactuar);
+        var ctx = inter.AddComponent<BotonContexto>();
+        ctx.icono = inter.transform.Find("Icono").GetComponent<Image>();
+        // Mismo orden que Interactuable.Icono: Mano, Recoger, Puerta, Cofre, Tablon, Construir.
+        ctx.sprites = new[] { "icon_hand", "icon_hand", "icon_key", "icon_money", "icon_star", "icon_wrench" }
+            .Select(n => AssetDatabase.LoadAssetAtPath<Sprite>(Controles + n + ".png")).ToArray();
         Boton("BotonCorrer", canvasGo.transform, new Vector2(-180f, 370f), "icon_arrow.png", BotonAccion.Tipo.Correr);
 
         var hudGo = new GameObject("HUD");
@@ -200,11 +232,12 @@ public static class CrearPrefabs
         return g;
     }
 
-    static void Boton(string nombre, Transform padre, Vector2 pos, string icono, BotonAccion.Tipo tipo)
+    static GameObject Boton(string nombre, Transform padre, Vector2 pos, string icono, BotonAccion.Tipo tipo)
     {
         var b = Imagen(nombre, padre, Controles + "button_circle.png", new Vector2(1f, 0f), pos, new Vector2(170f, 170f));
         var ic = Imagen("Icono", b.transform, Controles + icono, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(90f, 90f));
         ic.GetComponent<Image>().raycastTarget = false;
         b.AddComponent<BotonAccion>().tipo = tipo;
+        return b;
     }
 }

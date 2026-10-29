@@ -42,11 +42,12 @@ public class Transicion : MonoBehaviour
         }
     }
 
-    /// Va a la escena con fundido. Si ya hay una transición en marcha, no hace nada.
-    public static void Ir(string escena)
+    /// Va a la escena con fundido. "esperaEnNegro": segundos de pantalla negra antes de cargar
+    /// (al morir). Si ya hay una transición en marcha, no hace nada.
+    public static void Ir(string escena, float esperaEnNegro = 0f)
     {
         if (Ocupada) return;
-        Instancia.StartCoroutine(Instancia.Cambiar(escena));
+        Instancia.StartCoroutine(Instancia.Cambiar(escena, esperaEnNegro));
     }
 
     /// Fundido a negro, espera y vuelta sin cambiar de escena (muerte, reaparición).
@@ -56,11 +57,12 @@ public class Transicion : MonoBehaviour
         Instancia.StartCoroutine(Instancia.SoloFundido(enNegro, espera));
     }
 
-    IEnumerator Cambiar(string escena)
+    IEnumerator Cambiar(string escena, float espera)
     {
         Ocupada = true;
         _grupo.blocksRaycasts = true;
         yield return Fundir(0f, 1f);
+        if (espera > 0f) yield return new WaitForSecondsRealtime(espera);
         Viaje.escenaAnterior = SceneManager.GetActiveScene().name;
         var op = SceneManager.LoadSceneAsync(escena);
         while (op != null && !op.isDone) yield return null;

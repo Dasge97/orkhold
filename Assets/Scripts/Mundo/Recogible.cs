@@ -3,8 +3,7 @@ using UnityEngine;
 /// Objeto del suelo que el jugador recoge con el botón de interactuar.
 public class Recogible : Interactuable
 {
-    public enum Clase { Moneda, Pocion }
-    public Clase clase;
+    public Recurso recurso;
     public int cantidad = 1;
     public float giro = 90f;
 

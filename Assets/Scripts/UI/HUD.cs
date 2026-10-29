@@ -1,7 +1,8 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// Texto arriba a la izquierda con vida, monedas, pociones y bajas.
+/// Texto arriba a la izquierda con vida y recursos.
 public class HUD : MonoBehaviour
 {
     public Text texto;
@@ -17,16 +18,20 @@ public class HUD : MonoBehaviour
             if (!inventario) inventario = j.GetComponent<Inventario>();
         }
         if (vida) { vida.AlCambiar += Refrescar; vida.AlMorir += Refrescar; }
-        if (inventario) inventario.AlCambiar += Refrescar;
+        Partida.AlCambiar += Refrescar;
         Refrescar();
     }
+
+    void OnDestroy() { Partida.AlCambiar -= Refrescar; }
 
     void Refrescar()
     {
         if (!texto) return;
-        string vidaTxt = vida ? $"Vida {vida.actual}/{vida.maxima}" : "";
-        texto.text = vida && vida.Muerto
-            ? "Has muerto. Reiniciando..."
-            : $"{vidaTxt}\nMonedas: {inventario?.monedas ?? 0}   Pociones: {inventario?.pociones ?? 0}   Bajas: {inventario?.bajas ?? 0}";
+        if (vida && vida.Muerto) { texto.text = "Has muerto"; return; }
+        var inv = Partida.Inventario;
+        var sb = new StringBuilder();
+        if (vida) sb.Append($"Vida {vida.actual}/{vida.maxima}");
+        sb.Append($"\nMonedas {inv.monedas}   Madera {inv.madera}   Piedra {inv.piedra}   Hierro {inv.hierro}   Hueso {inv.hueso}   Pociones {inv.pociones}");
+        texto.text = sb.ToString();
     }
 }

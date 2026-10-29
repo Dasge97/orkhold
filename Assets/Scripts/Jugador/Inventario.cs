@@ -1,26 +1,20 @@
 using System;
 using UnityEngine;
 
-/// Lo que el jugador recolecta en el PvE. Es lo que más adelante se gastará en el PvP.
+/// Acceso del jugador al inventario de la partida (Partida), que sobrevive a los cambios de escena.
 public class Inventario : MonoBehaviour
 {
-    public int monedas;
-    public int pociones;
-    public int bajas;        // enemigos matados
     public event Action AlCambiar;
 
-    public void Sumar(Recogible.Clase clase, int cantidad = 1)
-    {
-        if (clase == Recogible.Clase.Moneda) monedas += cantidad;
-        else pociones += cantidad;
-        AlCambiar?.Invoke();
-    }
+    void OnEnable() { Partida.AlCambiar += Avisar; }
+    void OnDisable() { Partida.AlCambiar -= Avisar; }
+    void Avisar() => AlCambiar?.Invoke();
 
-    public void SumarBaja() { bajas++; AlCambiar?.Invoke(); }
+    public int this[Recurso r] => Partida.Inventario[r];
+    public int Bajas => Partida.Actual.bajas;
 
-    public bool UsarPocion()
-    {
-        if (pociones <= 0) return false;
-        pociones--; AlCambiar?.Invoke(); return true;
-    }
+    public void Sumar(Recurso r, int cantidad = 1) => Partida.Sumar(r, cantidad);
+    public bool Gastar(Recurso r, int cantidad = 1) => Partida.Gastar(r, cantidad);
+    public void SumarBaja() { Partida.Actual.bajas++; Partida.Cambiado(); }
+    public bool UsarPocion() => Partida.Gastar(Recurso.Pocion);
 }

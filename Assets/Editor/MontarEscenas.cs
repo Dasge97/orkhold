@@ -37,20 +37,27 @@ public static class MontarEscenas
         var paleta = CrearPaletaMapa.Crear();
         Directory.CreateDirectory(CarpetaEscenas);
 
-        Montar("Pueblo", "pueblo", Ambiente.Exterior, paleta, r =>
+        Montar("Pueblo", "pueblo", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Hierba; }, r =>
         {
             Configurar(r, 'D', "mazmorra1", "Mazmorra1", "", true);
             Configurar(r, 'C', "asalto", "Asalto", "", false);
             PonerHuecoFuerte(r, paleta);
         });
-        Montar("Mazmorra1", "catacumbas", Ambiente.Mazmorra, paleta, r =>
+        Montar("Mazmorra1", "catacumbas", Ambiente.Mazmorra, paleta, g =>
+        {
+            g.alMorir = GestorEscena.Muerte.SalirConMitad; g.suelo = GestorEscena.Suelo.Piedra;
+            g.puertaVuelta = "mazmorra1"; g.esMazmorra = true;
+        }, r =>
             Configurar(r, 'E', "salida", "Pueblo", "mazmorra1", true));
-        Montar("Fuerte", "fuerte-base", Ambiente.Exterior, paleta, r =>
+        Montar("Fuerte", "fuerte-base", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Piedra; }, r =>
         {
             Configurar(r, 'E', "salida", "Pueblo", "fuerte", true);
             PonerPradera(r);
         });
-        Montar("Asalto", "fuerte-base", Ambiente.Exterior, paleta, r =>
+        Montar("Asalto", "fuerte-base", Ambiente.Exterior, paleta, g =>
+        {
+            g.alMorir = GestorEscena.Muerte.Avisar; g.suelo = GestorEscena.Suelo.Piedra; g.puertaVuelta = "asalto";
+        }, r =>
         {
             Configurar(r, 'E', "salida", "Pueblo", "asalto", true);
             PonerPradera(r);
@@ -69,7 +76,7 @@ public static class MontarEscenas
         Debug.Log("Escenas montadas: " + string.Join(", ", Escenas));
     }
 
-    static void Montar(string escena, string mapa, Ambiente amb, PaletaMapa paleta, System.Action<CargadorMapa.Resultado> extra)
+    static void Montar(string escena, string mapa, Ambiente amb, PaletaMapa paleta, System.Action<GestorEscena> ajustes, System.Action<CargadorMapa.Resultado> extra)
     {
         var sc = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         PonerAmbiente(amb);
@@ -80,10 +87,11 @@ public static class MontarEscenas
         CalcularLlegadas(r, paleta);
         extra?.Invoke(r);
         int trozos = CombinarMallas.Combinar(r.raiz.transform, escena, r.sueltas);
-        MarcarEstatico(r.raiz);
+        MarcarEstatico(r.raiz, r.sueltas);
 
         // Aparición: la letra de la cabecera. Si es una puerta, su casilla de llegada; si no, al sur de la casilla.
         var gestor = new GameObject("GestorEscena").AddComponent<GestorEscena>();
+        ajustes?.Invoke(gestor);
         char letraAparicion = r.mapa.Valor("aparicion", "F")[0];
         var marca = r.Buscar(letraAparicion);
         if (marca.HasValue)
@@ -200,7 +208,7 @@ public static class MontarEscenas
             var pu = m.entidad.GetComponent<Puerta>();
             if (!pu) continue;
             pu.id = id; pu.destino = destino; pu.llegarA = llegarA; pu.alPisar = alPisar;
-            if (!alPisar) pu.alcance = 1.5f;
+            if (!alPisar) { pu.alcance = 1.5f; pu.icono = Interactuable.Icono.Cofre; }
             m.entidad.name = "Puerta " + id;
             EditorUtility.SetDirty(pu);
             n++;
@@ -243,14 +251,17 @@ public static class MontarEscenas
         g.transform.localScale = new Vector3(70f, 1f, 70f);
     }
 
-    static void MarcarEstatico(GameObject raiz)
+    /// Lo que no se mueve, estático. Las piezas sueltas (árboles y rocas) tiemblan y encogen: no.
+    static void MarcarEstatico(GameObject raiz, ICollection<GameObject> sueltas)
     {
+        var moviles = new HashSet<Transform>();
+        foreach (var g in sueltas) if (g) foreach (var t in g.GetComponentsInChildren<Transform>(true)) moviles.Add(t);
         foreach (var nombre in new[] { "Suelo", "Piezas" })
         {
             var t = raiz.transform.Find(nombre);
             if (!t) continue;
             foreach (var hijo in t.GetComponentsInChildren<Transform>(true))
-                GameObjectUtility.SetStaticEditorFlags(hijo.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic);
+                if (!moviles.Contains(hijo)) GameObjectUtility.SetStaticEditorFlags(hijo.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic);
         }
     }
 }

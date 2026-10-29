@@ -3,6 +3,18 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-29 — Fase 2 cerrada (tareas 2.1 a 2.6)
+- Hecho: `Partida` (inventario que vive entre escenas, con moneda, madera, piedra, hierro, hueso y
+  pociones), `Regeneracion`, `Fogata`, `FuenteRecurso` (árboles y rocas: 3 golpes, temblor, se agotan
+  60 s), `IGolpeable`, `EfectoDano` + `NumeroFlotante`, muerte por escena en `GestorEscena`,
+  `BotonContexto`, `Avisos` y `Sonidos` (Kenney RPG Audio e Impact Sounds, 48 clips).
+- Comprobado: 7 tests nuevos en Play Mode (golpear árbol → 1 madera, regenerar, fogata, parpadeo,
+  muerte en pueblo y en mazmorra, icono del botón, sonidos), 10 de 10 OK; fotos 40-42; APK en el
+  emulador a 60 fps.
+- Aprendido: tintar con `_Color` multiplica la textura y deja al personaje casi negro; para el
+  parpadeo hay que cambiar el material entero. Los objetos marcados estáticos no se pueden mover ni
+  escalar en juego: árboles y rocas sueltos no se marcan.
+
 ## 2026-10-29 — Fase 1 cerrada (tareas 1.2 a 1.7)
 - Hecho: `MontarEscenas` monta Pueblo, Mazmorra1, Fuerte y Asalto desde `pueblo.txt` (48x48),
   `catacumbas.txt` (20x30) y `fuerte-base.txt` (16x16), con prefabs (`CrearPrefabs`), puertas con

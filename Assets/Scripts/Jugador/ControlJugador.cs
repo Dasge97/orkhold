@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,9 +13,14 @@ public class ControlJugador : MonoBehaviour
     public float alcanceAtaque = 0.9f;
     public int danoAtaque = 1;
     public float duracionAtaque = 0.6f;
-    public float alcanceRecoger = 1.3f;
+    [Tooltip("Al atacar, se gira solo hacia lo golpeable más cercano dentro de esta distancia.")]
+    public float alcanceAutoApuntar = 1.6f;
     public Animator animador;
     public Transform cameraRef;
+
+    /// Momento (Time.time) del último golpe dado o recibido.
+    public float UltimoCombate { get; private set; } = -999f;
+    public Vida Vida => _vida;
 
     CharacterController _cc;
     Vida _vida;
@@ -22,6 +28,8 @@ public class ControlJugador : MonoBehaviour
     float _vy;
     float _ocupadoHasta;
     string _estado = "";
+    Vector3 _empuje;
+    float _siguientePaso;
 
     void Awake()
     {
@@ -30,6 +38,12 @@ public class ControlJugador : MonoBehaviour
         _inv = GetComponent<Inventario>();
         if (!animador) animador = GetComponentInChildren<Animator>();
         _vida.AlMorir += Morir;
+        _vida.AlRecibirDano += (n, desde) =>
+        {
+            UltimoCombate = Time.time;
+            Sonidos.Tocar("dano");
+            Empujar(desde, 3f);
+        };
     }
 
     void Update()
@@ -58,7 +72,15 @@ public class ControlJugador : MonoBehaviour
         }
 
         _vy = _cc.isGrounded ? -1f : _vy - 20f * Time.deltaTime;
-        _cc.Move((dir * vel + Vector3.up * _vy) * Time.deltaTime);
+        _cc.Move((dir * vel + Vector3.up * _vy + _empuje) * Time.deltaTime);
+        _empuje = Vector3.MoveTowards(_empuje, Vector3.zero, 14f * Time.deltaTime);
+
+        if (dir.sqrMagnitude > 0.01f && _cc.isGrounded && Time.time >= _siguientePaso)
+        {
+            _siguientePaso = Time.time + (corre ? 0.27f : 0.38f);
+            var gestor = GestorEscena.Actual;
+            Sonidos.Tocar(gestor && gestor.suelo == GestorEscena.Suelo.Piedra ? "pasos_piedra" : "pasos_hierba", null, 0.35f);
+        }
 
         if (!ocupado)
         {
@@ -70,18 +92,39 @@ public class ControlJugador : MonoBehaviour
 
     void Atacar()
     {
+        Apuntar();
         _ocupadoHasta = Time.time + duracionAtaque;
         Animar("attack-melee-right", true);
         Invoke(nameof(AplicarGolpe), duracionAtaque * 0.4f);
     }
 
+    /// Se gira hacia lo golpeable más cercano: en el móvil es difícil apuntar con el joystick.
+    void Apuntar()
+    {
+        IGolpeable mejor = null; float dMejor = float.MaxValue;
+        foreach (var c in Physics.OverlapSphere(transform.position + Vector3.up * 0.4f, alcanceAutoApuntar))
+        {
+            var g = c.GetComponentInParent<IGolpeable>();
+            if (g == null || !g.PuedeRecibirGolpe || ReferenceEquals(g.Transform, transform)) continue;
+            Vector3 d = g.Transform.position - transform.position; d.y = 0f;
+            if (d.magnitude < dMejor) { dMejor = d.magnitude; mejor = g; }
+        }
+        if (mejor == null) return;
+        Vector3 a = mejor.Transform.position - transform.position; a.y = 0f;
+        if (a.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(a);
+    }
+
     void AplicarGolpe()
     {
+        if (_vida.Muerto) return;
         Vector3 centro = transform.position + transform.forward * alcanceAtaque * 0.6f + Vector3.up * 0.4f;
+        var golpeados = new HashSet<IGolpeable>();
         foreach (var c in Physics.OverlapSphere(centro, alcanceAtaque))
         {
-            var e = c.GetComponentInParent<Enemigo>();
-            if (e && !e.Vida.Muerto) e.RecibirGolpe(danoAtaque, this);
+            var g = c.GetComponentInParent<IGolpeable>();
+            if (g == null || !g.PuedeRecibirGolpe || ReferenceEquals(g.Transform, transform) || !golpeados.Add(g)) continue;
+            g.RecibirGolpe(danoAtaque, transform.position, this);
+            UltimoCombate = Time.time;
         }
     }
 
@@ -105,18 +148,44 @@ public class ControlJugador : MonoBehaviour
     {
         _ocupadoHasta = Time.time + 0.7f;
         Animar("pick-up", true);
-        _inv.Sumar(r.clase, r.cantidad);
+        _inv.Sumar(r.recurso, r.cantidad);
+        Sonidos.Tocar(r.recurso == Recurso.Moneda ? "recoger_moneda" : "recoger");
+        NumeroFlotante.Crear(transform.position + Vector3.up * 1.1f, $"+{r.cantidad} {Nombres.De(r.recurso)}", new Color(1f, 0.9f, 0.4f), 0.8f);
     }
 
     public void RegistrarBaja() { _inv.SumarBaja(); }
 
+    /// Empujón en dirección contraria a "desde".
+    public void Empujar(Vector3 desde, float fuerza)
+    {
+        Vector3 d = transform.position - desde; d.y = 0f;
+        if (d.sqrMagnitude < 0.0001f) d = -transform.forward;
+        _empuje = d.normalized * fuerza;
+    }
+
     void Morir()
     {
         Animar("die", true);
-        Invoke(nameof(Reiniciar), 2.5f);
+        Sonidos.Tocar("morir");
+        CancelInvoke(nameof(AplicarGolpe));
+        Invoke(nameof(AvisarMuerte), 1.2f);
     }
 
-    void Reiniciar() { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+    void AvisarMuerte()
+    {
+        if (GestorEscena.Actual) GestorEscena.Actual.JugadorMuerto(this);
+        else SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    /// Vuelve a la vida en un sitio (reaparición en la fogata).
+    public void Revivir(Vector3 donde, float giro)
+    {
+        _vida.Revivir();
+        _empuje = Vector3.zero;
+        _ocupadoHasta = 0f;
+        GestorEscena.Colocar(transform, donde, giro);
+        Animar("idle", true);
+    }
 
     void Animar(string estado, bool forzar = false)
     {

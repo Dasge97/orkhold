@@ -15,6 +15,8 @@ public class Puerta : Interactuable
     [Tooltip("Dónde se pone al jugador cuando llega por esta puerta (casilla libre al lado, hacia dentro).")]
     public Vector3 llegada;
     public float radioPisar = 0.8f;
+    [Tooltip("Icono del botón de interactuar cuando se usa con el botón (el cofre PvP muestra el de cofre).")]
+    public Icono icono = Icono.Puerta;
 
     /// Si no es null, se llama en vez de cambiar de escena (por ejemplo, el asalto pide un rival antes).
     public System.Func<bool> antesDeIr;
@@ -22,7 +24,7 @@ public class Puerta : Interactuable
     Transform _jugador;
     bool _armada;   // hay que salir de la puerta antes de que vuelva a funcionar
 
-    public override Icono IconoBoton => Icono.Puerta;
+    public override Icono IconoBoton => icono;
     public override bool Disponible => base.Disponible && !alPisar;
 
     void Start()
@@ -47,6 +49,7 @@ public class Puerta : Interactuable
     {
         if (antesDeIr != null && !antesDeIr()) return;
         _armada = false;
+        Sonidos.Tocar("puerta");
         Viaje.llegarA = llegarA ?? "";
         Transicion.Ir(destino);
     }

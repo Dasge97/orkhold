@@ -55,9 +55,11 @@ public static class CrearPaletaMapa
                 giroAleatorio: true, colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 2f, 0f));
         e.combinar = false;
         e.combinarEnBorde = 3;
+        e.esFuente = true; e.recursoFuente = Recurso.Madera;
         e = Agregar(p, 'r', "roca", Modelos(Natura, "rock_largeA", "rock_largeB", "rock_tallA"),
                 giroAleatorio: true, colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 2f, 0f));
         e.combinar = false;
+        e.esFuente = true; e.recursoFuente = Recurso.Piedra;
         Agregar(p, 'f', "flor", Modelos(Natura, "flower_redA", "flower_yellowA", "flower_purpleA", "grass_large"), giroAleatorio: true);
         Agregar(p, 'h', "casa 2x2", new[] { CrearPrefabs.Cargar("Casa") }, bloque: 2,
                 colision: PaletaMapa.Colision.Caja, tamano: new Vector3(2f, 2f, 2f));
@@ -74,7 +76,7 @@ public static class CrearPaletaMapa
 
         // Puntos con lógica propia.
         var puerta = CrearPrefabs.Cargar("Puerta");
-        Agregar(p, 'F', "fogata (aparición)", Modelos(Natura, "campfire_stones"), marca: true,
+        Agregar(p, 'F', "fogata (aparición)", Modelos(Natura, "campfire_stones"), marca: true, entidad: CrearPrefabs.Cargar("Fogata"),
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 0.5f, 0f));
         Agregar(p, 'C', "cofre PvP", Modelos(Dungeon, "chest"), entidad: puerta, escala: 1.4f,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.4f, 0.6f, 0f));

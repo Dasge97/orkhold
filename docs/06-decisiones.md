@@ -21,3 +21,16 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 13 | Emulador `Medium_Phone` con 4 GB de RAM (antes 2 GB; copia en `config.ini.original`). | Con 2 GB el emulador iba a 5-15 fps incluso con una escena vacía. |
 | 14 | Fuerte y Asalto llevan una pradera grande alrededor. | Que no se vea el vacío al borde del fuerte. |
 | 15 | Scripts, editor y tests en ensamblados propios (`Orkhold`, `Orkhold.Editor`, `Orkhold.Pruebas`). | Los tests no pueden ver el ensamblado por defecto de Unity. |
+
+## Fase 2
+| # | Decisión | Por qué |
+|---|---|---|
+| 16 | "Fuera de combate" = 5 s sin dar ni recibir golpes. | El diseño no lo define. |
+| 17 | La fogata cura del todo al acercarse a 1,7 m, sin pulsar nada. | Es lo más rápido en móvil. |
+| 18 | Al cambiar de escena el jugador entra con la vida llena. | El personaje se crea en cada escena; guardar la vida entre escenas no aporta en la primera versión. |
+| 19 | El árbol o la roca agotada se encoge al 35 % durante 60 s y luego vuelve a crecer. | Se ve claro que está agotado sin modelos nuevos. |
+| 20 | Al morir en la mazmorra se conserva la mitad de lo ganado redondeando a favor del jugador (de 5 se quedan 3). | El diseño dice "la mitad". |
+| 21 | Al atacar, el personaje se gira solo hacia lo golpeable más cercano (1,6 m). | Apuntar con el joystick es difícil en móvil. |
+| 22 | Modelos de los recursos en el suelo: madera = `log`, piedra = `stone_smallA`, hierro = `rocks` (Mini Dungeon), hueso = `stone_smallFlatB`. | No hay modelos de hierro ni de hueso en los packs. |
+| 23 | Iconos del botón: mano (nada o recoger), llave (puerta), monedas (cofre PvP), estrella (tablón), llave inglesa (construir). | Son los iconos del pack Mobile Controls. |
+| 24 | Sonidos: Kenney RPG Audio e Impact Sounds (CC0), en `Assets/Kenney/Audio/Resources/Sonidos`. | Los pide la tarea 2.6. |

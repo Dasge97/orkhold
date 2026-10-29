@@ -152,7 +152,11 @@ public static class CargadorMapa
                     PonerColision(g, e, g.transform.localScale.x);
                 }
                 int aBorde = Mathf.Min(Mathf.Min(c, f), Mathf.Min(mapa.Ancho - 1 - c, mapa.Alto - 1 - f));
-                if (g && !e.combinar && aBorde >= e.combinarEnBorde) r.sueltas.Add(g);
+                if (g && !e.combinar && aBorde >= e.combinarEnBorde)
+                {
+                    r.sueltas.Add(g);
+                    if (e.esFuente) g.AddComponent<FuenteRecurso>().recurso = e.recursoFuente;
+                }
 
                 GameObject ent = null;
                 if (e.entidad)

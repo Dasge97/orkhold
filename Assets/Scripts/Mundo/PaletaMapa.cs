@@ -53,6 +53,9 @@ public class PaletaMapa : ScriptableObject
         public bool combinar = true;
         [Tooltip("Aunque no se combinen, las piezas a menos de estas casillas del borde sí se funden (bosque del borde).")]
         public int combinarEnBorde = 0;
+        [Tooltip("Árbol o roca que suelta un recurso al golpearlo (solo si queda suelto, no fundido).")]
+        public bool esFuente;
+        public Recurso recursoFuente = Recurso.Madera;
         [Tooltip("Las casillas seguidas de la misma fila comparten una sola caja de colisión.")]
         public bool unirColision;
         [Tooltip("Letra cuya pieza se pone debajo (el río bajo el puente). El modelo propio se gira para cruzarla.")]

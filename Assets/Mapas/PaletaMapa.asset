@@ -58,6 +58,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 45
@@ -88,6 +90,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 43
@@ -118,6 +122,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 126
@@ -147,6 +153,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 1
     debajo: 0
   - letra: 95
@@ -177,6 +185,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 126
   - letra: 35
@@ -207,6 +217,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 1
     debajo: 0
   - letra: 84
@@ -241,6 +253,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 0
     combinarEnBorde: 3
+    esFuente: 1
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 114
@@ -273,6 +287,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 0
     combinarEnBorde: 0
+    esFuente: 1
+    recursoFuente: 2
     unirColision: 0
     debajo: 0
   - letra: 102
@@ -306,6 +322,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 104
@@ -336,6 +354,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 118
@@ -365,6 +385,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 1
     debajo: 0
   - letra: 44
@@ -394,6 +416,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 70
@@ -421,9 +445,11 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 2381057531936559049, guid: 2fe354e3d8a37a24a915979977da0ec2, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 67
@@ -454,6 +480,8 @@ MonoBehaviour:
     entidad: {fileID: 2889229765549693342, guid: d81ce2b8165c62145805650fa692af10, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 66
@@ -484,6 +512,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 68
@@ -514,6 +544,8 @@ MonoBehaviour:
     entidad: {fileID: 2889229765549693342, guid: d81ce2b8165c62145805650fa692af10, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 69
@@ -543,6 +575,8 @@ MonoBehaviour:
     entidad: {fileID: 2889229765549693342, guid: d81ce2b8165c62145805650fa692af10, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 91
@@ -572,6 +606,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 93
@@ -601,6 +637,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 111
@@ -630,6 +668,8 @@ MonoBehaviour:
     entidad: {fileID: 222233470317050978, guid: c4d17555a09389041851bffb86ef2dac, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 97
@@ -659,6 +699,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 101
@@ -688,6 +730,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 74
@@ -717,6 +761,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 36
@@ -746,6 +792,8 @@ MonoBehaviour:
     entidad: {fileID: 3765521715804691772, guid: c3b6c00672e523543ab5026c21998ffd, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 112
@@ -775,6 +823,8 @@ MonoBehaviour:
     entidad: {fileID: 6590398990866390494, guid: 0f7f0496d33593b439419d8e1d3014d6, type: 3}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 88
@@ -805,6 +855,8 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0
   - letra: 75
@@ -835,5 +887,7 @@ MonoBehaviour:
     entidad: {fileID: 0}
     combinar: 1
     combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
     unirColision: 0
     debajo: 0

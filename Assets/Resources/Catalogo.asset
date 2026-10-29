@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 975445c9c5f73b04a91db2b408993343, type: 3}
+  m_Name: Catalogo
+  m_EditorClassIdentifier: Orkhold::Catalogo
+  moneda: {fileID: 3765521715804691772, guid: c3b6c00672e523543ab5026c21998ffd, type: 3}
+  madera: {fileID: 1503175409524836513, guid: bd827b8787922164ab2b0f6598a82f80, type: 3}
+  piedra: {fileID: 5656129938996847421, guid: 219f5c57da734194182d20569af4989a, type: 3}
+  hierro: {fileID: 928510157182508690, guid: fc1062fce64a4644eb6ab30c9ed98f98, type: 3}
+  hueso: {fileID: 4008040740364776082, guid: 27f27df6c2f78a74fb2fd1ef3184e9e3, type: 3}
+  pocion: {fileID: 6590398990866390494, guid: 0f7f0496d33593b439419d8e1d3014d6, type: 3}
