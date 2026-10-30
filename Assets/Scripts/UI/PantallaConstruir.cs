@@ -18,7 +18,7 @@ public class PantallaConstruir : MonoBehaviour
 
     public static PantallaConstruir Crear(EditorFuerte editor)
     {
-        if (!_fuente) _fuente = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (!_fuente) _fuente = Ui.Fuente;
         var go = new GameObject("PantallaConstruir");
         var canvas = go.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;

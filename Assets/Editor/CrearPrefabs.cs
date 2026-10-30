@@ -112,11 +112,41 @@ public static class CrearPrefabs
         Guardar(g, "Tablon");
     }
 
+    /// Materiales de partículas en Resources (para que el shader entre en la compilación): humo y fuego.
+    static void CrearMaterialesParticulas()
+    {
+        var tex = AssetDatabase.GetBuiltinExtraResource<Texture2D>("Default-Particle.psd");
+        foreach (var (nombre, shader) in new[] { ("Particula", "Legacy Shaders/Particles/Alpha Blended"), ("ParticulaSuma", "Legacy Shaders/Particles/Additive") })
+        {
+            string ruta = "Assets/Resources/" + nombre + ".mat";
+            var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
+            if (!m) { m = new Material(Shader.Find(shader)); AssetDatabase.CreateAsset(m, ruta); }
+            m.shader = Shader.Find(shader);
+            m.mainTexture = tex;
+            EditorUtility.SetDirty(m);
+        }
+    }
+
+    /// La Brasa (07-lore.md): hoguera grande de troncos con fuego vivo, luz y humo. Cura como siempre.
     static void CrearFogata()
     {
+        CrearMaterialesParticulas();
         var g = new GameObject("Fogata");
         g.AddComponent<Fogata>();
+        var troncos = Poner(Natura + "campfire_logs.fbx", g.transform, Vector3.zero, 0f);
+        troncos.transform.localScale = Vector3.one * 3.2f;
+        var piedras = Poner(Natura + "campfire_stones.fbx", g.transform, Vector3.zero, 25f);
+        piedras.transform.localScale = Vector3.one * 1.25f;
+        var f = g.AddComponent<Fuego>();
+        f.tamano = 2.2f; f.alturaLlamas = 0.05f;
         Guardar(g, "Fogata");
+
+        // Brasero de mazmorra (cesta de fuego del Graveyard Kit) y chimenea (solo humo).
+        var b = new GameObject("Brasero");
+        Poner(Cementerio + "fire-basket.fbx", b.transform, Vector3.zero, 0f).transform.localScale = Vector3.one * 1.8f;
+        var fb = b.AddComponent<Fuego>();
+        fb.tamano = 0.7f; fb.alturaLlamas = 0.75f; fb.humo = false;
+        Guardar(b, "Brasero");
     }
 
     static void CrearJugador()
@@ -453,17 +483,22 @@ public static class CrearPrefabs
     }
 
     /// Casa de 2x2: bloque de muros de Mini Dungeon con armazón de madera encima.
+    /// Casa de 2x2 (15-interfaz.md §10.2): planta de piedra con puerta en arco y tejado a dos aguas del
+    /// Castle Kit, y una chimenea con humo.
     static void CrearCasa()
     {
         var g = new GameObject("Casa");
-        foreach (var x in new[] { -0.5f, 0.5f })
-            foreach (var z in new[] { -0.5f, 0.5f })
-            {
-                Poner(Dungeon + "wall.fbx", g.transform, new Vector3(x, 0f, z), 0f);
-                Poner(Dungeon + "wood-structure.fbx", g.transform, new Vector3(x, 1.1f, z), 0f);
-            }
-        Poner(Dungeon + "banner.fbx", g.transform, new Vector3(-0.5f, 0.15f, -0.53f), 0f);
-        Poner(Dungeon + "banner.fbx", g.transform, new Vector3(0.5f, 0.15f, -0.53f), 0f);
+        var planta = Poner(Castillo + "tower-square-mid-door.fbx", g.transform, Vector3.zero, 180f);
+        planta.transform.localScale = new Vector3(1.95f, 1.35f, 1.95f);
+        var tejado = Poner(Castillo + "tower-slant-roof.fbx", g.transform, new Vector3(0f, 1.36f, 0f), 180f);
+        tejado.transform.localScale = new Vector3(1.75f, 1.3f, 1.75f);
+        var chimenea = Poner(Castillo + "tower-square-base.fbx", g.transform, new Vector3(0.55f, 1.7f, 0.45f), 0f);
+        chimenea.transform.localScale = new Vector3(0.32f, 0.9f, 0.32f);
+        var humo = new GameObject("Humo");
+        humo.transform.SetParent(g.transform, false);
+        humo.transform.localPosition = new Vector3(0.55f, 2.6f, 0.45f);
+        var f = humo.AddComponent<Fuego>();
+        f.tamano = 0.6f; f.llamas = false; f.luz = false;
         Guardar(g, "Casa");
     }
 
@@ -489,8 +524,8 @@ public static class CrearPrefabs
         var inter = Boton("BotonInteractuar", canvasGo.transform, new Vector2(-380f, 150f), "icon_hand.png", BotonAccion.Tipo.Interactuar);
         var ctx = inter.AddComponent<BotonContexto>();
         ctx.icono = inter.transform.Find("Icono").GetComponent<Image>();
-        // Mismo orden que Interactuable.Icono: Mano, Recoger, Puerta, Cofre, Tablon, Construir.
-        ctx.sprites = new[] { "icon_hand", "icon_hand", "icon_key", "icon_money", "icon_star", "icon_wrench" }
+        // Mismo orden que Interactuable.Icono: Mano, Recoger, Puerta, Cofre, Tablon, Construir, Hablar.
+        ctx.sprites = new[] { "icon_hand", "icon_hand", "icon_key", "icon_money", "icon_star", "icon_wrench", "icon_target" }
             .Select(n => AssetDatabase.LoadAssetAtPath<Sprite>(Controles + n + ".png")).ToArray();
         Boton("BotonCorrer", canvasGo.transform, new Vector2(-180f, 370f), "icon_arrow.png", BotonAccion.Tipo.Correr);
 
@@ -498,13 +533,10 @@ public static class CrearPrefabs
         hudGo.transform.SetParent(canvasGo.transform, false);
         var rt = hudGo.AddComponent<RectTransform>();
         rt.anchorMin = rt.anchorMax = new Vector2(0f, 1f); rt.pivot = new Vector2(0f, 1f);
-        rt.anchoredPosition = new Vector2(30f, -30f); rt.sizeDelta = new Vector2(900f, 160f);
-        var txt = hudGo.AddComponent<Text>();
-        txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        txt.fontSize = 36; txt.color = Color.white;
-        txt.horizontalOverflow = HorizontalWrapMode.Overflow;
-        var sombra = hudGo.AddComponent<Shadow>(); sombra.effectDistance = new Vector2(2f, -2f);
-        hudGo.AddComponent<HUD>().texto = txt;
+        // El HUD se monta solo al arrancar (15-interfaz.md §3): retrato, vida, recursos y cartel del sitio.
+        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one; rt.offsetMin = rt.offsetMax = Vector2.zero;
+        hudGo.AddComponent<HUD>();
+        hudGo.transform.SetAsFirstSibling();
         canvasGo.AddComponent<Menu>().icono = AssetDatabase.LoadAssetAtPath<Sprite>(Controles + "icon_menu.png");
         Guardar(canvasGo, "Interfaz");
     }

@@ -26,7 +26,7 @@ public static class CrearPaletaMapa
         p.sueloExterior = Modelos(Natura, "ground_grass");
         p.sueloInterior = Modelos(Dungeon, "floor", "floor", "floor", "floor", "floor-detail");
         p.flores = Modelos(Natura, "grass_large", "grass", "grass_leafs", "plant_bushSmall", "plant_bush", "rock_smallA", "rock_smallC",
-            "rock_smallFlatA", "stump_old", "mushroom_tanGroup", "log");
+            "rock_smallFlatA", "mushroom_tanGroup", "grass_leafsLarge");
         p.densidadFlores = 0.2f;   // más relleno: menos suelo vacío
         p.entradas.Clear();
         PaletaMapa.Entrada e;
@@ -77,7 +77,7 @@ public static class CrearPaletaMapa
 
         // Puntos con lógica propia.
         var puerta = CrearPrefabs.Cargar("Puerta");
-        Agregar(p, 'F', "fogata (aparición)", Modelos(Natura, "campfire_stones"), marca: true, entidad: CrearPrefabs.Cargar("Fogata"),
+        Agregar(p, 'F', "la Brasa (aparición)", new GameObject[0], marca: true, entidad: CrearPrefabs.Cargar("Fogata"),
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 0.5f, 0f));
         Agregar(p, 'C', "cofre PvP", Modelos(Dungeon, "chest"), entidad: puerta, escala: 1.4f,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.4f, 0.6f, 0f));
@@ -94,12 +94,33 @@ public static class CrearPaletaMapa
         Agregar(p, '$', "moneda", new GameObject[0], entidad: CrearPrefabs.Cargar("Moneda"));
         Agregar(p, 'p', "poción", new GameObject[0], entidad: CrearPrefabs.Cargar("Pocion"));
         Agregar(p, 'X', "trampa", new GameObject[0], entidad: CrearPrefabs.Cargar("Trampa"));
+        // Pueblo de Vado Gris (15-interfaz.md §10.2): muralla, torres, calles, farolas, colonos y ruinas.
+        Agregar(p, 'm', "muralla", Modelos(CrearPrefabs.Castillo, "wall-narrow-wood"), escala: 1.02f,
+                colision: PaletaMapa.Colision.Caja, tamano: new Vector3(1f, 1.4f, 1f)).unirColision = true;
+        Agregar(p, 'A', "torre de la muralla", Modelos(CrearPrefabs.Castillo, "tower-hexagon-base"), escala: 1.35f,
+                colision: PaletaMapa.Colision.Caja, tamano: new Vector3(1f, 1.8f, 1f));
+        Agregar(p, 's', "calle empedrada", Modelos(Dungeon, "floor", "floor", "floor-detail"), conSuelo: false, giroY: 0f);
+        Agregar(p, 'l', "farola", Modelos(CrearPrefabs.Cementerio, "lightpost-single"), escala: 1.5f,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.12f, 1.8f, 0f));
+        Agregar(p, 'i', "tienda de colono", Modelos(Natura, "tent_detailedOpen", "tent_smallClosed"), escala: 2.2f, giroAleatorio: true,
+                colision: PaletaMapa.Colision.Caja, tamano: new Vector3(1f, 1.2f, 1f));
+        Agregar(p, 'k', "leña", Modelos(Natura, "log_stackLarge", "log_stack"), escala: 1.6f, giroAleatorio: true,
+                colision: PaletaMapa.Colision.Caja, tamano: new Vector3(0.9f, 0.6f, 0.9f));
+        Agregar(p, 'g', "barriles", Modelos(Dungeon, "barrel"), escala: 0.9f, giroAleatorio: true,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 0.7f, 0f));
+        Agregar(p, 't', "estandarte", Modelos(CrearPrefabs.Castillo, "flag-banner-long"), escala: 1.2f,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.1f, 2f, 0f));
+        Agregar(p, 'x', "columna rota", Modelos(Natura, "statue_columnDamaged", "statue_column"), escala: 2.2f, giroAleatorio: true,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 1.4f, 0f));
+        Agregar(p, 'R', "torre en ruinas", Modelos(Dungeon, "wall-half", "column", "wall-narrow"), escala: 1.1f, giroAleatorio: true,
+                colision: PaletaMapa.Colision.Caja, tamano: new Vector3(1f, 1.5f, 1f));
+        Agregar(p, 'z', "mesa", Modelos(Dungeon, "table"), escala: 1.1f, colision: PaletaMapa.Colision.Caja, tamano: new Vector3(0.9f, 0.4f, 0.7f));
         // Mazmorra 2, la Forja Hundida (11-mazmorras.md §2).
         Agregar(p, 'H', "orco herrero", new GameObject[0], entidad: CrearPrefabs.Cargar("OrcoHerrero"));
         Agregar(p, 'Q', "bombardero", new GameObject[0], entidad: CrearPrefabs.Cargar("Bombardero"));
         Agregar(p, 'Z', "trampa de fuego", new GameObject[0], entidad: CrearPrefabs.Cargar("TrampaFuego"));
         // Decoración de la Forja con el Graveyard Kit (14.1).
-        Agregar(p, 'b', "brasero", Modelos(CrearPrefabs.Cementerio, "fire-basket"), escala: 1.8f,
+        Agregar(p, 'b', "brasero", new GameObject[0], entidad: CrearPrefabs.Cargar("Brasero"),
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 0.7f, 0f));
         Agregar(p, 'c', "columna", Modelos(CrearPrefabs.Cementerio, "column-large"), escala: 1.6f,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 1.5f, 0f));

@@ -50,7 +50,7 @@ public class BarraVidaJefe : MonoBehaviour
 
         var t = new GameObject("Nombre").AddComponent<Text>();
         t.transform.SetParent(fondo, false);
-        t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        t.font = Ui.Fuente;
         t.fontSize = 30; t.fontStyle = FontStyle.Bold; t.color = Color.white;
         t.alignment = TextAnchor.MiddleCenter;
         var trt = t.rectTransform;

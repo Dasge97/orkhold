@@ -88,6 +88,8 @@ public class Enemigo : MonoBehaviour, IGolpeable
             Vida.maxima = Mathf.Max(1, Mathf.RoundToInt(Vida.maxima * mult));
             Vida.actual = Vida.maxima;
         }
+        // Nombre en rojo y barra de vida al acercarse o al pegarle (15-interfaz.md §4). Los jefes llevan la barra grande.
+        if (!(this is Jefe jefe && jefe.deMazmorra)) Rotulo.Poner(gameObject, Rotulo.Tipo.Enemigo, nombre);
         _casa = transform.position;
         _giroCasa = transform.rotation;
         EstadoActual = patrulla ? Estado.Patrulla : Estado.Quieto;

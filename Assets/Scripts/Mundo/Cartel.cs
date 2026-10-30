@@ -1,78 +1,70 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-/// Cartel del tutorial (tarea 9.2): cuando el jugador de este móvil se acerca, su texto sale en un
-/// recuadro arriba de la pantalla y se va al alejarse. Los textos vienen de la cabecera del mapa
-/// (cartel1 ... cartel5 en pueblo.txt); los coloca MontarEscenas.
-public class Cartel : MonoBehaviour
+/// Personaje del tutorial (tarea 9.2, 15-interfaz.md §5): su texto ya no salta al acercarse. Lleva su nombre encima,
+/// una exclamación mientras no hayas hablado con él, y con el botón de interactuar ("Hablar") abre la caja de diálogo.
+/// Los textos vienen de la cabecera del mapa (cartel1 ... cartel5 en pueblo.txt, "Nombre: texto"); los coloca MontarEscenas.
+public class Cartel : Interactuable
 {
     [TextArea] public string texto = "";
     public float radio = 2.4f;
 
-    static Cartel _mostrado;
-    static CanvasGroup _grupo;
-    static Text _texto;
+    /// Oficio de cada personaje (07-lore.md §5), debajo de su nombre.
+    public static string Oficio(string quien) =>
+        quien == "Maela" ? "Guardiana de la Brasa" : quien == "Tobin" ? "Tablonero" : quien == "Ferra" ? "Herrera"
+        : quien == "Ansel" ? "Cartógrafo" : quien == "Rook" ? "Vigilante del Este" : quien == "Gruk" ? "Mercenario"
+        : quien == "Urzog" ? "Guardián de la Cripta" : "";
 
-    /// Texto que se ve ahora (para los tests); vacío si no hay ninguno.
-    public static string Visible => _grupo && _grupo.alpha > 0.5f && _mostrado ? _mostrado.texto : "";
+    /// Texto que se ve ahora en la caja de diálogo si lo dice un cartel; vacío si no (para los tests).
+    public static string Visible => Dialogo.Abierto && _hablando ? _hablando.Frase : "";
 
-    void Update()
+    static Cartel _hablando;
+    Rotulo _rotulo;
+
+    /// "Maela: texto" → "Maela".
+    public string Nombre { get { int i = texto.IndexOf(':'); return i > 0 && i < 24 ? texto.Substring(0, i).Trim() : ""; } }
+    /// "Maela: texto" → "texto".
+    public string Frase { get { int i = texto.IndexOf(':'); return i > 0 && i < 24 ? texto.Substring(i + 1).Trim() : texto; } }
+
+    public override Icono IconoBoton => Icono.Hablar;
+    public override string Verbo => "Hablar";
+    string ClaveHablado => "hablado-" + Nombre;
+
+    void Start()
     {
-        var yo = ControlJugador.Local;
-        bool cerca = false;
-        if (yo)
-        {
-            Vector3 d = yo.transform.position - transform.position; d.y = 0f;
-            cerca = d.sqrMagnitude <= radio * radio;
-        }
-        if (cerca && _mostrado != this) { _mostrado = this; Panel(); _texto.text = texto; }
-        if (_mostrado != this) return;
-        if (!cerca && _mostrado == this && _grupo && _grupo.alpha <= 0f) { _mostrado = null; return; }
-        _grupo.alpha = Mathf.MoveTowards(_grupo.alpha, cerca ? 1f : 0f, Time.unscaledDeltaTime * 4f);
+        alcance = Mathf.Max(alcance, 1.8f);
+        _rotulo = Rotulo.Poner(gameObject, Rotulo.Tipo.Personaje, Nombre, Oficio(Nombre));
+        _rotulo.novedad = Partida.Actual.Progreso(ClaveHablado) != "1";
     }
 
-    void OnDestroy()
+    public override void Usar(ControlJugador jugador)
     {
-        if (_mostrado == this) { _mostrado = null; if (_grupo) _grupo.alpha = 0f; }
+        _hablando = this;
+        if (_rotulo) _rotulo.novedad = false;
+        if (Partida.Actual.Progreso(ClaveHablado) != "1") Partida.Actual.PonerProgreso(ClaveHablado, "1");
+        Mirar(jugador);
+        var herreria = GetComponent<Herreria>();
+        if (herreria) Dialogo.Abrir(transform, Nombre, Oficio(Nombre), Nombre, Frase, ("Fabricar", () => herreria.Usar(jugador)));
+        else if (Nombre == "Tobin") Dialogo.Abrir(transform, Nombre, Oficio(Nombre), Nombre, Frase, ("Clasificación", AbrirRanking));
+        else Dialogo.Abrir(transform, Nombre, Oficio(Nombre), Nombre, Frase);
     }
 
-    /// Recuadro oscuro arriba en el centro, debajo del HUD. Se crea una vez y sobrevive a los cambios de escena.
-    static void Panel()
+    static void AbrirRanking()
     {
-        if (_grupo) return;
-        var go = new GameObject("Cartel tutorial");
-        DontDestroyOnLoad(go);
-        var canvas = go.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 850;
-        var esc = go.AddComponent<CanvasScaler>();
-        esc.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        esc.referenceResolution = new Vector2(1920f, 1080f);
-        esc.matchWidthOrHeight = 0.5f;
-        _grupo = go.AddComponent<CanvasGroup>();
-        _grupo.blocksRaycasts = false;
-        _grupo.alpha = 0f;
+        if (!Sesion.Conectado) { Avisos.Mostrar("Tobin: \"Sin servidor no hay tablón.\"", 2.5f); return; }
+        PantallaRanking.Abrir();
+    }
 
-        var fondo = new GameObject("Fondo").AddComponent<Image>();
-        fondo.transform.SetParent(go.transform, false);
-        fondo.color = new Color(0.08f, 0.07f, 0.05f, 0.82f);
-        var rf = fondo.rectTransform;
-        rf.anchorMin = new Vector2(0.22f, 0.66f); rf.anchorMax = new Vector2(0.78f, 0.84f);
-        rf.offsetMin = rf.offsetMax = Vector2.zero;
-        fondo.gameObject.AddComponent<Outline>().effectColor = new Color(0.85f, 0.7f, 0.35f, 0.9f);
+    /// El personaje se gira hacia quien le habla.
+    void Mirar(ControlJugador jugador)
+    {
+        if (!jugador) return;
+        Vector3 d = jugador.transform.position - transform.position; d.y = 0f;
+        if (d.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(d);
+    }
 
-        _texto = new GameObject("Texto").AddComponent<Text>();
-        _texto.transform.SetParent(fondo.transform, false);
-        _texto.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        _texto.fontSize = 36;
-        _texto.alignment = TextAnchor.MiddleCenter;
-        _texto.color = new Color(1f, 0.95f, 0.85f);
-        _texto.horizontalOverflow = HorizontalWrapMode.Wrap;
-        _texto.verticalOverflow = VerticalWrapMode.Truncate;
-        _texto.resizeTextForBestFit = true;
-        _texto.resizeTextMinSize = 24; _texto.resizeTextMaxSize = 36;
-        var rt = _texto.rectTransform;
-        rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
-        rt.offsetMin = new Vector2(28f, 14f); rt.offsetMax = new Vector2(-28f, -14f);
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (_hablando == this) _hablando = null;
     }
 }

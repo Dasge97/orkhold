@@ -61,6 +61,16 @@ public static class CargadorMapa
         return mapa;
     }
 
+    static int VecinosIguales(MapaTexto mapa, int c, int f, char letra)
+    {
+        int n = 0;
+        if (mapa.Letra(c + 1, f) == letra) n++;
+        if (mapa.Letra(c - 1, f) == letra) n++;
+        if (mapa.Letra(c, f + 1) == letra) n++;
+        if (mapa.Letra(c, f - 1) == letra) n++;
+        return n;
+    }
+
     /// Centro de una casilla en coordenadas locales del mapa.
     public static Vector3 Casilla(MapaTexto mapa, int columna, int fila)
     {
@@ -98,12 +108,18 @@ public static class CargadorMapa
                 }
 
                 var pos = Casilla(mapa, c, f);
-                if (e == null || e.conSuelo)
+                // Una casilla rodeada de empedrado (dos o más vecinos) lleva empedrado debajo, no hierba:
+                // así los personajes, farolas y barriles de la plaza no quedan sobre una isla verde.
+                var pavimento = paleta.pavimento != ' ' ? paleta.Buscar(paleta.pavimento) : null;
+                bool empedrada = pavimento != null && letra != paleta.pavimento && (e == null || e.conSuelo) && VecinosIguales(mapa, c, f, paleta.pavimento) >= 2;
+                if (empedrada)
+                    Poner(Elegir(pavimento.modelos, azar), suelo.transform, pos, 0f, Vector3.one, instanciar, r);
+                else if (e == null || e.conSuelo)
                     Poner(Elegir(sueloModelos, azar), suelo.transform, pos, azar.Next(4) * 90f, Vector3.one, instanciar, r);
 
                 // Relleno decorativo: siempre se tira el dado para que el azar no dependa del relleno.
                 double dado = azar.NextDouble();
-                if (vacia && flores && dado < paleta.densidadFlores)
+                if (vacia && flores && !empedrada && dado < paleta.densidadFlores)
                 {
                     var p = pos + new Vector3((float)azar.NextDouble() * 0.6f - 0.3f, 0f, (float)azar.NextDouble() * 0.6f - 0.3f);
                     Poner(Elegir(paleta.flores, azar), piezas.transform, p, (float)azar.NextDouble() * 360f, Vector3.one, instanciar, r);

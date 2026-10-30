@@ -35,13 +35,18 @@ public class PruebaLore
         yield return null;
         Assert.AreEqual(gruk, Interactuable.MasCercano(j.transform.position));
         gruk.Usar(j);
-        StringAssert.Contains("Gruk", Avisos.Ultimo);
+        StringAssert.StartsWith("Gruk:", Dialogo.Ultimo);
+        Dialogo.Cerrar();
 
         // Junto a la fogata, Maela.
         GestorEscena.Colocar(j.transform, carteles[0].transform.position + Vector3.left * 1.3f, 90f);   // al oeste: Tobin está al este
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.3f);
+        Assert.AreEqual(carteles[0], Interactuable.MasCercano(j.transform.position));
+        carteles[0].Usar(j);
+        yield return new WaitForSeconds(1.5f);
         Ayudas.Foto("80-maela-tutorial");
-        StringAssert.StartsWith("Maela:", Cartel.Visible);
+        Assert.AreEqual("Maela", Dialogo.Hablante);
+        Assert.AreEqual(carteles[0].Frase, Cartel.Visible);
 
         Transicion.Ir("Pueblo");
         yield return Ayudas.EsperarEscena("Pueblo");

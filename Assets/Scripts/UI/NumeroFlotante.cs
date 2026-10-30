@@ -12,7 +12,7 @@ public class NumeroFlotante : MonoBehaviour
 
     public static void Crear(Vector3 donde, string texto, Color color, float tamano = 1f)
     {
-        if (!_fuente) _fuente = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (!_fuente) _fuente = Ui.Fuente;
         var go = new GameObject("Numero " + texto);
         go.transform.position = donde;
         var tm = go.AddComponent<TextMesh>();

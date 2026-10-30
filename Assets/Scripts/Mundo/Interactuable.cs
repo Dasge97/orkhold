@@ -5,7 +5,7 @@ using UnityEngine;
 /// Se apuntan solos a una lista para buscar el más cercano sin recorrer la escena.
 public abstract class Interactuable : MonoBehaviour
 {
-    public enum Icono { Mano, Recoger, Puerta, Cofre, Tablon, Construir }
+    public enum Icono { Mano, Recoger, Puerta, Cofre, Tablon, Construir, Hablar }
 
     public static readonly List<Interactuable> Todos = new List<Interactuable>();
 
@@ -13,6 +13,10 @@ public abstract class Interactuable : MonoBehaviour
     public float alcance = 1.3f;
 
     public virtual Icono IconoBoton => Icono.Mano;
+    /// Lo que dice el botón de interactuar (15-interfaz.md §3): "Hablar", "Recoger", "Entrar"...
+    public virtual string Verbo =>
+        IconoBoton == Icono.Recoger ? "Recoger" : IconoBoton == Icono.Puerta ? "Entrar" : IconoBoton == Icono.Cofre ? "Abrir"
+        : IconoBoton == Icono.Tablon ? "Leer" : IconoBoton == Icono.Construir ? "Construir" : IconoBoton == Icono.Hablar ? "Hablar" : "Usar";
     /// Lo decide el servidor en el pueblo online (recogibles). Lo demás (puertas, cofre, tablón) lo usa el dueño en su móvil.
     public virtual bool EnServidor => false;
     public virtual bool Disponible => isActiveAndEnabled;

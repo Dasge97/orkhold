@@ -69,6 +69,8 @@ public class PaletaMapa : ScriptableObject
     [Tooltip("Modelos para 'relleno: flores' en la cabecera del mapa.")]
     public GameObject[] flores = new GameObject[0];
     [Range(0f, 1f)] public float densidadFlores = 0.06f;
+    [Tooltip("Letra del empedrado: las casillas con dos o más vecinos empedrados llevan empedrado debajo (' ' = ninguna).")]
+    public char pavimento = 's';
     public List<Entrada> entradas = new List<Entrada>();
 
     Dictionary<char, Entrada> indice;

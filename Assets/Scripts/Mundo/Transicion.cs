@@ -32,6 +32,12 @@ public class Transicion : MonoBehaviour
     /// Nombre del lugar en la última pantalla de carga ("Vado Gris" al ir al pueblo), para los tests.
     public static string Lugar => _instancia && _instancia._lugar ? _instancia._lugar.text : "";
 
+    /// Nombre de cada sitio para la pantalla de carga, el cartel del HUD y los carteles de las puertas.
+    public static string NombreLugar(string escena) =>
+        escena == "Pueblo" ? "Vado Gris" : escena == "Mazmorra1" ? "Las catacumbas" : escena == "Mazmorra2" ? "La Forja Hundida"
+        : escena.StartsWith("Mazmorra3") ? "La Torre del Vigía" : escena == "Mazmorra4" ? "El Pozo de los Clanes"
+        : escena == "Fuerte" ? "Tu fuerte" : escena == "Asalto" ? "Saqueo" : "";
+
     /// Se dispara cuando la escena nueva ya está cargada (antes del fundido de vuelta).
     public static event System.Action<string> AlLlegar;
 
@@ -64,7 +70,7 @@ public class Transicion : MonoBehaviour
             _instancia._carga.transform.SetParent(go.transform, false);
             var crt = _instancia._carga.AddComponent<RectTransform>();
             crt.anchorMin = Vector2.zero; crt.anchorMax = Vector2.one; crt.offsetMin = crt.offsetMax = Vector2.zero;
-            Texto(_instancia._carga.transform, "ORKHOLD", 96, new Color(1f, 0.86f, 0.45f), new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.68f), FontStyle.Bold);
+            Texto(_instancia._carga.transform, "ORKHOLD", 110, new Color(1f, 0.86f, 0.45f), new Vector2(0.1f, 0.5f), new Vector2(0.9f, 0.68f), FontStyle.Normal).font = Ui.FuenteTitulo;
             _instancia._lugar = Texto(_instancia._carga.transform, "", 44, new Color(0.9f, 0.8f, 0.6f), new Vector2(0.1f, 0.44f), new Vector2(0.9f, 0.52f), FontStyle.Italic);
             _instancia._consejo = Texto(_instancia._carga.transform, "", 34, new Color(0.85f, 0.85f, 0.8f), new Vector2(0.15f, 0.26f), new Vector2(0.85f, 0.42f), FontStyle.Normal);
             _instancia._carga.SetActive(false);
@@ -91,7 +97,7 @@ public class Transicion : MonoBehaviour
     {
         var t = new GameObject("Texto").AddComponent<Text>();
         t.transform.SetParent(padre, false);
-        t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        t.font = Ui.Fuente;
         t.text = texto; t.fontSize = tam; t.color = color; t.fontStyle = estilo;
         t.alignment = TextAnchor.MiddleCenter;
         t.horizontalOverflow = HorizontalWrapMode.Wrap;
@@ -106,8 +112,7 @@ public class Transicion : MonoBehaviour
         _grupo.blocksRaycasts = true;
         _consejo.text = Consejos[Random.Range(0, Consejos.Length)];
         // Al pueblo: su nombre debajo del título (07-lore.md §7).
-        if (_lugar) _lugar.text = escena == "Pueblo" ? "Vado Gris" : escena == "Mazmorra1" ? "Las catacumbas" : escena == "Mazmorra2" ? "La Forja Hundida"
-            : escena.StartsWith("Mazmorra3") ? "La Torre del Vigía" : escena == "Mazmorra4" ? "El Pozo de los Clanes" : "";
+        if (_lugar) _lugar.text = NombreLugar(escena);
         _carga.SetActive(true);
         yield return Fundir(0f, 1f);
         if (espera > 0f) yield return new WaitForSecondsRealtime(espera);

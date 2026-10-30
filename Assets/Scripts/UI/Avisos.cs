@@ -33,7 +33,7 @@ public class Avisos : MonoBehaviour
             _instancia._grupo.alpha = 0f;
             var t = new GameObject("Texto").AddComponent<Text>();
             t.transform.SetParent(go.transform, false);
-            t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            t.font = Ui.Fuente;
             t.fontSize = 56; t.fontStyle = FontStyle.Bold;
             t.alignment = TextAnchor.MiddleCenter; t.color = Color.white;
             t.horizontalOverflow = HorizontalWrapMode.Wrap;

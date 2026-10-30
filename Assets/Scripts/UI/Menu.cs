@@ -15,8 +15,11 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        if (!_fuente) _fuente = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (!_fuente) _fuente = Ui.Fuente;
         var b = Caja("BotonMenu", transform, new Vector2(1f, 1f), new Vector2(-90f, -80f), new Vector2(120f, 120f), new Color(0f, 0f, 0f, 0.45f));
+        var fondo = b.GetComponent<Image>();
+        fondo.sprite = Ui.Sprite("buttonSquare_brown"); fondo.type = Image.Type.Sliced; fondo.pixelsPerUnitMultiplier = 0.5f;
+        fondo.color = Color.white;
         b.gameObject.AddComponent<Button>().onClick.AddListener(Abrir);
         if (icono)
         {

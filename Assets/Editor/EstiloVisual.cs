@@ -53,13 +53,22 @@ public static class EstiloVisual
     {
         if (m.name.StartsWith("amb-")) return m;
         if (_copias.TryGetValue(m, out var hecha)) return hecha;
-        string nombre = "amb-" + (mazmorra ? "m-" : "") + Limpio(m.name);
+        // Varios packs llaman "colormap" a su material: el nombre lleva la carpeta de su textura.
+        string pack = m.mainTexture ? Pack(AssetDatabase.GetAssetPath(m.mainTexture)) + "-" : "";
+        string nombre = "amb-" + (mazmorra ? "m-" : "") + pack + Limpio(m.name);
         string ruta = Carpeta + nombre + ".mat";
         var c = AssetDatabase.LoadAssetAtPath<Material>(ruta);
         if (!c) { c = new Material(m); AssetDatabase.CreateAsset(c, ruta); }
         c.CopyPropertiesFromMaterial(m);
         c.name = nombre;
         if (m.HasProperty("_Color")) c.color = Tono(m.name, m.color, mazmorra);
+        // Los packs con textura de colores (Mini Dungeon, Castle, Graveyard) llevan el color en la textura:
+        // se usa una copia desaturada (los tejados azul chillón del Castle Kit, por ejemplo).
+        if (m.mainTexture is Texture2D tex && AssetDatabase.GetAssetPath(tex).Contains("/Kenney/"))
+        {
+            c.mainTexture = TexturaSobria(tex, mazmorra);
+            c.color = mazmorra ? new Color(0.66f, 0.63f, 0.68f) : new Color(0.92f, 0.9f, 0.88f);
+        }
         EditorUtility.SetDirty(c);
         _copias[m] = c;
         return c;
@@ -73,6 +82,47 @@ public static class EstiloVisual
         var d = Color.Lerp(new Color(gris, gris, gris, c.a), c, 0.6f) * (mazmorra ? 0.8f : 0.86f);
         d.a = c.a;
         return d;
+    }
+
+    static readonly Dictionary<Texture2D, Texture2D> _texturas = new Dictionary<Texture2D, Texture2D>();
+
+    /// Copia de la textura con la saturación al 55 % (se guarda como PNG junto a los materiales).
+    static Texture2D TexturaSobria(Texture2D original, bool mazmorra)
+    {
+        if (_texturas.TryGetValue(original, out var hecha)) return hecha;
+        string origen = AssetDatabase.GetAssetPath(original);
+        string ruta = Carpeta + "tex-" + Pack(origen) + "-" + Path.GetFileNameWithoutExtension(origen) + ".png";
+        if (!File.Exists(ruta))
+        {
+            var t = new Texture2D(2, 2);
+            t.LoadImage(File.ReadAllBytes(origen));
+            var px = t.GetPixels();
+            for (int i = 0; i < px.Length; i++)
+            {
+                var p = px[i];
+                float gris = p.r * 0.3f + p.g * 0.59f + p.b * 0.11f;
+                var d = Color.Lerp(new Color(gris, gris, gris), p, 0.55f);
+                d.a = p.a;
+                px[i] = d;
+            }
+            t.SetPixels(px);
+            File.WriteAllBytes(ruta, t.EncodeToPNG());
+            AssetDatabase.ImportAsset(ruta);
+            var imp = (TextureImporter)AssetImporter.GetAtPath(ruta);
+            var impOrigen = AssetImporter.GetAtPath(origen) as TextureImporter;
+            if (imp && impOrigen) { imp.filterMode = impOrigen.filterMode; imp.mipmapEnabled = impOrigen.mipmapEnabled; imp.SaveAndReimport(); }
+        }
+        var r = AssetDatabase.LoadAssetAtPath<Texture2D>(ruta);
+        _texturas[original] = r;
+        return r;
+    }
+
+    /// "Assets/Kenney/CastleKit/Textures/colormap.png" → "CastleKit".
+    static string Pack(string ruta)
+    {
+        var partes = ruta.Split('/');
+        int i = System.Array.IndexOf(partes, "Kenney");
+        return i >= 0 && i + 1 < partes.Length ? partes[i + 1] : "otro";
     }
 
     static string Limpio(string n) => n.Replace(" (Instance)", "").Replace("/", "_").Trim();

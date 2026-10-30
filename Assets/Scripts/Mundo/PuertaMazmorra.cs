@@ -12,8 +12,13 @@ public class PuertaMazmorra : MonoBehaviour
     /// La mazmorra ya existe en el juego (las que aún no están construidas tienen la puerta, pero no la escena).
     public bool Existe => Application.CanStreamedLevelBeLoaded(GetComponent<Puerta>().destino);
 
+    static readonly string[] Jefes = { "", "Urzog", "Grimbra", "el Vigía Mayor", "Kargash" };
+
     void Start()
     {
+        // Debajo del destino, por qué no se puede entrar todavía.
+        var r = Rotulo.Poner(gameObject, Rotulo.Tipo.Puerta, Transicion.NombreLugar(GetComponent<Puerta>().destino));
+        r.subtitulo = !Existe ? "Sin explorar" : Abierta ? "" : "Cerrada · vence a " + Jefes[Mathf.Clamp(numero - 1, 0, 4)];
         GetComponent<Puerta>().antesDeIr = () =>
         {
             if (!Existe) { Avisos.Mostrar("Ansel: \"Ahí hay una entrada, pero todavía no sé adónde lleva.\"", 3f); return false; }

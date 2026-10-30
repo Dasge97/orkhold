@@ -29,6 +29,13 @@ public class Puerta : Interactuable
     static readonly bool EsBot = Configuracion.Bandera("-bot");
     public override bool Disponible => base.Disponible && !alPisar;
 
+    /// Cartel con el destino al acercarse (15-interfaz.md §6): "Las catacumbas", "Vado Gris"...
+    void Start()
+    {
+        string lugar = Transicion.NombreLugar(destino);
+        if (lugar != "") Rotulo.Poner(gameObject, Rotulo.Tipo.Puerta, lugar);
+    }
+
     void Update()
     {
         if (ControlJugador.Local) _jugador = ControlJugador.Local.transform;
@@ -36,7 +43,8 @@ public class Puerta : Interactuable
         Vector3 d = _jugador.position - transform.position;
         // Zona cuadrada como la casilla: cuenta aunque el jugador se quede pegado al muro de al lado.
         float dist = Mathf.Max(Mathf.Abs(d.x), Mathf.Abs(d.z));
-        if (dist > radioPisar + 0.6f) _armada = true;
+        // Se arma al alejarse de verdad: un empujón de un golpe junto a la salida no te saca de la mazmorra.
+        if (dist > radioPisar + 1.6f) _armada = true;
         else if (_armada && dist <= radioPisar) Ir();
     }
 

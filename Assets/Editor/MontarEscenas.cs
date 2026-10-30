@@ -36,6 +36,7 @@ public static class MontarEscenas
     public static void MontarTodas()
     {
         CrearPrefabs.Crear();
+        CrearIconosJuego.Crear();
         var paleta = CrearPaletaMapa.Crear();
         Directory.CreateDirectory(CarpetaEscenas);
 
@@ -104,6 +105,7 @@ public static class MontarEscenas
         if (r.letrasDesconocidas.Count > 0) Debug.LogWarning($"{escena}: letras sin paleta: {new string(r.letrasDesconocidas.ToArray())}");
         CalcularLlegadas(r, paleta);
         extra?.Invoke(r);
+        if (amb == Ambiente.Mazmorra) DecorarMazmorra.Aplicar(r);
         // Colores más sobrios antes de unir las mallas (las une por material).
         EstiloVisual.Aplicar(r.raiz, amb == Ambiente.Mazmorra);
         int trozos = CombinarMallas.Combinar(r.raiz.transform, escena, r.sueltas);
@@ -225,9 +227,10 @@ public static class MontarEscenas
         }
         else
         {
-            luz.intensity = 0.75f;
-            luz.color = new Color(1f, 0.85f, 0.7f);
-            RenderSettings.ambientLight = new Color(0.32f, 0.3f, 0.38f);
+            // Penumbra fría: lo cálido lo ponen las antorchas (15-interfaz.md §10.3).
+            luz.intensity = 0.55f;
+            luz.color = new Color(0.75f, 0.78f, 0.95f);
+            RenderSettings.ambientLight = new Color(0.24f, 0.23f, 0.3f);
             RenderSettings.fogColor = new Color(0.06f, 0.05f, 0.08f);
             RenderSettings.fogStartDistance = 9f;
             RenderSettings.fogEndDistance = 20f;

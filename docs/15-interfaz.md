@@ -113,7 +113,7 @@ mazmorra "cuatro piedras". Los encargos, rachas y logros de §8 quedan fuera por
 - Árboles de la variante oscura del Nature Kit y el triple de relleno pequeño (hierba alta, arbustos, rocas, tocones).
 - Antes y después: `Revision/antes/` y `Revision/`.
 
-### 10.2 Pueblo de Vado Gris (por hacer)
+### 10.2 Pueblo de Vado Gris (hecho 30-10-2026; falta la "vida": pájaros y polillas)
 | Qué | Cómo |
 |---|---|
 | Que parezca un pueblo | Empalizada de madera alrededor con dos puertas, calles empedradas (Graveyard `road`), casas con tejado y puerta, no bloques. |
@@ -123,12 +123,14 @@ mazmorra "cuatro piedras". Los encargos, rachas y logros de §8 quedan fuera por
 | Tierras del Este | Vallas, caminos y estandartes en la entrada de la parcela. |
 | Vida | Humo de chimeneas, pájaros, polillas cerca de los faroles y orcos patrullando fuera de la empalizada (no junto a las puertas). |
 
-### 10.3 Mazmorras (por hacer)
+### 10.3 Mazmorras (hecho 30-10-2026, `DecorarMazmorra`)
 | Qué | Cómo |
 |---|---|
 | Catacumbas | Ataúdes, criptas, lápidas, velas, urnas y huesos del Graveyard Kit; suelo con losas distintas; telarañas de luz verde. |
 | Forja Hundida | Braseros con fuego vivo, yunques, cadenas, barriles y luz roja de las trampas de fuego. |
 | Todas | Antorchas en las paredes que iluminan a trozos, oscuridad en las esquinas, polvo flotando y paredes con columnas y variaciones, no un muro repetido. |
 
-### 10.4 Interfaz (§2-§7)
+### 10.4 Interfaz (§2-§7) (hecho 30-10-2026)
 Con los packs ya descargados (UI Pack RPG Expansion, Game Icons y Kenney Fonts): HUD, nombres, diálogos y avisos de §3-§6.
+Hecho: §3 (sin botón de poción ni vuelo del icono al contador), §4, §5 (Ferra y Tobin con opción; el resto, decisión 136), §6 (aro, verbo, carteles de puerta;
+sin brillo de recogibles ni reloj en árboles agotados), §7 (sacudida y cámara lenta; sin sonidos de interfaz nuevos ni rebote del botín).

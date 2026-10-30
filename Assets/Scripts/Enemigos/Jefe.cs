@@ -112,6 +112,8 @@ public class Jefe : Enemigo
     {
         if (!deMazmorra) return;
         base.SoltarBotin();
+        CamaraSigue.Lenta(0.6f);
+        CamaraSigue.Sacudir(0.25f, 0.5f);
         Partida.JefeMuertoEnEntrada = true;
         var p = Partida.Actual;
         if (!Configuracion.ModoLocal)
