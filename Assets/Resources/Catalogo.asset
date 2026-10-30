@@ -22,3 +22,24 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 073791c55c3930d43a1530a46499233b, type: 3}
   - {fileID: 4900000, guid: a999100c126fd8b4c916b0c5e1c59e9a, type: 3}
   - {fileID: 4900000, guid: ef179fe4e1384fe43ab77aaaecc1d1fd, type: 3}
+  idsPersonajes:
+  - character-male-a
+  - character-female-a
+  - character-male-c
+  - character-female-c
+  nombresPersonajes:
+  - Aventurero
+  - Aventurera
+  - Explorador
+  - Exploradora
+  modelosPersonajes:
+  - {fileID: 919132149155446097, guid: 9393601d5fae4a94a80b8db26069e315, type: 3}
+  - {fileID: 919132149155446097, guid: 34a3f4baab4c2204aa257a6909ae7764, type: 3}
+  - {fileID: 919132149155446097, guid: 25b69e65d54d4fd46a0f46a178773453, type: 3}
+  - {fileID: 919132149155446097, guid: 8840785ce7a7afd458094d0ffa40f717, type: 3}
+  controladoresPersonajes:
+  - {fileID: 9100000, guid: e73b2a51eb788c14cba412d2a8087df2, type: 2}
+  - {fileID: 9100000, guid: 5b1231d1d3cf48f42ba5785f67aa9b63, type: 2}
+  - {fileID: 9100000, guid: 5f42e50ea04abce45a3810bcf41c7333, type: 2}
+  - {fileID: 9100000, guid: 127737a7df6041d47b7c59166bdb9b47, type: 2}
+  escalaPersonajes: 1.12

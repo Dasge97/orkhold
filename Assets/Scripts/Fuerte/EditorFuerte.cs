@@ -35,6 +35,7 @@ public class EditorFuerte : MonoBehaviour
     public void Entrar()
     {
         if (Construyendo) return;
+        if (Sesion.SinConexion) { Avisos.Mostrar("Sin conexión: el fuerte se construye con el servidor", 2.5f); return; }
         Construyendo = true;
         // El jugador se aparta a la entrada (ahí no se construye). Antes de mover la cámara:
         // colocar al jugador recoloca la cámara que le sigue.

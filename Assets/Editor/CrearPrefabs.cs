@@ -29,7 +29,9 @@ public static class CrearPrefabs
         var hierro = CrearRecogible("Hierro", Dungeon + "rocks.fbx", 0.45f, 0.05f, Recurso.Hierro);
         var hueso = CrearRecogible("Hueso", Natura + "stone_smallFlatB.fbx", 0.6f, 0.05f, Recurso.Hueso);
         CrearCatalogo(moneda, madera, piedra, hierro, hueso, pocion);
+        CrearConfiguracion();
         CrearFogata();
+        CrearTablon();
         CrearJugador();
         CrearEnemigos();
         CrearTrampa();
@@ -71,7 +73,30 @@ public static class CrearPrefabs
         c.moneda = moneda; c.madera = madera; c.piedra = piedra; c.hierro = hierro; c.hueso = hueso; c.pocion = pocion;
         c.fuertesPrueba = new[] { "facil", "medio", "dificil" }
             .Select(n => AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Mapas/fuertes-prueba/" + n + ".json")).ToArray();
+        // Personajes para elegir al empezar (Mini Characters). Los ids son los que acepta la API.
+        c.idsPersonajes = new[] { "character-male-a", "character-female-a", "character-male-c", "character-female-c" };
+        c.nombresPersonajes = new[] { "Aventurero", "Aventurera", "Explorador", "Exploradora" };
+        c.modelosPersonajes = c.idsPersonajes.Select(id => AssetDatabase.LoadAssetAtPath<GameObject>(Personajes + id + ".fbx")).ToArray();
+        c.controladoresPersonajes = c.idsPersonajes.Select(id => (RuntimeAnimatorController)CrearControlador(Personajes + id + ".fbx", Anim + "personaje-" + id + ".controller")).ToArray();
+        c.escalaPersonajes = 1.12f;
         EditorUtility.SetDirty(c);
+    }
+
+    public const string Personajes = "Assets/Kenney/MiniCharacters/";
+    public const string RutaConfiguracion = "Assets/Resources/Configuracion.asset";
+
+    /// Sin URL de API (modo local) si no existe; la compilación del APK la puede cambiar.
+    static void CrearConfiguracion()
+    {
+        if (AssetDatabase.LoadAssetAtPath<Configuracion>(RutaConfiguracion)) return;
+        AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<Configuracion>(), RutaConfiguracion);
+    }
+
+    static void CrearTablon()
+    {
+        var g = new GameObject("Tablon");
+        g.AddComponent<Tablon>().alcance = 1.6f;
+        Guardar(g, "Tablon");
     }
 
     static void CrearFogata()
@@ -95,6 +120,7 @@ public static class CrearPrefabs
         j.AddComponent<Inventario>();
         j.AddComponent<ControlJugador>().animador = an;
         j.AddComponent<Regeneracion>();
+        j.AddComponent<PersonajeJugador>();
         j.AddComponent<EfectoDano>().alturaNumero = 1.05f;
         Guardar(j, "Jugador");
     }

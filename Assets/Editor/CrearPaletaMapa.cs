@@ -80,7 +80,7 @@ public static class CrearPaletaMapa
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 0.5f, 0f));
         Agregar(p, 'C', "cofre PvP", Modelos(Dungeon, "chest"), entidad: puerta, escala: 1.4f,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.4f, 0.6f, 0f));
-        Agregar(p, 'B', "tablón", Modelos(Natura, "sign"), escala: 2.5f, marca: true,
+        Agregar(p, 'B', "tablón", Modelos(Natura, "sign"), escala: 2.5f, entidad: CrearPrefabs.Cargar("Tablon"),
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.25f, 1f, 0f));
         Agregar(p, 'D', "puerta de mazmorra", Modelos(Dungeon, "gate"), entidad: puerta);
         Agregar(p, 'E', "salida o entrada", new GameObject[0], entidad: puerta);

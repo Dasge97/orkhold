@@ -22,7 +22,7 @@ public class BuscarRival : MonoBehaviour
     {
         GetComponent<Puerta>().antesDeIr = () =>
         {
-            if (BuscarEnServidor != null) BuscarEnServidor();
+            if (BuscarEnServidor != null && !Configuracion.ModoLocal) BuscarEnServidor();
             else Abrir();
             return false;
         };

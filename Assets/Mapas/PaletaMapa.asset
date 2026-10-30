@@ -496,7 +496,7 @@ MonoBehaviour:
     colision: 2
     tamano: {x: 0.25, y: 1, z: 0}
     bloque: 1
-    marca: 1
+    marca: 0
     union:
       recto: {fileID: 0}
       curva: {fileID: 0}
@@ -509,7 +509,7 @@ MonoBehaviour:
       brazoPosicion: {x: 0, y: 0, z: 0}
       brazoGiro: {x: 0, y: 0, z: 0}
       brazoEscala: {x: 1, y: 1, z: 1}
-    entidad: {fileID: 0}
+    entidad: {fileID: 5195805704083002747, guid: 656e3c4af7ff3bc47ab625e9874b2990, type: 3}
     combinar: 1
     combinarEnBorde: 0
     esFuente: 0

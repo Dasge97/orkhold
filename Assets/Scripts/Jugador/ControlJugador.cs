@@ -159,6 +159,8 @@ public class ControlJugador : MonoBehaviour
         _ocupadoHasta = Time.time + 0.7f;
         Animar("pick-up", true);
         _inv.Sumar(r.recurso, r.cantidad);
+        var g = GestorEscena.Actual;
+        if (g && g.esPueblo) Sincronizacion.AnotarPueblo(r.recurso, r.cantidad);
         Sonidos.Tocar(r.recurso == Recurso.Moneda ? "recoger_moneda" : "recoger");
         NumeroFlotante.Crear(transform.position + Vector3.up * 1.1f, $"+{r.cantidad} {Nombres.De(r.recurso)}", new Color(1f, 0.9f, 0.4f), 0.8f);
     }

@@ -10,7 +10,7 @@ public class Asalto : MonoBehaviour
     public const float DuracionPorDefecto = 90f;
     public float duracion = DuracionPorDefecto;
     [Tooltip("Distancia al centro del cofre que cuenta como tocarlo.")]
-    public float radioCofre = 0.95f;
+    public float radioCofre = 1.25f;
 
     public enum Fin { EnCurso, Ganado, PerdidoMuerte, PerdidoTiempo, Abandonado }
 
@@ -26,8 +26,9 @@ public class Asalto : MonoBehaviour
         public int puntosAntes, puntosDespues;
     }
 
-    /// Quién decide las recompensas. Sin servidor, Recompensar en local; la fase 6 lo cambia por la API.
-    public static Func<Resultado, Resultado> Recompensar = RecompensaLocal;
+    /// Quién decide las recompensas: en local, RecompensaLocal; con servidor, la API (Sincronizacion).
+    /// Recibe el resultado y llama a "listo" con las recompensas y puntos ya puestos.
+    public static Action<Resultado, Action<Resultado>> Procesar = (r, listo) => listo(RecompensaLocal(r));
     /// Al terminar (para la pantalla de resultado, la API y los tests).
     public static event Action<Resultado> AlTerminar;
 
@@ -108,10 +109,12 @@ public class Asalto : MonoBehaviour
             murosRotos = MurosRotos,
             puntosAntes = Partida.Actual.puntuacion,
         };
-        r = Recompensar(r);
-        Ultimo = r;
-        Sonidos.Tocar(r.ganado ? "recoger_moneda" : "morir");
-        AlTerminar?.Invoke(r);
+        Procesar(r, final =>
+        {
+            Ultimo = final;
+            Sonidos.Tocar(final.ganado ? "recoger_moneda" : "morir");
+            AlTerminar?.Invoke(final);
+        });
     }
 
     /// Recompensas provisionales sin servidor: ganar 10 monedas + 2 materiales al azar y +20 puntos;

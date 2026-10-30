@@ -3,6 +3,19 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 6 cerrada (tareas 6.1 a 6.9)
+- Hecho: API en `api/` (Node 22, Fastify 5, Zod, pg, PostgreSQL 16 en docker compose, migraciones
+  numeradas, 31 tests con `node:test`); cliente con `Configuracion`, `ApiCliente`, `Sesion`,
+  `Sincronizacion`, escena Arranque (crear personaje con 4 modelos de Mini Characters),
+  `PersonajeJugador`, tablón con ranking e historial, asalto real contra la API.
+- Comprobado: 31/31 tests de la API, 39/39 de Unity (uno juega entero contra la API en Docker); en el
+  emulador: Ana crea personaje y construye 5 muros (la API descuenta la madera), Bruno busca rival
+  (le toca Ana), gana en 69 s (+20, recompensas de la API), el ranking cambia y Ana tiene el asalto en
+  "recibidos". Con un solo emulador y dos cuentas seguidas: no hay disco para un segundo emulador.
+- Aprendido: un POST sin cuerpo desde Unity llega con otro Content-Type (415 en Fastify); en
+  PostgreSQL un upsert con cantidad negativa falla la comprobación antes del conflicto; `extract()`
+  llega como texto. `il2cpp.exe` se cerró una vez solo (AccessViolation); al repetir, compiló.
+
 ## 2026-10-30 — Fase 5 cerrada (tareas 5.1 a 5.5)
 - Hecho: `Asalto` (90 s, ganar tocando el cofre, perder al morir, por tiempo o saliendo, muros rotos,
   recompensas y puntuación locales), `PantallaAsalto` (reloj, barra al cofre, resultado),

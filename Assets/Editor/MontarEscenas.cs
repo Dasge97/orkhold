@@ -15,7 +15,9 @@ public static class MontarEscenas
 {
     public const string CarpetaEscenas = "Assets/Scenes/";
     public const string CarpetaMapas = "Assets/Mapas/";
+    /// Escenas que salen de un mapa de texto. La de arranque va aparte y es la primera del APK.
     public static readonly string[] Escenas = { "Pueblo", "Mazmorra1", "Fuerte", "Asalto" };
+    public const string EscenaArranque = "Arranque";
 
     enum Ambiente { Exterior, Mazmorra }
 
@@ -37,7 +39,8 @@ public static class MontarEscenas
         var paleta = CrearPaletaMapa.Crear();
         Directory.CreateDirectory(CarpetaEscenas);
 
-        Montar("Pueblo", "pueblo", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Hierba; }, r =>
+        MontarArranque();
+        Montar("Pueblo", "pueblo", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Hierba; g.esPueblo = true; }, r =>
         {
             Configurar(r, 'D', "mazmorra1", "Mazmorra1", "", true);
             Configurar(r, 'C', "asalto", "Asalto", "", false);
@@ -67,7 +70,8 @@ public static class MontarEscenas
         });
 
         if (File.Exists(CarpetaEscenas + "PvE.unity")) AssetDatabase.DeleteAsset(CarpetaEscenas + "PvE.unity");
-        EditorBuildSettings.scenes = Escenas.Select(e => new EditorBuildSettingsScene(CarpetaEscenas + e + ".unity", true)).ToArray();
+        EditorBuildSettings.scenes = new[] { EscenaArranque }.Concat(Escenas)
+            .Select(e => new EditorBuildSettingsScene(CarpetaEscenas + e + ".unity", true)).ToArray();
         AjustarCalidad();
         PlayerSettings.companyName = "Orkhold";
         PlayerSettings.productName = "Orkhold";
@@ -146,6 +150,34 @@ public static class MontarEscenas
             QualitySettings.antiAliasing = 0;
         }
         QualitySettings.SetQualityLevel(actual, false);
+    }
+
+    /// Escena de arranque: fondo, luz, pedestal para ver el personaje elegido y la pantalla de arranque.
+    static void MontarArranque()
+    {
+        var sc = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        PonerAmbiente(Ambiente.Exterior);
+        RenderSettings.fog = false;
+        var cam = new GameObject("Camara").AddComponent<Camera>();
+        cam.tag = "MainCamera";
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = new Color(0.12f, 0.13f, 0.18f);
+        cam.fieldOfView = 35f;
+        cam.transform.position = new Vector3(0f, 1.6f, -6f);
+        cam.transform.LookAt(new Vector3(0f, 0.9f, 0f));
+        cam.gameObject.AddComponent<AudioListener>();
+        // El pedestal a la derecha de la pantalla (a la izquierda va el formulario).
+        var pedestal = CrearPrefabs.Poner(CrearPrefabs.Natura + "platform_stone.fbx", null, new Vector3(1.2f, 0f, 0f), 0f);
+        pedestal.name = "Pedestal";
+        pedestal.transform.localScale = new Vector3(1.6f, 1f, 1.6f);
+        var p = new GameObject("PantallaArranque").AddComponent<PantallaArranque>();
+        var punto = new GameObject("Punto");
+        punto.transform.position = new Vector3(1.2f, 0.2f, 0f);
+        p.pedestal = punto.transform;
+        var ev = new GameObject("EventSystem");
+        ev.AddComponent<EventSystem>();
+        ev.AddComponent<StandaloneInputModule>();
+        EditorSceneManager.SaveScene(sc, CarpetaEscenas + EscenaArranque + ".unity");
     }
 
     static GameObject Instanciar(GameObject m) => (GameObject)PrefabUtility.InstantiatePrefab(m);

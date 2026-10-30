@@ -43,6 +43,8 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 |---|---|
 | Montar las escenas desde cero | Menú `Prototipo > Montar escenas` (o borrar `Assets/Scenes/Pueblo.unity`; se monta sola en 2 s). Las escenas y `Assets/Mapas/Mallas/` se generan desde `Assets/Mapas/*.txt` y no van en git |
 | Unity en batch (sin ventana) | `Unity.exe -batchmode -projectPath <proyecto> -logFile <log> -executeMethod <Clase.Metodo>`: `MontarEscenas.MontarTodas` (con `-quit`), `RevisionPrototipo.EnBatch`, `PruebaCargadorMapa.EnBatch`, `FotosModelos.EnBatch`, `CompilarAndroid.EnBatch` (con `-buildTarget Android`). No puede haber otro Unity con el proyecto abierto |
+| API local | `cd api; docker compose up -d --build` (API en http://127.0.0.1:3100, PostgreSQL en 5442; secretos en `api/.env`, fuera de git). Tests: `docker compose run --rm api npm test` |
+| APK contra la API local | `CompilarAndroid.EnBatch -urlApi http://10.0.2.2:3100` (10.0.2.2 = el PC visto desde el emulador) |
 | Tests | `Unity.exe -batchmode -projectPath <proyecto> -runTests -testPlatform PlayMode -testResults <xml>`. Están en `Assets/Tests/PlayMode` |
 | Ver forma de modelos | Rutas en `Revision/modelos.txt` y `FotosModelos.EnBatch`: hoja cenital (cubo rojo = norte), en perspectiva, y materiales |
 | Revisión automática | Menú `Prototipo > Revisar`, o crear `Revision/pedir.txt` (se atiende sola en 2 s). Deja fotos de las cuatro escenas e `informe.txt` en `Revision/` |

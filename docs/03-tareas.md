@@ -64,15 +64,15 @@ Leer antes: `01-diseno.md` §5.2, §8.
 
 ## Fase 6 · API y cuentas
 Leer antes: `02-arquitectura.md` §1, §4, §4.1, §2.6.
-- [ ] 6.1 Carpeta `api/`: Node 22 + Fastify + Zod + pg. `docker-compose.yml` con postgres. Migraciones SQL numeradas.
-- [ ] 6.2 Tablas de `02-arquitectura.md` §4.1.
-- [ ] 6.3 `POST /sesion` con token de dispositivo; `GET /jugador`; `PUT /jugador/personaje`.
-- [ ] 6.4 `GET/PUT /fuerte`, `GET /catalogo`, `POST /mazmorra/resultado`: validación de límites y coste.
-- [ ] 6.5 `POST /asalto/buscar` (rival ±100 o fuerte del sistema; 10 al día) y `POST /asalto/resultado` (5-90 s, Elo, recompensas).
-- [ ] 6.6 `GET /ranking`, `GET /asaltos/historial`, `GET /salud`.
-- [ ] 6.7 Tests de todas las rutas con base de datos de prueba.
-- [ ] 6.8 Cliente: `ApiCliente` + `Sesion`; el guardado local pasa a ser caché y la API manda. Pantalla de arranque con crear personaje.
-- [ ] 6.9 Asalto real: buscar rival, cargar su diseño, jugar, mandar resultado. Pantallas Ranking e Historial.
+- [x] 6.1 (30-10-2026) Carpeta `api/`: Node 22 + Fastify + Zod + pg. `docker-compose.yml` con postgres. Migraciones SQL numeradas.
+- [x] 6.2 (30-10-2026) Tablas de `02-arquitectura.md` §4.1.
+- [x] 6.3 (30-10-2026) `POST /sesion` con token de dispositivo; `GET /jugador`; `PUT /jugador/personaje`.
+- [x] 6.4 (30-10-2026) `GET/PUT /fuerte`, `GET /catalogo`, `POST /mazmorra/resultado`: validación de límites y coste.
+- [x] 6.5 (30-10-2026) `POST /asalto/buscar` (rival ±100 o fuerte del sistema; 10 al día) y `POST /asalto/resultado` (5-90 s, Elo, recompensas).
+- [x] 6.6 (30-10-2026) `GET /ranking`, `GET /asaltos/historial`, `GET /salud`.
+- [x] 6.7 (30-10-2026) Tests de todas las rutas con base de datos de prueba.
+- [x] 6.8 (30-10-2026) Cliente: `ApiCliente` + `Sesion`; el guardado local pasa a ser caché y la API manda. Pantalla de arranque con crear personaje.
+- [x] 6.9 (30-10-2026) Asalto real: buscar rival, cargar su diseño, jugar, mandar resultado. Pantallas Ranking e Historial.
   Comprobar: dos emuladores con dos cuentas; uno construye su fuerte, el otro lo asalta y gana; el ranking cambia; el primero ve el asalto en su historial.
 
 ## Fase 7 · Pueblo online

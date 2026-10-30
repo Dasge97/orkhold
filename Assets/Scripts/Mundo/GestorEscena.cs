@@ -24,6 +24,8 @@ public class GestorEscena : MonoBehaviour
     public string puertaVuelta = "";
     [Tooltip("Es una mazmorra: lo recogido desde que se entra es el botín de la entrada.")]
     public bool esMazmorra;
+    [Tooltip("Es el pueblo: lo recogido se manda a la API como botín del pueblo.")]
+    public bool esPueblo;
 
     public static GestorEscena Actual { get; private set; }
     /// Para el asalto (fase 5): se dispara cuando el jugador muere y alMorir es Avisar.

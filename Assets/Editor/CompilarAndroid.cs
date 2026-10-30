@@ -23,6 +23,14 @@ public static class CompilarAndroid
 
     public static BuildResult UltimoResultado = BuildResult.Unknown;
 
+    /// Valor del argumento de línea de órdenes "nombre valor", o null si no está.
+    static string Argumento(string nombre)
+    {
+        var a = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < a.Length - 1; i++) if (a[i] == nombre) return a[i + 1];
+        return null;
+    }
+
     /// Para la línea de órdenes (lanzar Unity con -buildTarget Android): sale con 0 si compila.
     public static void EnBatch()
     {
@@ -54,6 +62,13 @@ public static class CompilarAndroid
         PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.Android, false);
         PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, new[] { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 });
         PlayerSettings.Android.useCustomKeystore = false;
+        // URL de la API: argumento -urlApi (vacío = modo local). En http (emulador) hay que permitir tráfico sin cifrar.
+        string url = Argumento("-urlApi");
+        var conf = AssetDatabase.LoadAssetAtPath<Configuracion>(CrearPrefabs.RutaConfiguracion);
+        string urlAntes = conf ? conf.urlApi : "";
+        if (url != null && conf) { conf.urlApi = url; EditorUtility.SetDirty(conf); AssetDatabase.SaveAssets(); }
+        PlayerSettings.insecureHttpOption = (conf && conf.urlApi.StartsWith("http://")) ? InsecureHttpOption.AlwaysAllowed : InsecureHttpOption.NotAllowed;
+        Debug.Log("APK: urlApi=" + (conf ? conf.urlApi : "(sin configuración)"));
         EditorUserBuildSettings.buildAppBundle = false;
 
         Directory.CreateDirectory("Builds");
@@ -67,6 +82,7 @@ public static class CompilarAndroid
         var informe = BuildPipeline.BuildPlayer(opciones);
         var r = informe.summary;
         UltimoResultado = r.result;
+        if (url != null && conf) { conf.urlApi = urlAntes; EditorUtility.SetDirty(conf); AssetDatabase.SaveAssets(); }
         Debug.Log($"APK: resultado={r.result} tamaño={r.totalSize / 1048576} MB errores={r.totalErrors} tiempo={r.totalTime.TotalSeconds:F0}s ruta={Salida}");
     }
 }

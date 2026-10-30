@@ -6,6 +6,11 @@ public static class Partida
     static DatosPartida _actual = new DatosPartida();
     static DatosInventario _alEntrar;   // inventario al entrar en la mazmorra
 
+    /// Inventario al entrar en la mazmorra (para mandar a la API lo ganado en la entrada).
+    public static DatosInventario InventarioAlEntrar { get; private set; }
+    /// El jefe ha muerto en esta entrada (la API da su botín).
+    public static bool JefeMuertoEnEntrada { get; set; }
+
     public static DatosPartida Actual => _actual;
     public static DatosInventario Inventario => _actual.inventario;
 
@@ -26,7 +31,15 @@ public static class Partida
     public static void Reemplazar(DatosPartida datos) { _actual = datos ?? new DatosPartida(); Cambiado(); }
 
     /// Se llama al entrar en la mazmorra: lo recogido desde aquí es el botín de esta entrada.
-    public static void EmpezarEntrada() { _alEntrar = Inventario.Copia(); }
+    public static void EmpezarEntrada()
+    {
+        _alEntrar = Inventario.Copia();
+        InventarioAlEntrar = Inventario.Copia();
+        JefeMuertoEnEntrada = false;
+    }
+
+    /// La entrada ya se ha contado (enviado a la API).
+    public static void TerminarEntrada() { InventarioAlEntrar = null; JefeMuertoEnEntrada = false; }
 
     /// Al morir en la mazmorra: se pierde la mitad (redondeando a favor del jugador) de lo ganado en esta entrada.
     /// Devuelve cuántas unidades se perdieron en total.

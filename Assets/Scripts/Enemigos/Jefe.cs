@@ -69,7 +69,16 @@ public class Jefe : Enemigo
     {
         if (!deMazmorra) return;
         base.SoltarBotin();
+        Partida.JefeMuertoEnEntrada = true;
         var p = Partida.Actual;
+        if (!Configuracion.ModoLocal)
+        {
+            // Con servidor, la unidad o los huesos los da la API al salir de la mazmorra.
+            Avisos.Mostrar(p.Progreso(ClaveProgreso) != "1"
+                ? "¡Orco jefe derrotado! Consigues un Orco jefe defensor para tu fuerte"
+                : "¡Orco jefe derrotado! +3 huesos", 4f);
+            return;
+        }
         if (p.Progreso(ClaveProgreso) != "1")
         {
             p.unidades.Add(new DatosUnidad { tipo = TipoUnidad });

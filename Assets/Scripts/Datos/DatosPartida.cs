@@ -7,6 +7,11 @@ public class DatosPartida
 {
     public const int VersionActual = 1;
     public int version = VersionActual;
+    /// Personaje elegido en el arranque (01-diseno.md §6.1).
+    public string nombre = "";
+    public string modelo = "";
+    /// Asaltos hechos hoy según la API (máximo 10).
+    public int asaltosHoy;
     public DatosInventario inventario = new DatosInventario();
     public int bajas;
     /// Puntuación tipo Elo para elegir rival (empieza en 1000).

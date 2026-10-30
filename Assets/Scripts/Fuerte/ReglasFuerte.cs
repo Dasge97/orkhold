@@ -82,7 +82,6 @@ public static class ReglasFuerte
         if (!string.IsNullOrEmpty(p.requiereUnidad))
         {
             var u = partida.unidades.Find(q => q.tipo == p.requiereUnidad);
-            vidaExtra = u.vidaExtra;
             partida.unidades.Remove(u);
         }
         else foreach (var c in p.costes) partida.inventario[c.recurso] -= c.cantidad;
@@ -90,7 +89,8 @@ public static class ReglasFuerte
         return true;
     }
 
-    /// Quita la pieza de (x, z) y devuelve lo que costó (las mejoras con hueso no se devuelven).
+    /// Quita la pieza de (x, z) y devuelve todo lo que costó, mejoras incluidas (igual que la API:
+    /// el fuerte cuesta la suma de sus piezas y mejoras, y al guardar se paga o devuelve la diferencia).
     public static bool Quitar(DisenoFuerte d, CatalogoPiezas cat, DatosPartida partida, int x, int z)
     {
         var q = d.En(x, z);
@@ -98,8 +98,9 @@ public static class ReglasFuerte
         var p = cat.Buscar(q.tipo);
         d.piezas.Remove(q);
         if (p == null) return true;
-        if (!string.IsNullOrEmpty(p.requiereUnidad)) partida.unidades.Add(new DatosUnidad { tipo = p.requiereUnidad, vidaExtra = q.vida_extra });
+        if (!string.IsNullOrEmpty(p.requiereUnidad)) partida.unidades.Add(new DatosUnidad { tipo = p.requiereUnidad });
         else foreach (var c in p.costes) partida.inventario[c.recurso] += c.cantidad;
+        partida.inventario.hueso += q.vida_extra * cat.huesosPorMejora;
         return true;
     }
 

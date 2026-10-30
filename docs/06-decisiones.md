@@ -74,3 +74,19 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 50 | **Cambio de diseño:** vida de muros madera 5, piedra 10, puerta 6 (antes 3, 6 y 4). | Con los números originales un asalto no llegaba a 20 s; ver `docs/04-pruebas-asalto.md`. |
 | 51 | La tarea 5.5 se da por hecha con un jugador automático; la prueba con Daniel queda pendiente. | Daniel pidió seguir sin parar. |
 | 52 | Reloj y barra del asalto a la derecha del centro; letra del HUD de 42 a 36. | Se solapaban con la segunda línea del HUD. |
+
+## Fase 6
+| # | Decisión | Por qué |
+|---|---|---|
+| 53 | Hasta el servidor de mundo (fase 7), el cliente manda el botín del pueblo a `POST /pueblo/botin`, con límite por minuto; se apaga con `PUEBLO_CLIENTE=0`. | Sin esto no se pueden conseguir madera ni piedra para el fuerte antes de la fase 7. |
+| 54 | Unidades de botín (orco jefe) como recurso `orco_jefe` en la tabla `inventario`. | La tabla de §4.1 no tiene sitio para unidades. |
+| 55 | Quitar un defensor devuelve también los huesos de sus mejoras (antes no). | La API cobra la diferencia entre diseños; así cliente y API coinciden. |
+| 56 | Elo: ganar `40·(1−E)`, perder `−30·E`; fuertes del sistema con 900/1000/1100 puntos según la puntuación del atacante. | +20/−15 entre iguales como dice el diseño, "ajustado" según el rival. |
+| 57 | Una derrota puede durar menos de 5 s (rendirse); la regla de 5-90 s es para victorias. Además, no se aceptan más segundos de los pasados desde la búsqueda. | Rendirse es legal; declarar tiempo falso no. |
+| 58 | Personajes: 4 de Mini Characters (`male-a`, `female-a`, `male-c`, `female-c`), 12 % más grandes. | §6.1 pide 4; Mini Characters son algo más pequeños que el humano de Mini Dungeon. |
+| 59 | Sin URL de API (modo local) el juego funciona como antes y así corren los tests. Con URL y sin conexión, se juega pero fuerte y asalto se bloquean. | §8 del diseño. |
+| 60 | Puertos locales 3100 (API) y 5442 (PostgreSQL). | 3000 y 5432 los usa WSL en este PC. |
+| 61 | Secretos de desarrollo en `api/.env` (fuera de git), generados al azar. | Regla de credenciales; los de producción irán a la bóveda (fase 8). |
+| 62 | La prueba de "dos emuladores" se hizo con un emulador y dos cuentas seguidas (borrando los datos de la app entre una y otra); el historial de Ana se comprobó contra la API. | No hay disco: el segundo emulador pide 7,4 GB y quedan 5,4 GB. |
+| 63 | Radio para "tocar el cofre": 1,25 m (antes 0,95). | En el emulador, pasando junto al cofre no contaba. |
+| 64 | Al entrar en el fuerte el cliente pide a la API el inventario y el fuerte. | Construir con los datos más recientes. |

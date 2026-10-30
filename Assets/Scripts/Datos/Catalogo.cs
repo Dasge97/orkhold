@@ -9,6 +9,14 @@ public class Catalogo : ScriptableObject
     [Tooltip("Fuertes del sistema para asaltar sin servidor: fácil, medio, difícil (Assets/Mapas/fuertes-prueba).")]
     public TextAsset[] fuertesPrueba = new TextAsset[0];
 
+    [Header("Personajes que se pueden elegir (Mini Characters)")]
+    public string[] idsPersonajes = new string[0];
+    public string[] nombresPersonajes = new string[0];
+    public GameObject[] modelosPersonajes = new GameObject[0];
+    public RuntimeAnimatorController[] controladoresPersonajes = new RuntimeAnimatorController[0];
+    [Tooltip("Mini Characters son algo más pequeños que el humano de Mini Dungeon.")]
+    public float escalaPersonajes = 1.12f;
+
     static Catalogo _instancia;
     public static Catalogo Instancia => _instancia ? _instancia : (_instancia = Resources.Load<Catalogo>("Catalogo"));
 

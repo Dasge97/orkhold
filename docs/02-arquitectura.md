@@ -135,7 +135,11 @@ instancia con colliders y con `Enemigo` en los defensores.
 - `ClienteRed`: conecta con NGO al servidor de mundo en la escena Pueblo. El jugador es un
   `NetworkObject` con autoridad del servidor: el cliente manda la entrada, el servidor mueve.
   Predicción local del propio movimiento y corrección suave.
-- `ApiCliente`: `UnityWebRequest`, JSON con `JsonUtility`, token en cabecera.
+- `ApiCliente`: `UnityWebRequest`, JSON con `JsonUtility`, token en cabecera. URL en
+  `Resources/Configuracion.asset` (vacía = modo local, como en los tests); el APK se compila con
+  `-urlApi <url>`.
+- `Sincronizacion`: la API manda y la partida local es caché (pueblo en lotes de 5 s, mazmorra al
+  salir, fuerte en "Listo", asalto al buscar y al terminar).
 - `Sesion`: token de dispositivo en `PlayerPrefs`. Sin contraseña en la primera versión.
 - Sin conexión: el pueblo arranca en modo host local (NGO) y se avisa en pantalla; mazmorra sí,
   fuerte y asalto no (necesitan la API).
@@ -156,7 +160,8 @@ instancia con colliders y con `Enemigo` en los defensores.
 | `POST /sesion` | Crea o recupera cuenta por token de dispositivo. Devuelve token de sesión. |
 | `GET /jugador` | Personaje, inventario, puntuación, progreso. |
 | `PUT /jugador/personaje` | Nombre y modelo elegido. |
-| `POST /inventario/sumar` | Solo servidor de mundo (clave de servidor): `{jugador, recurso, cantidad, origen}`. |
+| `POST /inventario/sumar` | Solo servidor de mundo (clave de servidor, cabecera `X-Clave-Servidor`): `{jugador, recurso, cantidad, origen}`. |
+| `POST /pueblo/botin` | **Provisional hasta la fase 7**: el cliente manda lo recogido en el pueblo (`{recursos}`), con límite por minuto. Se apaga con `PUEBLO_CLIENTE=0`. |
 | `POST /mazmorra/resultado` | Cliente: botín de una entrada a la mazmorra (`{jefe_muerto, recursos}`). Validado contra límites por entrada. |
 | `GET /fuerte` · `PUT /fuerte` | Diseño del fuerte propio. `PUT` valida límites, coste y que las piezas sean suyas; descuenta recursos. |
 | `GET /catalogo` | Piezas del fuerte con coste y vida. |
@@ -166,6 +171,18 @@ instancia con colliders y con `Enemigo` en los defensores.
 | `GET /ranking` | 50 mejores y tu puesto. |
 | `GET /salud` | Para el Kit. |
 
+Detalles (implementado en `api/`, tests en `api/test`):
+- Sesión: token firmado HMAC-SHA256 de 30 días (`Authorization: Bearer`). Errores: `{error, mensaje}`.
+- `PUT /fuerte` cobra la diferencia entre el diseño nuevo y el viejo: coste de piezas + 2 huesos por
+  mejora + unidades `orco_jefe`; lo quitado se devuelve entero. Reglas iguales a `ReglasFuerte.cs`
+  (copia de `fuerte-base.txt` y catálogo en `api/src/datos`; un test de Unity comprueba que coinciden).
+- Mazmorra: máximo por entrada 60 monedas, 10 hierro, 12 huesos, nada de madera ni piedra; una
+  entrada cada 20 s; si `jefe_muerto`, la API da la unidad (primera vez) o 3 huesos.
+- Asalto: rival con fuerte de ±100 puntos, si no fuerte del sistema (fácil < 1000 ≤ medio < 1100 ≤
+  difícil, con 900/1000/1100 puntos). Elo: ganar `40·(1−E)`, perder `−30·E` (+20/−15 entre iguales);
+  el defensor no cambia. Victoria entre 5 y 90 s y no más segundos de los pasados desde la búsqueda.
+- Inventario de la API: `moneda, madera, piedra, hierro, hueso, orco_jefe`. Las pociones solo existen en el móvil.
+
 ### 4.1 Tablas
 ```
 jugadores(id, token_dispositivo, nombre, modelo, puntuacion, creado, ultimo_acceso)
@@ -174,6 +191,9 @@ fuertes(jugador_id, diseno_json, actualizado)
 asaltos(id, atacante_id, defensor_id, diseno_defensor_json, ganado, segundos, muros_rotos,
         puntos_atacante_antes, puntos_atacante_despues, creado)
 progreso(jugador_id, clave, valor)                   -- ej. "jefe1_muerto" = "1"
+asaltos: además defensor_sistema, recompensa_json y terminado (resultado pendiente si es NULL)
+mazmorras(id, jugador_id, jefe_muerto, recursos_json, creado)      -- control de entradas
+botin_pueblo(id, jugador_id, recursos_json, creado)                -- provisional (fase 7)
 ```
 
 ## 5. Despliegue en codehive
