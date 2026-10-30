@@ -162,3 +162,8 @@ Lo más reciente arriba.
 ## 30-10-2026 — fase 13: lore en el juego
 - Los cinco carteles los dicen Maela, Rook, Ferra (con la forja), Ansel y Tobin, con su modelo de Mini Characters delante; Gruk con sus frases al este. Textos de carga del lore y "Vado Gris" en la carga del pueblo. Urzog habla al empezar el combate, al caer y en tu fuerte.
 - 42 tests de Unity y 55 de la API en verde.
+
+## 30-10-2026 — versión 2 en producción
+- Copia de la base antes de subir; `desplegar.sh` aplicó las migraciones 002-005. API, panel y balance responden en app.orkhold.com; dos bots se ven en el servidor de mundo (RED: OK).
+- Administrador `admin@orkhold.com` con su contraseña en la bóveda («orkhold - admin admin@orkhold.com»). APK firmado de la versión 2 en `Builds/orkhold.apk`.
+- No se probó en el emulador: el disco C tiene menos de 2 GB libres y el emulador no arranca.
