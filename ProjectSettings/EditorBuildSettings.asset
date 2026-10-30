@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Asalto.unity
     guid: 832dbf4d3154d924697fb4483bf3f6d4
+  - enabled: 1
+    path: Assets/Scenes/Mazmorra2.unity
+    guid: 5dca4740ef947d04886f6860f8d7a790
   m_configObjects: {}
