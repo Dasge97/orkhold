@@ -83,8 +83,8 @@ Leer antes: `02-arquitectura.md` §1, §2.6, §3. Es la fase más difícil: si u
 - [x] 7.4 Enemigos del pueblo solo en el servidor; estado replicado. Daño y botín se deciden en el servidor y van a la API (`POST /inventario/sumar` con clave de servidor). (2026-10-30)
 - [x] 7.5 Puertas (mazmorra, fuerte, asalto) desconectan del pueblo con transición y reconectan al volver. (2026-10-30)
 - [x] 7.6 Modo sin conexión: NGO en modo host local y aviso en pantalla; fuerte y asalto bloqueados. (2026-10-30)
-- [ ] 7.7 Build "Dedicated Server" Linux; Dockerfile; `docker-compose` junto a la API; UDP 7777.
-  (Dockerfile y compose hechos en `deployment/`; falta compilar: el módulo de Unity pide permisos de administrador.)
+- [x] 7.7 Build "Dedicated Server" Linux; Dockerfile; `docker-compose` junto a la API; UDP 7777.
+  (30-10-2026: en producción el servidor de mundo es el ejecutable de Windows bajo Wine (`deployment/mundo/Dockerfile.wine`), probado con jugadores desde fuera. El Dockerfile Linux queda listo para cuando se instale el módulo.)
 - [x] 7.8 Script de prueba: servidor local + 2 clientes en editor (ParrelSync) se ven y se mueven. (2026-10-30)
   Comprobar: dos emuladores conectados al servidor de codehive se ven moverse; matar un orco en uno suma monedas en la API.
   (Comprobado en local: dos clientes y un servidor se ven moverse, y lo que recoge un cliente llega a la API. Con codehive, en la fase 8.)

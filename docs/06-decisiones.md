@@ -131,3 +131,4 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 91 | Dominio: `app.orkhold.com` para la API y el servidor de mundo; `orkhold.com` queda libre para la landing. | Lo decidió Daniel el 30-10-2026; sustituye a `orkhold.code-hive.space`. |
 | 92 | La red de Docker de Orkhold usa la subred fija 10.96.0.0/24. | En codehive Docker ya no tiene subredes libres; otros proyectos usan 10.90-10.95. |
 | 93 | El servidor de mundo bajo Wine arranca Xvfb a mano, con `init: true`, y escribe su registro en `estado/mundo.log`. | Sin pantalla Wine no arranca; `xvfb-run` como primer proceso se queda colgado; con `-logFile -` el juego no arranca. |
+| 94 | La tarea 7.7 se cierra con el servidor de mundo bajo Wine en producción. | Funciona desde fuera (RED: OK contra app.orkhold.com); el módulo Linux de Unity no se ha podido instalar sin permisos. |

@@ -7,6 +7,7 @@ import rutasJugador from './rutas/jugador.js';
 import rutasFuerte from './rutas/fuerte.js';
 import rutasBotin from './rutas/botin.js';
 import rutasAsaltos from './rutas/asaltos.js';
+import rutasPublico from './rutas/publico.js';
 
 export const VERSION = '0.1.0';
 
@@ -47,6 +48,7 @@ export function crearServidor(opciones) {
   app.register(rutasFuerte);
   app.register(rutasBotin);
   app.register(rutasAsaltos);
+  app.register(rutasPublico);
   return app;
 }
 
