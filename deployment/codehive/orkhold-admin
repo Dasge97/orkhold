@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Administradores del panel de Orkhold (https://app.orkhold.com/admin/, docs/10-panel-admin.md §2.1).
+# Se instala como /home/codehive/bin/orkhold-admin (enlace a este fichero).
+#   orkhold-admin crear <correo>   genera una contraseña, la guarda en la bóveda como
+#                                  "orkhold - admin <correo>" y crea (o cambia) el administrador.
+# La contraseña no se imprime: se lee con vault-usar o en https://vault.code-hive.space.
+set -euo pipefail
+export PATH="/home/codehive/bin:/home/codehive/.local/bin:$PATH"
+export NODE_OPTIONS="${NODE_OPTIONS:---no-deprecation}"
+W=/home/codehive/codehive-app-state/deployments/orkhold/workspace/deployment
+
+case "${1:-}" in
+  crear)
+    correo="${2:-}"
+    [[ "$correo" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]] || { echo "Uso: orkhold-admin crear <correo>" >&2; exit 1; }
+    nombre="orkhold - admin $correo"
+    # Primero la bóveda: si falla, no queda un administrador con una contraseña que nadie conoce.
+    openssl rand -base64 24 | tr -d '\n' | vault-guardar "$nombre" --usuario "$correo" --url https://app.orkhold.com/admin/ >/dev/null
+    vault-usar "$nombre" CLAVE_ADMIN -- bash -c 'printf "%s" "$CLAVE_ADMIN"' \
+      | (cd "$W" && docker compose --env-file .env exec -T api node src/crear-admin.js "$correo")
+    echo "Contraseña en la bóveda: $nombre"
+    ;;
+  *)
+    echo "Uso: orkhold-admin crear <correo>" >&2; exit 1 ;;
+esac

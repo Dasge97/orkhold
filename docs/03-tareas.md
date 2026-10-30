@@ -115,12 +115,13 @@ se siguen marcando cuando se hagan. La versión 2 empieza sin esperarlas (decisi
 
 ## Fase 10 · Balance y panel de administración
 Leer antes: `10-panel-admin.md`.
-- [ ] 10.1 Tablas `balance` y `balance_historial`, `balance.json` con los valores de §1.3, carga al arrancar y `GET /balance`.
+- [x] 10.1 Tablas `balance` y `balance_historial`, `balance.json` con los valores de §1.3, carga al arrancar y `GET /balance`.
   Las reglas de la API (catálogo, límites, mazmorra, pueblo) leen el balance en vez de números fijos.
   Comprobar: tests de la API; cambiar `pieza.muro_madera.coste.madera` en la tabla cambia el coste al guardar un fuerte.
-- [ ] 10.2 Administradores, `POST /admin/sesion` y todas las rutas `/admin` de §3, con tests.
-- [ ] 10.3 Web del panel en `/admin/` con las pestañas de §2.2. Script `orkhold-admin crear` en codehive.
-  Comprobar: capturas del panel en escritorio y móvil, modo claro y oscuro.
+- [x] 10.2 Administradores, `POST /admin/sesion` y todas las rutas `/admin` de §3, con tests.
+- [x] 10.3 Web del panel en `/admin/` con las pestañas de §2.2. Script `orkhold-admin crear` en codehive.
+  Comprobar: capturas del panel en escritorio y móvil, modo claro y oscuro. (2026-10-30: `Revision/panel/`, sin desplazamiento
+  horizontal ni errores de consola; las rutas de saqueos del panel leen la tabla `saqueos` de la fase 12.)
 - [ ] 10.4 Cliente y servidor de mundo leen `GET /balance` (costes del catálogo, tiempos de reaparición) y `GET /estado`
   (versión mínima, mantenimiento, avisos). Comprobar: test PlayMode con un balance cambiado.
 

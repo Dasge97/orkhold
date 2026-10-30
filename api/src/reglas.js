@@ -1,20 +1,42 @@
 // Reglas del juego que la API hace cumplir. Son las mismas que ReglasFuerte.cs en el cliente:
 // casillas construibles de fuerte-base.txt, límites por categoría, costes y mejoras con hueso.
+// Los números salen del balance (balance.js); catalogo.json solo dice qué piezas hay y de qué tipo.
 import { readFileSync } from 'node:fs';
+import { B, Bo, versionBalance } from './balance.js';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const datos = join(dirname(fileURLToPath(import.meta.url)), 'datos');
 
-export const CATALOGO = JSON.parse(readFileSync(join(datos, 'catalogo.json'), 'utf8'));
+const BASE = JSON.parse(readFileSync(join(datos, 'catalogo.json'), 'utf8'));
 export const RECURSOS = ['moneda', 'madera', 'piedra', 'hierro', 'hueso'];
 export const UNIDADES = ['orco_jefe'];
 export const TODO = [...RECURSOS, ...UNIDADES];
 export const MATERIALES = ['madera', 'piedra', 'hierro', 'hueso'];
-export const MAX_ASALTOS_DIA = 10;
+export const maxSaqueosDia = () => B('saqueo.saqueos_dia');
 
-const piezasPorId = new Map(CATALOGO.piezas.map(p => [p.id, p]));
-export const pieza = id => piezasPorId.get(id);
+/** Coste de algo del balance: { recurso: n } con las claves "<prefijo>.coste.<recurso>" que existan. */
+export function costeDe(prefijo) {
+  const c = {};
+  for (const r of RECURSOS) { const n = Bo(`${prefijo}.coste.${r}`, 0); if (n > 0) c[r] = n; }
+  return c;
+}
+
+// El catálogo con los números del balance; se rehace cuando el balance cambia.
+let _catalogo = null, _versionCatalogo = -1, _piezasPorId = new Map();
+export function catalogo() {
+  if (_catalogo && _versionCatalogo === versionBalance()) return _catalogo;
+  _catalogo = {
+    version: BASE.version,
+    limites: { muro: B('fuerte.limite_muro'), trampa: B('fuerte.limite_trampa'), defensor: B('fuerte.limite_defensor') },
+    mejora: { huesos: B('fuerte.mejora_huesos'), maxima: B('fuerte.mejora_maxima') },
+    piezas: BASE.piezas.map(p => ({ ...p, vida: B(`pieza.${p.id}.vida`), costes: costeDe(`pieza.${p.id}`) })),
+  };
+  _piezasPorId = new Map(_catalogo.piezas.map(p => [p.id, p]));
+  _versionCatalogo = versionBalance();
+  return _catalogo;
+}
+export const pieza = id => { catalogo(); return _piezasPorId.get(id); };
 
 // ---------- mapa fuerte-base ----------
 
@@ -74,12 +96,12 @@ export function errorDiseno(diseno) {
     if (vistas.has(clave)) return `Casilla repetida (${clave})`;
     vistas.add(clave);
     const extra = q.vida_extra ?? 0;
-    if (!Number.isInteger(extra) || extra < 0 || extra > CATALOGO.mejora.maxima) return `Mejora fuera de rango en (${clave})`;
+    if (!Number.isInteger(extra) || extra < 0 || extra > catalogo().mejora.maxima) return `Mejora fuera de rango en (${clave})`;
     if (extra > 0 && p.categoria !== 'defensor') return `Solo se mejoran defensores (${clave})`;
     cuenta[p.categoria]++;
   }
   for (const k of Object.keys(cuenta))
-    if (cuenta[k] > CATALOGO.limites[k]) return `Límite de ${k}: ${CATALOGO.limites[k]}`;
+    if (cuenta[k] > catalogo().limites[k]) return `Límite de ${k}: ${catalogo().limites[k]}`;
   return null;
 }
 
@@ -91,7 +113,7 @@ export function coste(diseno) {
     if (!p) continue;
     for (const [r, n] of Object.entries(p.costes)) t[r] += n;
     if (p.requiere_unidad) t[p.requiere_unidad] += 1;
-    t.hueso += (q.vida_extra ?? 0) * CATALOGO.mejora.huesos;
+    t.hueso += (q.vida_extra ?? 0) * catalogo().mejora.huesos;
   }
   return t;
 }
@@ -129,7 +151,7 @@ export function recompensa(ganado, azar = Math.random) {
 
 // ---------- límites de botín ----------
 
-/** Máximo por entrada a la mazmorra (catacumbas: ~8 enemigos, 6 monedas sueltas y el jefe). */
-export const MAX_MAZMORRA = { moneda: 60, madera: 0, piedra: 0, hierro: 10, hueso: 12 };
-/** Máximo de botín del pueblo por minuto (provisional hasta el servidor de mundo). */
-export const MAX_PUEBLO_MINUTO = { moneda: 30, madera: 20, piedra: 20, hierro: 10, hueso: 10 };
+/** Máximo por entrada a la mazmorra (catacumbas: ~8 enemigos, 6 monedas sueltas y el jefe). 0 si no hay clave. */
+export const maxMazmorra = r => Bo(`mazmorra.max_${r}`, 0);
+/** Máximo de botín del pueblo por minuto (cuando lo manda el cliente, sin servidor de mundo). */
+export const maxPuebloMinuto = r => B(`pueblo.max_${r}`);

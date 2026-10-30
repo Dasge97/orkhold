@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { validar } from '../servidor.js';
 import { enTransaccion } from '../bd.js';
 import { leerJugador, leerInventario, sumar, ErrorJuego } from '../inventario.js';
-import { CATALOGO, TODO, coste, errorDiseno, limpiarDiseno } from '../reglas.js';
+import { catalogo, TODO, coste, errorDiseno, limpiarDiseno } from '../reglas.js';
 
 const Pieza = z.object({ x: z.number().int(), z: z.number().int(), tipo: z.string().max(40), vida_extra: z.number().int().min(0).max(10).default(0) });
 const Cuerpo = z.object({ diseno: z.object({ version: z.number().int().optional(), piezas: z.array(Pieza).max(80) }) });
@@ -14,7 +14,7 @@ export async function leerDiseno(c, jugadorId) {
 }
 
 export default async function (app) {
-  app.get('/catalogo', async () => CATALOGO);
+  app.get('/catalogo', async () => catalogo());
 
   app.get('/fuerte', { config: { sesion: true } }, async (req) => {
     const c = await app.pool.connect();

@@ -142,3 +142,8 @@ Lo más reciente arriba.
 - Tropiezos: Docker sin subredes libres (subred fija 10.96.0.0/24); Wine necesita Xvfb; `xvfb-run` se cuelga como PID 1; `-logFile -` impide arrancar; `orkhold-vigilar` tenía CRLF en la copia de trabajo.
 - Los bots desde el PC no llegan al servidor de mundo: tcpdump en codehive no ve ningún paquete UDP 7777. Hay que abrir el puerto en el cortafuegos de IONOS.
 - Puerto UDP 7777 abierto en IONOS: dos bots desde el PC contra app.orkhold.com se ven moverse (RED: OK).
+
+## 30-10-2026 — fase 10: balance y panel (10.1-10.3)
+- Tabla `balance` con 101 números, `GET /balance`; reglas de la API, catálogo y jefe leen de ahí. Rutas `/admin` con tokens propios y bloqueo de jugadores.
+- Panel en `/admin/` (Vue desde CDN, sin compilar), capturas con Chrome sin ventana y puppeteer-core en la carpeta temporal: escritorio y móvil, claro y oscuro.
+- Aprendido: la imagen de la API copia `src` al construir; antes de `npm test` hay que `docker compose build api`.

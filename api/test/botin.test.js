@@ -10,18 +10,21 @@ after(async () => { await ctx.cerrar(); });
 const mazmorra = (cab, payload) => ctx.app.inject({ method: 'POST', url: '/mazmorra/resultado', headers: cab, payload });
 const antiguas = id => ctx.pool.query(`UPDATE mazmorras SET creado = now() - interval '1 hour' WHERE jugador_id = $1`, [id]);
 
-test('el botín de la mazmorra se suma; el jefe da la unidad la primera vez y 3 huesos después', async () => {
+test('el botín de la mazmorra se suma; el jefe da la unidad la primera vez, hueso y hierro una vez al día y monedas después', async () => {
   const a = await jugador(ctx.app, 'Explorador');
   const r1 = await mazmorra(a.cab, { jefe_muerto: true, recursos: { moneda: 20, hierro: 2 } });
   assert.equal(r1.statusCode, 200, r1.body);
   assert.equal(r1.json().primera_vez_jefe, true);
   const inv1 = r1.json().jugador.inventario;
-  assert.equal(inv1.moneda, 20); assert.equal(inv1.hierro, 2); assert.equal(inv1.orco_jefe, 1);
+  // 20 monedas y 2 hierro del botín, más 3 hueso y 2 hierro del jefe (primera vez del día).
+  assert.equal(inv1.moneda, 20); assert.equal(inv1.hierro, 4); assert.equal(inv1.hueso, 3); assert.equal(inv1.orco_jefe, 1);
   assert.ok(r1.json().jugador.progreso.some(p => p.clave === 'jefe1_muerto'));
   await antiguas(a.id);
   const r2 = await mazmorra(a.cab, { jefe_muerto: true, recursos: { hueso: 1 } });
   assert.equal(r2.json().primera_vez_jefe, false);
+  // Segunda vez el mismo día: 10 monedas en vez de hueso y hierro.
   assert.equal(r2.json().jugador.inventario.hueso, 4);
+  assert.equal(r2.json().jugador.inventario.moneda, 30);
   assert.equal(r2.json().jugador.inventario.orco_jefe, 1);
 });
 

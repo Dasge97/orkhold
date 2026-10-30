@@ -30,7 +30,7 @@ echo "3/4 Scripts, secretos, proxy y cron..."
 ssh codehive bash -s <<REMOTO_FIN
 set -euo pipefail
 chmod +x $W/deployment/codehive/orkhold-*
-for s in orkhold-secretos orkhold-vigilar orkhold-copia; do ln -sf $W/deployment/codehive/\$s /home/codehive/bin/\$s; done
+for s in orkhold-secretos orkhold-vigilar orkhold-copia orkhold-admin; do ln -sf $W/deployment/codehive/\$s /home/codehive/bin/\$s; done
 /home/codehive/bin/orkhold-secretos generar
 if [ -f $W/deployment/mundo/servidor/orkhold-mundo.x86_64 ]; then
   sed -i 's/^MUNDO_DOCKERFILE=.*/MUNDO_DOCKERFILE=Dockerfile/; s#^MUNDO_ESTADO=.*#MUNDO_ESTADO=/estado/mundo.json#' $W/deployment/.env

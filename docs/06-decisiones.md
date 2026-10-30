@@ -144,3 +144,8 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 100 | Orden de depósito: cofre central y luego los escondites en el orden en que se construyeron. Al gastar se saca en el mismo orden. | "Primer escondite con hueco" (08 §3.1); gastar del central primero lo vacía, que es lo más expuesto. |
 | 101 | El fuerte de prueba (sin rivales) no mueve botín, ni tasa, ni Elo. | 08 §4.1: "sin botín real ni tasa"; dar Elo contra un fuerte falso inflaría el ranking. |
 | 102 | "Mirar" es una petición al servidor; el móvil no conoce el contenido de los escondites del rival. | El servidor decide (08 §4.4) y así no se puede leer el contenido desde el cliente. |
+| 103 | El balance guarda números (no textos) con mínimo y máximo; los costes son claves `<cosa>.coste.<recurso>` y solo existen las que tienen valor de partida. | Un panel con rangos evita errores al teclear; añadir un recurso nuevo a un coste se hace en `balance.json`. |
+| 104 | Clave extra `saqueo.velocidad_max` (5,5 m/s) para rehacer la exploración. | Correr va a 4,5 m/s; el servidor necesita un tope con margen y es un número de balance. |
+| 105 | Jefe de la mazmorra: la unidad la primera vez; hueso y hierro la primera vez de cada día (UTC); monedas las demás. | 08 §1.2; antes daba 3 huesos siempre. |
+| 106 | Administradores aparte de los jugadores (tabla `administradores`), con token firmado con otra clave y 12 h. | Un token de jugador nunca vale para el panel. |
+| 107 | El servidor de mundo manda un latido con los jugadores del pueblo a la API cada 30 s. | Así el panel sabe cuántos hay sin leer ficheros del servidor. |

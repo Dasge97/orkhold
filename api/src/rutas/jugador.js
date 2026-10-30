@@ -5,10 +5,10 @@ import { leerJugador, ErrorJuego } from '../inventario.js';
 
 export const MODELOS = ['character-male-a', 'character-female-a', 'character-male-c', 'character-female-c'];
 
-const Personaje = z.object({
-  nombre: z.string().trim().min(3, 'mínimo 3 letras').max(16, 'máximo 16 letras').regex(/^[\p{L}\p{N} _-]+$/u, 'solo letras, números, espacio, _ y -'),
-  modelo: z.enum(MODELOS),
-});
+export const NombrePersonaje = z.string().trim().min(3, 'mínimo 3 letras').max(16, 'máximo 16 letras')
+  .regex(/^[\p{L}\p{N} _-]+$/u, 'solo letras, números, espacio, _ y -');
+
+const Personaje = z.object({ nombre: NombrePersonaje, modelo: z.enum(MODELOS) });
 
 export default async function (app) {
   app.get('/jugador', { config: { sesion: true } }, async (req) => {

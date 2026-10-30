@@ -1,13 +1,14 @@
 // Entradas de recursos:
-// - POST /mazmorra/resultado (cliente): botín de una entrada, con límites por entrada; el jefe da su botín aquí.
+// - POST /mazmorra/resultado (cliente): botín de una entrada, con límites por entrada; el jefe da su botín aquí
+//   (la unidad la primera vez; hueso y hierro la primera vez del día; monedas las demás).
 // - POST /pueblo/botin (cliente, provisional hasta la fase 7): lo recogido en el pueblo, con límite por minuto.
 // - POST /inventario/sumar (servidor de mundo, con clave de servidor).
 import { z } from 'zod';
-import { timingSafeEqual } from 'node:crypto';
-import { validar } from '../servidor.js';
+import { validar, esServidorDeMundo } from '../servidor.js';
 import { enTransaccion } from '../bd.js';
 import { leerJugador, sumar, ponerProgreso, ErrorJuego } from '../inventario.js';
-import { RECURSOS, MAX_MAZMORRA, MAX_PUEBLO_MINUTO } from '../reglas.js';
+import { RECURSOS, maxMazmorra, maxPuebloMinuto } from '../reglas.js';
+import { B } from '../balance.js';
 
 const Recursos = z.object(Object.fromEntries(RECURSOS.map(r => [r, z.number().int().min(0).max(1000).default(0)]))).default({});
 
@@ -21,18 +22,18 @@ const Sumar = z.object({
 });
 
 export const CLAVE_JEFE = 'jefe1_muerto';
-const SEGUNDOS_ENTRE_MAZMORRAS = 20;
+export const CLAVE_JEFE_DIA = 'jefe1_dia';
 
 export default async function (app) {
   app.post('/mazmorra/resultado', { config: { sesion: true } }, async (req) => {
     const { jefe_muerto, recursos } = validar(Mazmorra, req.body);
     for (const r of RECURSOS)
-      if (recursos[r] > MAX_MAZMORRA[r]) throw new ErrorJuego('botin_imposible', `Demasiado ${r} para una entrada (máximo ${MAX_MAZMORRA[r]})`);
+      if (recursos[r] > maxMazmorra(r)) throw new ErrorJuego('botin_imposible', `Demasiado ${r} para una entrada (máximo ${maxMazmorra(r)})`);
     return enTransaccion(app.pool, async (c) => {
       await c.query('SELECT id FROM jugadores WHERE id = $1 FOR UPDATE', [req.jugadorId]);
       const ultima = (await c.query(
         `SELECT extract(epoch FROM now() - creado)::float8 AS s FROM mazmorras WHERE jugador_id = $1 ORDER BY id DESC LIMIT 1`, [req.jugadorId])).rows[0];
-      if (ultima && ultima.s < SEGUNDOS_ENTRE_MAZMORRAS)
+      if (ultima && ultima.s < B('mazmorra.segundos_entre'))
         throw new ErrorJuego('demasiado_seguido', 'Otra entrada a la mazmorra demasiado seguida', 429);
       const delta = { ...recursos };
       let primeraVez = false;
@@ -40,7 +41,14 @@ export default async function (app) {
         const p = (await c.query('SELECT valor FROM progreso WHERE jugador_id = $1 AND clave = $2', [req.jugadorId, CLAVE_JEFE])).rows[0];
         primeraVez = !p;
         if (primeraVez) { delta.orco_jefe = 1; await ponerProgreso(c, req.jugadorId, CLAVE_JEFE, '1'); }
-        else delta.hueso = (delta.hueso ?? 0) + 3;
+        // 08 §1.2: hueso y hierro la primera vez de cada día; las demás, monedas.
+        const hoy = new Date().toISOString().slice(0, 10);
+        const dia = (await c.query('SELECT valor FROM progreso WHERE jugador_id = $1 AND clave = $2', [req.jugadorId, CLAVE_JEFE_DIA])).rows[0];
+        if (dia?.valor !== hoy) {
+          delta.hueso = (delta.hueso ?? 0) + B('mazmorra.jefe_hueso');
+          delta.hierro = (delta.hierro ?? 0) + B('mazmorra.jefe_hierro');
+          await ponerProgreso(c, req.jugadorId, CLAVE_JEFE_DIA, hoy);
+        } else delta.moneda = (delta.moneda ?? 0) + B('mazmorra.jefe_monedas');
       }
       await sumar(c, req.jugadorId, delta);
       await c.query('INSERT INTO mazmorras (jugador_id, jefe_muerto, recursos_json) VALUES ($1, $2, $3)',
@@ -58,7 +66,7 @@ export default async function (app) {
         `SELECT recursos_json FROM botin_pueblo WHERE jugador_id = $1 AND creado > now() - interval '60 seconds'`, [req.jugadorId])).rows;
       for (const r of RECURSOS) {
         const ya = previos.reduce((s, f) => s + (f.recursos_json[r] ?? 0), 0);
-        if (ya + recursos[r] > MAX_PUEBLO_MINUTO[r]) throw new ErrorJuego('demasiado_botin', `Demasiado ${r} en un minuto`, 429);
+        if (ya + recursos[r] > maxPuebloMinuto(r)) throw new ErrorJuego('demasiado_botin', `Demasiado ${r} en un minuto`, 429);
       }
       await sumar(c, req.jugadorId, recursos);
       await c.query('INSERT INTO botin_pueblo (jugador_id, recursos_json) VALUES ($1, $2)', [req.jugadorId, JSON.stringify(recursos)]);
@@ -67,9 +75,7 @@ export default async function (app) {
   });
 
   app.post('/inventario/sumar', async (req, reply) => {
-    const clave = Buffer.from(String(req.headers['x-clave-servidor'] ?? ''));
-    const buena = Buffer.from(app.opciones.claveServidor ?? '');
-    if (!buena.length || clave.length !== buena.length || !timingSafeEqual(clave, buena))
+    if (!esServidorDeMundo(app, req))
       return reply.code(403).send({ error: 'sin_permiso', mensaje: 'Solo el servidor de mundo' });
     const { jugador, recurso, cantidad } = validar(Sumar, req.body);
     return enTransaccion(app.pool, async (c) => {

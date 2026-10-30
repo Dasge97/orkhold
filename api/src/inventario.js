@@ -1,5 +1,5 @@
 // Inventario y datos del jugador en la base de datos.
-import { TODO, MAX_ASALTOS_DIA } from './reglas.js';
+import { TODO, maxSaqueosDia } from './reglas.js';
 
 export class ErrorJuego extends Error {
   constructor(codigo, mensaje, estado = 400) {
@@ -51,7 +51,7 @@ export async function leerJugador(c, jugadorId) {
     inventario: await leerInventario(c, jugadorId),
     progreso,
     asaltos_hoy: hoy,
-    max_asaltos_dia: MAX_ASALTOS_DIA,
+    max_asaltos_dia: maxSaqueosDia(),
   };
 }
 

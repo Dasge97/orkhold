@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { validar } from '../servidor.js';
 import { enTransaccion } from '../bd.js';
 import { leerJugador, sumar, ErrorJuego } from '../inventario.js';
-import { MAX_ASALTOS_DIA, fuerteSistema, limpiarDiseno, puntosGanar, puntosPerder, recompensa } from '../reglas.js';
+import { maxSaqueosDia, fuerteSistema, limpiarDiseno, puntosGanar, puntosPerder, recompensa } from '../reglas.js';
 
 const Resultado = z.object({
   asalto_id: z.union([z.string(), z.number()]).transform(String),
@@ -24,7 +24,7 @@ export default async function (app) {
       const yo = (await c.query('SELECT id, puntuacion FROM jugadores WHERE id = $1 FOR UPDATE', [req.jugadorId])).rows[0];
       const hoy = (await c.query(
         `SELECT count(*)::int AS n FROM asaltos WHERE atacante_id = $1 AND creado >= date_trunc('day', now())`, [yo.id])).rows[0].n;
-      if (hoy >= MAX_ASALTOS_DIA) throw new ErrorJuego('limite_diario', `Ya has hecho ${MAX_ASALTOS_DIA} asaltos hoy`, 429);
+      if (hoy >= maxSaqueosDia()) throw new ErrorJuego('limite_diario', `Ya has hecho ${maxSaqueosDia()} asaltos hoy`, 429);
 
       const rival = (await c.query(
         `SELECT j.id, j.nombre, j.puntuacion, f.diseno_json

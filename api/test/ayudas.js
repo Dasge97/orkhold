@@ -33,3 +33,11 @@ export async function dar(pool, id, recursos) {
       `INSERT INTO inventario (jugador_id, recurso, cantidad) VALUES ($1,$2,$3)
        ON CONFLICT (jugador_id, recurso) DO UPDATE SET cantidad = inventario.cantidad + EXCLUDED.cantidad`, [id, r, n]);
 }
+
+/** Crea un administrador y devuelve la cabecera con su sesión. */
+export async function admin(app, pool, correo = 'admin@orkhold.com', contrasena = 'contrasena-de-admin') {
+  const { cifrar } = await import('../src/contrasenas.js');
+  await pool.query('INSERT INTO administradores (correo, hash) VALUES ($1, $2) ON CONFLICT (correo) DO NOTHING', [correo, await cifrar(contrasena)]);
+  const r = await app.inject({ method: 'POST', url: '/admin/sesion', payload: { correo, contrasena } });
+  return { authorization: `Bearer ${r.json().token}` };
+}

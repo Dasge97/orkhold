@@ -1,0 +1,810 @@
+[
+ {
+  "clave": "saqueo.saqueos_dia",
+  "valor": 10,
+  "grupo": "Saqueo",
+  "descripcion": "Saqueos por día",
+  "minimo": 1,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.hora_recarga",
+  "valor": 6,
+  "grupo": "Saqueo",
+  "descripcion": "Hora del servidor (UTC) a la que se recargan los saqueos",
+  "minimo": 0,
+  "maximo": 23
+ },
+ {
+  "clave": "saqueo.escudo_horas",
+  "valor": 2,
+  "grupo": "Saqueo",
+  "descripcion": "Horas sin poder ser elegido tras un saqueo con botín",
+  "minimo": 0,
+  "maximo": 48
+ },
+ {
+  "clave": "saqueo.tasa",
+  "valor": 5,
+  "grupo": "Saqueo",
+  "descripcion": "Monedas que paga el atacante al entrar",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.acciones",
+  "valor": 3,
+  "grupo": "Saqueo",
+  "descripcion": "Marcas en la fase 2",
+  "minimo": 1,
+  "maximo": 10
+ },
+ {
+  "clave": "saqueo.exploracion_segundos",
+  "valor": 120,
+  "grupo": "Saqueo",
+  "descripcion": "Duración de la exploración",
+  "minimo": 30,
+  "maximo": 600
+ },
+ {
+  "clave": "saqueo.mirar_segundos",
+  "valor": 1,
+  "grupo": "Saqueo",
+  "descripcion": "Segundos parado para mirar",
+  "minimo": 0,
+  "maximo": 5
+ },
+ {
+  "clave": "saqueo.max_herramientas",
+  "valor": 2,
+  "grupo": "Saqueo",
+  "descripcion": "Herramientas por saqueo",
+  "minimo": 0,
+  "maximo": 5
+ },
+ {
+  "clave": "saqueo.margen_rival",
+  "valor": 100,
+  "grupo": "Saqueo",
+  "descripcion": "Diferencia máxima de puntuación con el rival",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "saqueo.horas_mismo_rival",
+  "valor": 24,
+  "grupo": "Saqueo",
+  "descripcion": "Horas antes de poder saquear otra vez al mismo",
+  "minimo": 0,
+  "maximo": 168
+ },
+ {
+  "clave": "saqueo.elo_nada_atacante",
+  "valor": -10,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del atacante si no encuentra nada",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.elo_nada_defensor",
+  "valor": 10,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del defensor si no le encuentran nada",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.elo_una_atacante",
+  "valor": 5,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del atacante si acierta 1 marca",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.elo_una_defensor",
+  "valor": -5,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del defensor si le aciertan 1 marca",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.elo_varias_atacante",
+  "valor": 15,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del atacante si acierta 2 o más",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.elo_varias_defensor",
+  "valor": -10,
+  "grupo": "Saqueo",
+  "descripcion": "Elo del defensor si le aciertan 2 o más",
+  "minimo": -100,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.central_umbral",
+  "valor": 20,
+  "grupo": "Saqueo",
+  "descripcion": "Unidades en el cofre central encontrado que dan el castigo extra",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "saqueo.central_extra",
+  "valor": 5,
+  "grupo": "Saqueo",
+  "descripcion": "Elo extra (+ atacante, - defensor) por ese castigo",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.objetivo_exito_min",
+  "valor": 60,
+  "grupo": "Saqueo",
+  "descripcion": "% mínimo de saqueos con botín antes de avisar en el panel",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.objetivo_exito_max",
+  "valor": 85,
+  "grupo": "Saqueo",
+  "descripcion": "% máximo de saqueos con botín antes de avisar en el panel",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "saqueo.velocidad_max",
+  "valor": 5.5,
+  "grupo": "Saqueo",
+  "descripcion": "Velocidad máxima (m/s) que acepta el servidor al rehacer la exploración",
+  "minimo": 1,
+  "maximo": 20
+ },
+ {
+  "clave": "escondite.central.capacidad",
+  "valor": 50,
+  "grupo": "Escondites",
+  "descripcion": "Capacidad del cofre central",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "escondite.central.porcentaje",
+  "valor": 75,
+  "grupo": "Escondites",
+  "descripcion": "% que se lleva quien acierta el cofre central",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.cofre.capacidad",
+  "valor": 30,
+  "grupo": "Escondites",
+  "descripcion": "Capacidad del cofre",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "escondite.cofre.porcentaje",
+  "valor": 50,
+  "grupo": "Escondites",
+  "descripcion": "% que se lleva quien acierta el cofre",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.cofre.limite",
+  "valor": 4,
+  "grupo": "Escondites",
+  "descripcion": "Máximo de cofre por fuerte",
+  "minimo": 0,
+  "maximo": 50
+ },
+ {
+  "clave": "escondite.cofre.coste.madera",
+  "valor": 4,
+  "grupo": "Escondites",
+  "descripcion": "Coste del cofre en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.cofre.coste.hierro",
+  "valor": 1,
+  "grupo": "Escondites",
+  "descripcion": "Coste del cofre en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.barril.capacidad",
+  "valor": 15,
+  "grupo": "Escondites",
+  "descripcion": "Capacidad del barril",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "escondite.barril.porcentaje",
+  "valor": 50,
+  "grupo": "Escondites",
+  "descripcion": "% que se lleva quien acierta el barril",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.barril.limite",
+  "valor": 6,
+  "grupo": "Escondites",
+  "descripcion": "Máximo de barril por fuerte",
+  "minimo": 0,
+  "maximo": 50
+ },
+ {
+  "clave": "escondite.barril.coste.madera",
+  "valor": 2,
+  "grupo": "Escondites",
+  "descripcion": "Coste del barril en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.enterrado.capacidad",
+  "valor": 10,
+  "grupo": "Escondites",
+  "descripcion": "Capacidad del enterrado",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "escondite.enterrado.porcentaje",
+  "valor": 50,
+  "grupo": "Escondites",
+  "descripcion": "% que se lleva quien acierta el enterrado",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.enterrado.limite",
+  "valor": 8,
+  "grupo": "Escondites",
+  "descripcion": "Máximo de enterrado por fuerte",
+  "minimo": 0,
+  "maximo": 50
+ },
+ {
+  "clave": "escondite.enterrado.coste.piedra",
+  "valor": 1,
+  "grupo": "Escondites",
+  "descripcion": "Coste del enterrado en piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.doble_fondo.capacidad",
+  "valor": 10,
+  "grupo": "Escondites",
+  "descripcion": "Capacidad del doble fondo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "escondite.doble_fondo.porcentaje",
+  "valor": 50,
+  "grupo": "Escondites",
+  "descripcion": "% que se lleva quien acierta el doble fondo",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.doble_fondo.limite",
+  "valor": 0,
+  "grupo": "Escondites",
+  "descripcion": "Máximo de doble fondo por fuerte",
+  "minimo": 0,
+  "maximo": 50
+ },
+ {
+  "clave": "escondite.doble_fondo.coste.piedra",
+  "valor": 3,
+  "grupo": "Escondites",
+  "descripcion": "Coste del doble fondo en piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "escondite.doble_fondo.coste.hierro",
+  "valor": 1,
+  "grupo": "Escondites",
+  "descripcion": "Coste del doble fondo en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.farol.disponible",
+  "valor": 1,
+  "grupo": "Herramientas",
+  "descripcion": "farol: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.farol.coste.hierro",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de farol en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.farol.coste.hueso",
+  "valor": 1,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de farol en hueso",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.farol.radio",
+  "valor": 1,
+  "grupo": "Herramientas",
+  "descripcion": "Casillas alrededor que revisa el farol",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.cuarta_accion.disponible",
+  "valor": 1,
+  "grupo": "Herramientas",
+  "descripcion": "cuarta_accion: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.cuarta_accion.coste.moneda",
+  "valor": 10,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de cuarta_accion en moneda",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.pico.disponible",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "pico: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.pico.coste.hierro",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de pico en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.pico.coste.madera",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de pico en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.pico.segundos",
+  "valor": 15,
+  "grupo": "Herramientas",
+  "descripcion": "Segundos que dura el pico",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.pico.dano",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "Daño por golpe con el pico",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.bomba.disponible",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "bomba: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.bomba.coste.hierro",
+  "valor": 4,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de bomba en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.bomba.coste.piedra",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de bomba en piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.bomba.retardo",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Segundos hasta que explota",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.sabueso.disponible",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "sabueso: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.sabueso.coste.hueso",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de sabueso en hueso",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.sabueso.coste.moneda",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de sabueso en moneda",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.sabueso.casillas",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "A cuántas casillas del escondite ladra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.senuelo.disponible",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "senuelo: 1 si se puede fabricar",
+  "minimo": 0,
+  "maximo": 1
+ },
+ {
+  "clave": "herramienta.senuelo.coste.hueso",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de senuelo en hueso",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "herramienta.senuelo.coste.madera",
+  "valor": 1,
+  "grupo": "Herramientas",
+  "descripcion": "Coste de senuelo en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_madera.vida",
+  "valor": 5,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de muro_madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_madera.coste.madera",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de muro_madera en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_piedra.vida",
+  "valor": 10,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de muro_piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_piedra.coste.piedra",
+  "valor": 3,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de muro_piedra en piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.puerta.vida",
+  "valor": 6,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de puerta",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.puerta.coste.madera",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de puerta en madera",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.puerta.coste.hierro",
+  "valor": 1,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de puerta en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.trampa.vida",
+  "valor": 0,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de trampa",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.trampa.coste.hierro",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de trampa en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.orco_defensor.vida",
+  "valor": 3,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de orco_defensor",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.orco_defensor.coste.moneda",
+  "valor": 10,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de orco_defensor en moneda",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.esqueleto_defensor.vida",
+  "valor": 4,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de esqueleto_defensor",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.esqueleto_defensor.coste.moneda",
+  "valor": 15,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de esqueleto_defensor en moneda",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.orco_jefe.vida",
+  "valor": 15,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de orco_jefe",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "fuerte.limite_muro",
+  "valor": 40,
+  "grupo": "Fuerte",
+  "descripcion": "Máximo de muros y puertas",
+  "minimo": 0,
+  "maximo": 200
+ },
+ {
+  "clave": "fuerte.limite_trampa",
+  "valor": 6,
+  "grupo": "Fuerte",
+  "descripcion": "Máximo de trampas",
+  "minimo": 0,
+  "maximo": 50
+ },
+ {
+  "clave": "fuerte.limite_defensor",
+  "valor": 4,
+  "grupo": "Fuerte",
+  "descripcion": "Máximo de defensores",
+  "minimo": 0,
+  "maximo": 20
+ },
+ {
+  "clave": "fuerte.mejora_huesos",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Huesos por cada +1 de vida de un defensor",
+  "minimo": 0,
+  "maximo": 20
+ },
+ {
+  "clave": "fuerte.mejora_maxima",
+  "valor": 3,
+  "grupo": "Fuerte",
+  "descripcion": "Mejora máxima de un defensor",
+  "minimo": 0,
+  "maximo": 10
+ },
+ {
+  "clave": "mundo.enemigos_reaparecer",
+  "valor": 60,
+  "grupo": "Mundo",
+  "descripcion": "Segundos hasta que reaparece un enemigo del pueblo",
+  "minimo": 5,
+  "maximo": 3600
+ },
+ {
+  "clave": "mundo.recursos_reaparecer",
+  "valor": 300,
+  "grupo": "Mundo",
+  "descripcion": "Segundos hasta que reaparece un árbol o una roca",
+  "minimo": 5,
+  "maximo": 3600
+ },
+ {
+  "clave": "mazmorra.max_moneda",
+  "valor": 60,
+  "grupo": "Mazmorra",
+  "descripcion": "Monedas máximas por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra.max_hierro",
+  "valor": 10,
+  "grupo": "Mazmorra",
+  "descripcion": "Hierro máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra.max_hueso",
+  "valor": 12,
+  "grupo": "Mazmorra",
+  "descripcion": "Hueso máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra.segundos_entre",
+  "valor": 20,
+  "grupo": "Mazmorra",
+  "descripcion": "Segundos mínimos entre dos entradas",
+  "minimo": 0,
+  "maximo": 600
+ },
+ {
+  "clave": "mazmorra.jefe_hueso",
+  "valor": 3,
+  "grupo": "Mazmorra",
+  "descripcion": "Hueso del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra.jefe_hierro",
+  "valor": 2,
+  "grupo": "Mazmorra",
+  "descripcion": "Hierro del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra.jefe_monedas",
+  "valor": 10,
+  "grupo": "Mazmorra",
+  "descripcion": "Monedas del jefe las demás veces",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pueblo.max_moneda",
+  "valor": 30,
+  "grupo": "Pueblo",
+  "descripcion": "moneda máximo por minuto en el pueblo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "pueblo.max_madera",
+  "valor": 20,
+  "grupo": "Pueblo",
+  "descripcion": "madera máximo por minuto en el pueblo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "pueblo.max_piedra",
+  "valor": 20,
+  "grupo": "Pueblo",
+  "descripcion": "piedra máximo por minuto en el pueblo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "pueblo.max_hierro",
+  "valor": 10,
+  "grupo": "Pueblo",
+  "descripcion": "hierro máximo por minuto en el pueblo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "pueblo.max_hueso",
+  "valor": 10,
+  "grupo": "Pueblo",
+  "descripcion": "hueso máximo por minuto en el pueblo",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "temporada.semanas",
+  "valor": 4,
+  "grupo": "Temporada",
+  "descripcion": "Semanas que dura una temporada",
+  "minimo": 1,
+  "maximo": 52
+ },
+ {
+  "clave": "temporada.plata",
+  "valor": 1050,
+  "grupo": "Temporada",
+  "descripcion": "Puntuación desde la que se es Plata",
+  "minimo": 0,
+  "maximo": 5000
+ },
+ {
+  "clave": "temporada.oro",
+  "valor": 1150,
+  "grupo": "Temporada",
+  "descripcion": "Puntuación desde la que se es Oro",
+  "minimo": 0,
+  "maximo": 5000
+ },
+ {
+  "clave": "temporada.hierro_orco",
+  "valor": 1250,
+  "grupo": "Temporada",
+  "descripcion": "Puntuación desde la que se es Hierro Orco",
+  "minimo": 0,
+  "maximo": 5000
+ },
+ {
+  "clave": "temporada.compresion",
+  "valor": 50,
+  "grupo": "Temporada",
+  "descripcion": "% de la distancia a 1000 que se conserva al cerrar la temporada",
+  "minimo": 0,
+  "maximo": 100
+ }
+]
