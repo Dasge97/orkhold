@@ -1,0 +1,4 @@
+# Scripts y ficheros que se ejecutan en Linux: siempre con saltos de línea LF
+*.sh text eol=lf
+deployment/** text eol=lf
+api/** text eol=lf
