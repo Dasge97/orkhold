@@ -25,7 +25,7 @@ MonoBehaviour:
     costes:
     - recurso: 1
       cantidad: 2
-    vida: 3
+    vida: 5
     requiereUnidad: 
   - id: muro_piedra
     nombre: Muro de piedra
@@ -34,7 +34,7 @@ MonoBehaviour:
     costes:
     - recurso: 2
       cantidad: 3
-    vida: 6
+    vida: 10
     requiereUnidad: 
   - id: puerta
     nombre: Puerta
@@ -45,7 +45,7 @@ MonoBehaviour:
       cantidad: 2
     - recurso: 3
       cantidad: 1
-    vida: 4
+    vida: 6
     requiereUnidad: 
   - id: trampa
     nombre: Trampa

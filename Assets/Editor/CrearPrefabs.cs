@@ -69,6 +69,8 @@ public static class CrearPrefabs
         var c = AssetDatabase.LoadAssetAtPath<Catalogo>(RutaCatalogo);
         if (!c) { c = ScriptableObject.CreateInstance<Catalogo>(); AssetDatabase.CreateAsset(c, RutaCatalogo); }
         c.moneda = moneda; c.madera = madera; c.piedra = piedra; c.hierro = hierro; c.hueso = hueso; c.pocion = pocion;
+        c.fuertesPrueba = new[] { "facil", "medio", "dificil" }
+            .Select(n => AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Mapas/fuertes-prueba/" + n + ".json")).ToArray();
         EditorUtility.SetDirty(c);
     }
 
@@ -214,9 +216,9 @@ public static class CrearPrefabs
         CatalogoPiezas.Coste K(Recurso r, int n) => new CatalogoPiezas.Coste { recurso = r, cantidad = n };
         void Pieza(string id, string nombre, CatalogoPiezas.Categoria cat, GameObject prefab, int vida, string unidad, params CatalogoPiezas.Coste[] costes)
             => c.piezas.Add(new CatalogoPiezas.Pieza { id = id, nombre = nombre, categoria = cat, prefab = prefab, vida = vida, requiereUnidad = unidad, costes = costes.ToList() });
-        Pieza("muro_madera", "Muro de madera", CatalogoPiezas.Categoria.Muro, muroMadera, 3, "", K(Recurso.Madera, 2));
-        Pieza("muro_piedra", "Muro de piedra", CatalogoPiezas.Categoria.Muro, muroPiedra, 6, "", K(Recurso.Piedra, 3));
-        Pieza("puerta", "Puerta", CatalogoPiezas.Categoria.Muro, puerta, 4, "", K(Recurso.Madera, 2), K(Recurso.Hierro, 1));
+        Pieza("muro_madera", "Muro de madera", CatalogoPiezas.Categoria.Muro, muroMadera, 5, "", K(Recurso.Madera, 2));
+        Pieza("muro_piedra", "Muro de piedra", CatalogoPiezas.Categoria.Muro, muroPiedra, 10, "", K(Recurso.Piedra, 3));
+        Pieza("puerta", "Puerta", CatalogoPiezas.Categoria.Muro, puerta, 6, "", K(Recurso.Madera, 2), K(Recurso.Hierro, 1));
         Pieza("trampa", "Trampa", CatalogoPiezas.Categoria.Trampa, Cargar("Trampa"), 0, "", K(Recurso.Hierro, 2));
         Pieza("orco_defensor", "Orco defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Orco"), 3, "", K(Recurso.Moneda, 10));
         Pieza("esqueleto_defensor", "Esqueleto defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Esqueleto"), 4, "", K(Recurso.Moneda, 15));
@@ -292,7 +294,7 @@ public static class CrearPrefabs
         rt.anchoredPosition = new Vector2(30f, -30f); rt.sizeDelta = new Vector2(900f, 160f);
         var txt = hudGo.AddComponent<Text>();
         txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        txt.fontSize = 42; txt.color = Color.white;
+        txt.fontSize = 36; txt.color = Color.white;
         txt.horizontalOverflow = HorizontalWrapMode.Overflow;
         var sombra = hudGo.AddComponent<Shadow>(); sombra.effectDistance = new Vector2(2f, -2f);
         hudGo.AddComponent<HUD>().texto = txt;

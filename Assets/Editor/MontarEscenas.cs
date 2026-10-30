@@ -63,7 +63,7 @@ public static class MontarEscenas
         {
             Configurar(r, 'E', "salida", "Pueblo", "asalto", true);
             PonerPradera(r);
-            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Asalto);
+            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Asalto).gameObject.AddComponent<Asalto>();
         });
 
         if (File.Exists(CarpetaEscenas + "PvE.unity")) AssetDatabase.DeleteAsset(CarpetaEscenas + "PvE.unity");
@@ -211,7 +211,11 @@ public static class MontarEscenas
             var pu = m.entidad.GetComponent<Puerta>();
             if (!pu) continue;
             pu.id = id; pu.destino = destino; pu.llegarA = llegarA; pu.alPisar = alPisar;
-            if (!alPisar) { pu.alcance = 1.5f; pu.icono = Interactuable.Icono.Cofre; }
+            if (!alPisar)
+            {
+                pu.alcance = 1.5f; pu.icono = Interactuable.Icono.Cofre;
+                if (destino == "Asalto" && !m.entidad.GetComponent<BuscarRival>()) m.entidad.AddComponent<BuscarRival>();
+            }
             m.entidad.name = "Puerta " + id;
             EditorUtility.SetDirty(pu);
             n++;

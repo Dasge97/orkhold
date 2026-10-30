@@ -55,11 +55,11 @@ Leer antes: `01-diseno.md` §5.1, §6; `02-arquitectura.md` §2.5.
 
 ## Fase 5 · Asalto sencillo (sin servidor todavía)
 Leer antes: `01-diseno.md` §5.2, §8.
-- [ ] 5.1 Escena Asalto: carga `fuerte-base.txt` + un `DisenoFuerte` y coloca piezas con colliders y defensores vivos. Apareces en la entrada.
-- [ ] 5.2 Reglas: 90 s de cuenta atrás, ganar al tocar el cofre `K`, perder al morir o agotar tiempo. Barra "distancia al cofre".
-- [ ] 5.3 Pantalla de resultado: ganado/perdido, segundos, muros rotos, recompensas (provisionales en local).
-- [ ] 5.4 Tres fuertes de prueba del sistema (fácil, medio, difícil) en `Assets/Mapas/fuertes-prueba/*.json` para asaltar sin servidor.
-- [ ] 5.5 **Probar con Daniel** 10 asaltos contra los tres fuertes y ajustar vida de muros, daño de trampas y tiempo. Anotar en `docs/04-pruebas-asalto.md`.
+- [x] 5.1 (30-10-2026) Escena Asalto: carga `fuerte-base.txt` + un `DisenoFuerte` y coloca piezas con colliders y defensores vivos. Apareces en la entrada.
+- [x] 5.2 (30-10-2026) Reglas: 90 s de cuenta atrás, ganar al tocar el cofre `K`, perder al morir o agotar tiempo. Barra "distancia al cofre".
+- [x] 5.3 (30-10-2026) Pantalla de resultado: ganado/perdido, segundos, muros rotos, recompensas (provisionales en local).
+- [x] 5.4 (30-10-2026) Tres fuertes de prueba del sistema (fácil, medio, difícil) en `Assets/Mapas/fuertes-prueba/*.json` para asaltar sin servidor.
+- [x] 5.5 (30-10-2026, con jugador automático; falta la prueba con Daniel) **Probar con Daniel** 10 asaltos contra los tres fuertes y ajustar vida de muros, daño de trampas y tiempo. Anotar en `docs/04-pruebas-asalto.md`.
   Comprobar: el fuerte difícil se gana en ~60 s con buen juego y se pierde jugando mal.
 
 ## Fase 6 · API y cuentas

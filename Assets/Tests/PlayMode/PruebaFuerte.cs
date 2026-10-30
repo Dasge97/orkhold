@@ -167,11 +167,11 @@ public class PruebaFuerte
         yield return Ayudas.Cargar("Asalto");
         yield return null;
         var muro = Fuerte.Actual.Piezas.First();
-        Assert.AreEqual(3, muro.vida.maxima);
-        for (int i = 0; i < 3; i++) muro.RecibirGolpe(1, muro.transform.position + Vector3.left, null);
+        Assert.AreEqual(5, muro.vida.maxima);
+        for (int i = 0; i < 5; i++) muro.RecibirGolpe(1, muro.transform.position + Vector3.left, null);
         yield return null;
         PiezaFuerte.AlRomper -= contar;
-        Assert.AreEqual(1, rotos, "El muro de madera se rompe en 3 golpes");
+        Assert.AreEqual(1, rotos, "El muro de madera se rompe en 5 golpes");
         Assert.IsTrue(muro == null, "El muro roto sigue en la escena");
     }
 

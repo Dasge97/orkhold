@@ -84,13 +84,16 @@ Desde el modo construir (botón al entrar al fuerte) se coloca en casillas libre
 
 | Pieza | Modelo | Cuesta | Vida | Qué hace |
 |---|---|---|---|---|
-| Muro de madera | `fence_simpleHigh` | 2 madera | 3 | Bloquea el paso |
-| Muro de piedra | `wall` | 3 piedra | 6 | Bloquea el paso |
-| Puerta | `gate` | 2 madera + 1 hierro | 4 | Solo la abre el dueño; el atacante la rompe |
+| Muro de madera | `fence_simpleHigh` | 2 madera | 5 | Bloquea el paso |
+| Muro de piedra | `wall` | 3 piedra | 10 | Bloquea el paso |
+| Puerta | `gate` | 2 madera + 1 hierro | 6 | Solo la abre el dueño; el atacante la rompe |
 | Trampa de pinchos | `trap` | 2 hierro | — | Oculta; 1 de daño al pisarla, cada 2 s |
 | Orco defensor | `character-orc` | 10 monedas | 3 | Persigue y pega dentro del fuerte |
 | Esqueleto defensor | `character-human` oscuro | 15 monedas | 4 | Lento y fuerte |
 | Orco jefe defensor | botín de la mazmorra 1 | — | 15 | Golpe en área |
+
+Vidas de muros y puerta subidas el 30-10-2026 (antes 3, 6 y 4) tras las pruebas de asalto: con 3 y 6 golpes un
+asalto no pasaba de 20 s (`docs/04-pruebas-asalto.md`).
 
 Límites de la primera versión: 40 muros, 6 trampas, 4 defensores. Mejora con hueso: +1 vida por 2 huesos, máximo +3.
 Construir es inmediato (sin tiempos de espera en la primera versión).
@@ -125,5 +128,5 @@ misiones, tienda con dinero real, iOS, segunda mazmorra, nivel de personaje, equ
   limita a 10 al día. Más adelante: simular el asalto también en el servidor.
 - Un fuerte sin salida posible (todo muros) sería injusto. Mitigación: el modo construir exige un
   camino libre hasta el cofre... o no, y los muros se rompen a golpes (3 golpes madera, 6 piedra):
-  siempre hay camino, solo cuesta tiempo. *Propuesta*: la segunda.
+  siempre hay camino, solo cuesta tiempo (5 golpes madera y 10 piedra desde el 30-10-2026). *Propuesta*: la segunda.
 - Kenney tiene pocos personajes distintos. Mitigación: variar color y tamaño del mismo modelo.

@@ -18,3 +18,7 @@ MonoBehaviour:
   hierro: {fileID: 928510157182508690, guid: fc1062fce64a4644eb6ab30c9ed98f98, type: 3}
   hueso: {fileID: 4008040740364776082, guid: 27f27df6c2f78a74fb2fd1ef3184e9e3, type: 3}
   pocion: {fileID: 6590398990866390494, guid: 0f7f0496d33593b439419d8e1d3014d6, type: 3}
+  fuertesPrueba:
+  - {fileID: 4900000, guid: 073791c55c3930d43a1530a46499233b, type: 3}
+  - {fileID: 4900000, guid: a999100c126fd8b4c916b0c5e1c59e9a, type: 3}
+  - {fileID: 4900000, guid: ef179fe4e1384fe43ab77aaaecc1d1fd, type: 3}

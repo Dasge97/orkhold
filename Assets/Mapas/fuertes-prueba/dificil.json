@@ -1,0 +1,305 @@
+{
+ "version": 1,
+ "piezas": [
+  {
+   "x": 7,
+   "z": 6,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 7,
+   "z": 7,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 7,
+   "z": 8,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 8,
+   "z": 6,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 8,
+   "z": 8,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 9,
+   "z": 6,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 9,
+   "z": 7,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 9,
+   "z": 8,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 5,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 6,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 7,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 8,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 9,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 5,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 7,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 7,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 8,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 8,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 9,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 9,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 10,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 10,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 4,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 5,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 6,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 7,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 8,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 9,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 11,
+   "z": 10,
+   "tipo": "muro_piedra",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 4,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 5,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 6,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 7,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 8,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 9,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 10,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 3,
+   "z": 11,
+   "tipo": "muro_madera",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 5,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 6,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 7,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 8,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 6,
+   "z": 9,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 4,
+   "z": 7,
+   "tipo": "trampa",
+   "vida_extra": 0
+  },
+  {
+   "x": 10,
+   "z": 9,
+   "tipo": "esqueleto_defensor",
+   "vida_extra": 1
+  },
+  {
+   "x": 10,
+   "z": 5,
+   "tipo": "esqueleto_defensor",
+   "vida_extra": 1
+  },
+  {
+   "x": 4,
+   "z": 10,
+   "tipo": "orco_defensor",
+   "vida_extra": 2
+  },
+  {
+   "x": 4,
+   "z": 5,
+   "tipo": "orco_defensor",
+   "vida_extra": 2
+  }
+ ]
+}

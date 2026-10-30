@@ -3,6 +3,16 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 5 cerrada (tareas 5.1 a 5.5)
+- Hecho: `Asalto` (90 s, ganar tocando el cofre, perder al morir, por tiempo o saliendo, muros rotos,
+  recompensas y puntuación locales), `PantallaAsalto` (reloj, barra al cofre, resultado),
+  `BuscarRival` en el cofre PvP con los tres fuertes de prueba en JSON, y `BotAsalto` para la 5.5.
+- Comprobado: 6 tests nuevos (35 de 35 OK); el jugador automático gana el difícil en 67-70 s y lo
+  pierde jugando mal (`docs/04-pruebas-asalto.md`); en el emulador, cofre → panel → difícil → asalto
+  con reloj y barra a 59 fps.
+- Aprendido: con las vidas del diseño (3 y 6 golpes) y un golpe que rompía varios muros, un asalto
+  no pasaba de 20 s; un golpe = una pieza y vidas 5/10/6. Falta la prueba con Daniel.
+
 ## 2026-10-30 — Fase 4 cerrada (tareas 4.1 a 4.6)
 - Hecho: unidades defensoras en la partida; `CatalogoPiezas` (7 piezas con coste, vida y límites);
   `DisenoFuerte`, `ReglasFuerte`, `ConstructorFuerte`, `Fuerte` (propio, asalto y vista en el hueco

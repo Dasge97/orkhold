@@ -169,11 +169,14 @@ public class PruebaMazmorra
         foreach (var e in Enemigo.Todos.ToArray()) e.gameObject.SetActive(false);
         GestorEscena.Colocar(j.transform, trampa.transform.position, 0f);
         int antes = j.Vida.actual;
-        yield return new WaitForSeconds(2.1f);
+        float t = 0f;
+        while (j.Vida.actual == antes && t < 2.2f) { t += Time.deltaTime; yield return null; }
+        Assert.AreEqual(antes - 1, j.Vida.actual, "Encima de la trampa, en 2 s debería pinchar una vez (1 de daño)");
         int tras1 = j.Vida.actual;
-        Assert.AreEqual(antes - 1, tras1, "En 2 s la trampa debería quitar 1 de vida");
+        yield return new WaitForSeconds(1.7f);
         GestorEscena.Colocar(j.transform, trampa.transform.position, 0f);
-        yield return new WaitForSeconds(2.0f);
+        Assert.AreEqual(tras1, j.Vida.actual, "Pincha antes de los 2 s");
+        yield return new WaitForSeconds(0.5f);
         Assert.AreEqual(tras1 - 1, j.Vida.actual, "La trampa no vuelve a pinchar a los 2 s");
     }
 }

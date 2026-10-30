@@ -49,8 +49,15 @@ public class PruebaTransiciones
         Assert.AreEqual(cofre, Interactuable.MasCercano(Ayudas.Jugador().transform.position), "El cofre no es lo más cercano para interactuar");
         EntradaJuego.InteractuarPantalla = true;
         yield return null;
+        yield return null;
+        var buscar = cofre.GetComponent<BuscarRival>();
+        Assert.IsTrue(buscar.Abierto, "El cofre PvP no abre el panel de buscar rival");
+        buscar.Elegir(0);
         yield return Ayudas.EsperarEscena("Asalto");
+        // Salir por la entrada es rendirse: sale el resultado y se vuelve con su botón.
         yield return Ayudas.Pisar(Ayudas.Puerta("salida"));
+        Assert.AreEqual(Asalto.Fin.Abandonado, Asalto.Actual.Estado);
+        Asalto.Actual.Volver();
         yield return Ayudas.EsperarEscena("Pueblo");
         Assert.Less(Ayudas.DistanciaPlana(Ayudas.Jugador().transform.position, Ayudas.Puerta("asalto").transform.position), 1.5f);
     }

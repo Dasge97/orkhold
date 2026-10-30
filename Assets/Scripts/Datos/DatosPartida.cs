@@ -9,6 +9,8 @@ public class DatosPartida
     public int version = VersionActual;
     public DatosInventario inventario = new DatosInventario();
     public int bajas;
+    /// Puntuación tipo Elo para elegir rival (empieza en 1000).
+    public int puntuacion = 1000;
     public List<DatosUnidad> unidades = new List<DatosUnidad>();
     public DisenoFuerte fuerte = new DisenoFuerte();
     /// Progreso como pares clave-valor (ej. "jefe1_muerto" = "1").

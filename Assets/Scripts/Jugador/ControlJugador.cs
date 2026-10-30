@@ -120,13 +120,22 @@ public class ControlJugador : MonoBehaviour
         if (_vida.Muerto) return;
         Vector3 centro = transform.position + transform.forward * alcanceAtaque * 0.6f + Vector3.up * 0.4f;
         var golpeados = new HashSet<IGolpeable>();
+        // Personajes: todos los que alcance el golpe. Piezas del fuerte: solo la más cercana (un muro por golpe).
+        PiezaFuerte pieza = null; float dPieza = float.MaxValue;
         foreach (var c in Physics.OverlapSphere(centro, alcanceAtaque))
         {
             var g = c.GetComponentInParent<IGolpeable>();
             if (g == null || !g.PuedeRecibirGolpe || ReferenceEquals(g.Transform, transform) || !golpeados.Add(g)) continue;
+            if (g is PiezaFuerte pf)
+            {
+                float d = Vector3.Distance(pf.transform.position + Vector3.up * 0.4f, centro);
+                if (d < dPieza) { dPieza = d; pieza = pf; }
+                continue;
+            }
             g.RecibirGolpe(danoAtaque, transform.position, this);
             UltimoCombate = Time.time;
         }
+        if (pieza) pieza.RecibirGolpe(danoAtaque, transform.position, this);
     }
 
     void Interactuar()

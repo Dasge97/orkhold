@@ -62,3 +62,15 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 42 | Guardado medio segundo después de cada cambio, al pausar y al salir; fichero roto → partida nueva y copia `.roto`. | No perder partida si el móvil cierra la app. |
 | 43 | Ajustes (sonido, vibración) en PlayerPrefs, aparte de la partida; vibrar al recibir daño. | Reiniciar la partida no debe tocar los ajustes. |
 | 44 | El menú no pausa el juego. | El pueblo será online (fase 7). |
+
+## Fase 5
+| # | Decisión | Por qué |
+|---|---|---|
+| 45 | Sin servidor, el cofre PvP abre un panel para elegir el fuerte de prueba (fácil, medio, difícil). | Poder probar los tres; la fase 6 lo cambia por la búsqueda de rival. |
+| 46 | Salir por la entrada del fuerte durante el asalto = rendirse (cuenta como perdido). | El diseño no lo dice; evita salir y entrar para esquivar la derrota. |
+| 47 | Recompensas y puntuación provisionales en local: ganar +10 monedas + 2 materiales al azar y +20 puntos; perder +3 monedas y -15 puntos. | Números del diseño; el Elo de verdad lo aplica la API. |
+| 48 | Al terminar, todo se para y sale la pantalla de resultado con "Volver al pueblo". | Que el jugador lea el resultado. |
+| 49 | Un golpe rompe como mucho una pieza del fuerte (la más cercana). | Un golpe rompía hasta tres muros. |
+| 50 | **Cambio de diseño:** vida de muros madera 5, piedra 10, puerta 6 (antes 3, 6 y 4). | Con los números originales un asalto no llegaba a 20 s; ver `docs/04-pruebas-asalto.md`. |
+| 51 | La tarea 5.5 se da por hecha con un jugador automático; la prueba con Daniel queda pendiente. | Daniel pidió seguir sin parar. |
+| 52 | Reloj y barra del asalto a la derecha del centro; letra del HUD de 42 a 36. | Se solapaban con la segunda línea del HUD. |
