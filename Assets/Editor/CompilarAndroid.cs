@@ -23,6 +23,17 @@ public static class CompilarAndroid
 
     public static BuildResult UltimoResultado = BuildResult.Unknown;
 
+    /// Deja la URL de la API como estaba antes de compilar (en git va vacía: modo local).
+    static void RestaurarUrl(string valor)
+    {
+        var c = AssetDatabase.LoadAssetAtPath<Configuracion>(CrearPrefabs.RutaConfiguracion);
+        if (!c) return;
+        c.urlApi = valor;
+        EditorUtility.SetDirty(c);
+        AssetDatabase.SaveAssets();
+        Debug.Log("APK: urlApi restaurada a '" + valor + "'");
+    }
+
     /// Valor del argumento de línea de órdenes "nombre valor", o null si no está.
     static string Argumento(string nombre)
     {
@@ -79,10 +90,13 @@ public static class CompilarAndroid
             target = BuildTarget.Android,
             options = BuildOptions.None
         };
-        var informe = BuildPipeline.BuildPlayer(opciones);
+        BuildReport informe;
+        try { informe = BuildPipeline.BuildPlayer(opciones); }
+        catch { if (url != null) RestaurarUrl(urlAntes); throw; }
         var r = informe.summary;
         UltimoResultado = r.result;
-        if (url != null && conf) { conf.urlApi = urlAntes; EditorUtility.SetDirty(conf); AssetDatabase.SaveAssets(); }
+        // La compilación recarga los assets: la referencia "conf" ya no vale, se vuelve a cargar.
+        if (url != null) RestaurarUrl(urlAntes);
         Debug.Log($"APK: resultado={r.result} tamaño={r.totalSize / 1048576} MB errores={r.totalErrors} tiempo={r.totalTime.TotalSeconds:F0}s ruta={Salida}");
     }
 }

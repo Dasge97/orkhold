@@ -90,3 +90,5 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 62 | La prueba de "dos emuladores" se hizo con un emulador y dos cuentas seguidas (borrando los datos de la app entre una y otra); el historial de Ana se comprobó contra la API. | No hay disco: el segundo emulador pide 7,4 GB y quedan 5,4 GB. |
 | 63 | Radio para "tocar el cofre": 1,25 m (antes 0,95). | En el emulador, pasando junto al cofre no contaba. |
 | 64 | Al entrar en el fuerte el cliente pide a la API el inventario y el fuerte. | Construir con los datos más recientes. |
+| 65 | En el asalto los defensores ven a 8 m y persiguen hasta 12 m; los del fuerte difícil del sistema llevan +3 de vida. | Equilibrio del asalto (`docs/04-pruebas-asalto.md`). |
+| 66 | La URL de la API va vacía en git y se pone solo al compilar el APK (`-urlApi`); un test lo comprueba. | Un APK de prueba dejó la URL del emulador en el commit de la fase 6. |

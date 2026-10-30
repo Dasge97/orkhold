@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7861670e2b92543b58900e31b0b423, type: 3}
   m_Name: Configuracion
   m_EditorClassIdentifier: Orkhold::Configuracion
-  urlApi: http://10.0.2.2:3100
+  urlApi: 

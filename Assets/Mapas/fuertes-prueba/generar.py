@@ -24,5 +24,5 @@ guardar('medio', medio)
 dif=[P(x,z,'muro_piedra') for x,z in anillo(7,6,9,8)] + [P(x,z,'muro_piedra') for x,z in anillo(5,4,11,10)]
 dif+=[P(3,z,'muro_madera') for z in range(4,12)]
 dif+=[P(6,z,'trampa') for z in range(5,10)] + [P(4,7,'trampa')]
-dif+=[P(10,9,'esqueleto_defensor',1),P(10,5,'esqueleto_defensor',1),P(4,10,'orco_defensor',2),P(4,5,'orco_defensor',2)]
+dif+=[P(10,9,'esqueleto_defensor',3),P(10,5,'esqueleto_defensor',3),P(4,10,'orco_defensor',3),P(4,5,'orco_defensor',3)]
 guardar('dificil', dif)

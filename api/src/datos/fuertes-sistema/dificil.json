@@ -281,25 +281,25 @@
    "x": 10,
    "z": 9,
    "tipo": "esqueleto_defensor",
-   "vida_extra": 1
+   "vida_extra": 3
   },
   {
    "x": 10,
    "z": 5,
    "tipo": "esqueleto_defensor",
-   "vida_extra": 1
+   "vida_extra": 3
   },
   {
    "x": 4,
    "z": 10,
    "tipo": "orco_defensor",
-   "vida_extra": 2
+   "vida_extra": 3
   },
   {
    "x": 4,
    "z": 5,
    "tipo": "orco_defensor",
-   "vida_extra": 2
+   "vida_extra": 3
   }
  ]
 }

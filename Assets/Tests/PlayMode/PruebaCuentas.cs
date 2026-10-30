@@ -179,6 +179,13 @@ public class PruebaCuentas
         Assert.IsNotEmpty(id1);
     }
 
+    /// En git la configuración va sin URL (modo local); la URL solo se pone al compilar el APK.
+    [Test]
+    public void LaConfiguracionDelRepositorioEsModoLocal()
+    {
+        Assert.IsEmpty(Configuracion.Instancia.urlApi, "Resources/Configuracion.asset tiene una URL de API: debería ir vacía en git");
+    }
+
     /// La API tiene su copia de catálogo, mapa del fuerte y fuertes del sistema: tienen que coincidir con el cliente.
     [Test]
     public void ElServidorUsaLasMismasReglasQueElCliente()

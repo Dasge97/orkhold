@@ -80,7 +80,9 @@ public static class ConstructorFuerte
                 {
                     e.reaparecerSegundos = 0f;
                     e.monedasMin = e.monedasMax = 0; e.probabilidadExtra = 0f;
-                    e.distanciaPerder = 7f;
+                    // Un defensor vigila todo su fuerte: ve más lejos y persigue por todo el recinto.
+                    e.distanciaVer = Mathf.Max(e.distanciaVer, 8f);
+                    e.distanciaPerder = 12f;
                     e.patrulla = false;
                     e.enabled = modo == PiezaFuerte.Modo.Asalto;
                     var jefe = e as Jefe;
