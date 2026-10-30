@@ -53,12 +53,16 @@ public class PantallaConstruir : MonoBehaviour
         if (cat)
             foreach (var pieza in cat.piezas)
             {
+                // Los escondites bloqueados (doble fondo hasta la mazmorra 2) no salen.
+                if (pieza.categoria == CatalogoPiezas.Categoria.Escondite && pieza.limite <= 0) continue;
                 string id = pieza.id;
                 var b = Boton(_barra.transform, "", Vector2.zero, Vector2.zero, Vector2.zero, Fondo, () => _editor.Seleccionar(id), 28);
                 _botones[id] = (b.GetComponent<Image>(), b.GetComponentInChildren<Text>());
             }
         var bm = Boton(_barra.transform, "", Vector2.zero, Vector2.zero, Vector2.zero, Fondo, () => _editor.Seleccionar(EditorFuerte.Mejorar), 28);
         _botones[EditorFuerte.Mejorar] = (bm.GetComponent<Image>(), bm.GetComponentInChildren<Text>());
+        var br = Boton(_barra.transform, "", Vector2.zero, Vector2.zero, Vector2.zero, Fondo, () => _editor.Seleccionar(EditorFuerte.Repartir), 28);
+        _botones[EditorFuerte.Repartir] = (br.GetComponent<Image>(), br.GetComponentInChildren<Text>());
 
         _botonListo = Boton(transform, "Listo", new Vector2(1f, 1f), new Vector2(-310f, -80f), new Vector2(240f, 110f), Verde, _editor.Salir, 44).gameObject;
 
@@ -90,16 +94,23 @@ public class PantallaConstruir : MonoBehaviour
             if (!_botones.TryGetValue(pieza.id, out var b)) continue;
             int usadas = d.Contar(q => q.tipo == pieza.id);
             string extra = string.IsNullOrEmpty(pieza.requiereUnidad) ? "" : $"\ntienes {Partida.Actual.unidades.FindAll(u => u.tipo == pieza.requiereUnidad).Count}";
-            b.texto.text = $"<b>{pieza.nombre}</b>\n{pieza.TextoCoste()}{extra}\npuestas {usadas}";
+            if (pieza.categoria == CatalogoPiezas.Categoria.Escondite)
+                b.texto.text = $"<b>{pieza.nombre}</b>\n{pieza.TextoCoste()}\ncabe {pieza.capacidad} · {usadas}/{pieza.limite}";
+            else b.texto.text = $"<b>{pieza.nombre}</b>\n{pieza.TextoCoste()}{extra}\npuestas {usadas}";
             b.fondo.color = _editor.Seleccion == pieza.id ? Elegido : Fondo;
         }
         var m = _botones[EditorFuerte.Mejorar];
         m.texto.text = $"<b>Mejorar</b>\n+1 vida defensor\n{cat.huesosPorMejora} huesos";
         m.fondo.color = _editor.Seleccion == EditorFuerte.Mejorar ? Elegido : Fondo;
+        var rep = _botones[EditorFuerte.Repartir];
+        rep.texto.text = "<b>Repartir</b>\ntoca un escondite\npara llenarlo";
+        rep.fondo.color = _editor.Seleccion == EditorFuerte.Repartir ? Elegido : Fondo;
 
         int Cat(CatalogoPiezas.Categoria k) => d.Contar(q => cat.Buscar(q.tipo)?.categoria == k);
+        // Lo guardado frente a la capacidad: manda la API (Partida.capacidad); sin servidor, la del catálogo.
+        int capacidad = Partida.Actual.capacidad > 0 ? Partida.Actual.capacidad : cat.Capacidad(d);
         _ayuda.text = $"Muros {Cat(CatalogoPiezas.Categoria.Muro)}/{cat.maxMuros} · Trampas {Cat(CatalogoPiezas.Categoria.Trampa)}/{cat.maxTrampas} · " +
-                      $"Defensores {Cat(CatalogoPiezas.Categoria.Defensor)}/{cat.maxDefensores} — toca una casilla para poner o quitar";
+                      $"Defensores {Cat(CatalogoPiezas.Categoria.Defensor)}/{cat.maxDefensores} · Guardado {Partida.Actual.guardado}/{capacidad}";
     }
 
     static Button Boton(Transform padre, string texto, Vector2 ancla, Vector2 pos, Vector2 tam, Color color, UnityEngine.Events.UnityAction accion, int tamLetra)

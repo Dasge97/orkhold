@@ -20,6 +20,8 @@ public static class ConstructorFuerte
         {
             var p = cat.Buscar(q.tipo);
             if (p == null || !p.prefab) { Debug.LogWarning("Pieza desconocida en el diseño: " + q.tipo); continue; }
+            // El enterrado solo lo ve su dueño (en el pueblo, el hueco del fuerte lo enseña a todos).
+            if (q.tipo == "enterrado" && modo != PiezaFuerte.Modo.Propio) continue;
             var g = Object.Instantiate(p.prefab, contenedor);
             g.name = $"{p.id} ({q.x},{q.z})";
             g.transform.localPosition = ReglasFuerte.Celda(q.x, q.z);
@@ -70,6 +72,19 @@ public static class ConstructorFuerte
             case CatalogoPiezas.Categoria.Trampa:
                 var t = g.GetComponent<Trampa>();
                 if (t) { t.oculta = modo == PiezaFuerte.Modo.Asalto; t.enabled = modo == PiezaFuerte.Modo.Asalto; }
+                break;
+            case CatalogoPiezas.Categoria.Escondite:
+                // Cofres, barriles y doble fondo ocupan la casilla; el enterrado parece suelo.
+                if (q.tipo != "enterrado" && !g.GetComponent<Collider>())
+                {
+                    var bc = g.AddComponent<BoxCollider>();
+                    bc.size = new Vector3(0.8f, 0.9f, 0.8f); bc.center = new Vector3(0f, 0.45f, 0f);
+                }
+                if (modo == PiezaFuerte.Modo.Asalto && (q.tipo == "cofre" || q.tipo == "barril"))
+                {
+                    var m = g.AddComponent<Mirable>();
+                    m.x = q.x; m.z = q.z; m.alcance = 1.4f;
+                }
                 break;
             case CatalogoPiezas.Categoria.Defensor:
                 var e = g.GetComponent<Enemigo>();

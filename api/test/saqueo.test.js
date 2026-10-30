@@ -153,7 +153,7 @@ test('romper muros a golpes abre camino; demasiado deprisa no cuenta', async () 
   for (let i = 0; i < 10; i++) { golpes.push({ t: +t.toFixed(2), x: 8, z: 10, golpe: { x: 9, z: 10 } }); t += 0.6; }
   const entradas = [...ir, ...golpes, { t: +(t + 0.3).toFixed(2), x: 9, z: 10 }];
   const r = (await pedir('POST', '/saqueo/resolver', { saqueo_id: p.saqueo_id, marcas: [{ x: 10, z: 10 }], entradas }, a.cab)).json();
-  assert.deepEqual(r.rotos, [[9, 10]], JSON.stringify(r));
+  assert.deepEqual(r.rotos, [{ x: 9, z: 10 }], JSON.stringify(r));
   assert.equal(r.marcas[0].resultado, 'botin');
   assert.equal(r.botin.moneda, 4);                      // 50 % de 8
 });

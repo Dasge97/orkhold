@@ -80,6 +80,14 @@ public static class CrearPrefabs
         c.modelosPersonajes = c.idsPersonajes.Select(id => AssetDatabase.LoadAssetAtPath<GameObject>(Personajes + id + ".fbx")).ToArray();
         c.controladoresPersonajes = c.idsPersonajes.Select(id => (RuntimeAnimatorController)CrearControlador(Personajes + id + ".fbx", Anim + "personaje-" + id + ".controller")).ToArray();
         c.escalaPersonajes = 1.12f;
+        // Estandarte de la temporada y marca de las casillas elegidas en el saqueo.
+        var est = new GameObject("Estandarte");
+        Poner(Dungeon + "banner.fbx", est.transform, Vector3.zero, 0f).transform.localScale = Vector3.one * 1.6f;
+        c.estandarte = Guardar(est, "Estandarte");
+        var marca = new GameObject("MarcaSaqueo");
+        var b = Poner(Dungeon + "banner.fbx", marca.transform, Vector3.zero, 0f);
+        b.transform.localScale = Vector3.one * 0.9f;
+        c.marcaSaqueo = Guardar(marca, "MarcaSaqueo");
         EditorUtility.SetDirty(c);
     }
 
@@ -276,6 +284,20 @@ public static class CrearPrefabs
         Poner(Dungeon + "wall.fbx", mp.transform, Vector3.zero, 0f);
         var muroPiedra = Guardar(mp, "PiezaMuroPiedra");
 
+        // Escondites (08-formato-y-pvp.md §3.2): cofre, barril, tierra removida (solo la ve el dueño) y doble fondo.
+        var co = new GameObject("PiezaCofre");
+        Poner(Dungeon + "chest.fbx", co.transform, Vector3.zero, 0f).transform.localScale = Vector3.one * 1.1f;
+        var cofre = Guardar(co, "PiezaCofre");
+        var ba = new GameObject("PiezaBarril");
+        Poner(Dungeon + "barrel.fbx", ba.transform, Vector3.zero, 0f);
+        var barril = Guardar(ba, "PiezaBarril");
+        var en = new GameObject("PiezaEnterrado");
+        Poner(Dungeon + "dirt.fbx", en.transform, Vector3.zero, 0f).transform.localScale = new Vector3(0.9f, 0.6f, 0.9f);
+        var enterrado = Guardar(en, "PiezaEnterrado");
+        var df = new GameObject("PiezaDobleFondo");
+        Poner(Dungeon + "wall.fbx", df.transform, Vector3.zero, 0f);
+        var dobleFondo = Guardar(df, "PiezaDobleFondo");
+
         var pu = new GameObject("PiezaPuerta");
         var gate = Poner(Dungeon + "gate.fbx", pu.transform, Vector3.zero, 0f);
         gate.transform.localScale = new Vector3(1.25f, 1.4f, 1.25f);
@@ -296,6 +318,14 @@ public static class CrearPrefabs
         Pieza("orco_defensor", "Orco defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Orco"), 3, "", K(Recurso.Moneda, 10));
         Pieza("esqueleto_defensor", "Esqueleto defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Esqueleto"), 4, "", K(Recurso.Moneda, 15));
         Pieza("orco_jefe", "Orco jefe", CatalogoPiezas.Categoria.Defensor, Cargar("Jefe"), 15, Jefe.TipoUnidad);
+        void Escondite(string id, string nombre, GameObject prefab, int capacidad, int limite, params CatalogoPiezas.Coste[] costes)
+            => c.piezas.Add(new CatalogoPiezas.Pieza { id = id, nombre = nombre, categoria = CatalogoPiezas.Categoria.Escondite, prefab = prefab,
+                                                       capacidad = capacidad, limite = limite, costes = costes.ToList() });
+        Escondite("cofre", "Cofre", cofre, 30, 4, K(Recurso.Madera, 4), K(Recurso.Hierro, 1));
+        Escondite("barril", "Barril", barril, 15, 6, K(Recurso.Madera, 2));
+        Escondite("enterrado", "Enterrado", enterrado, 10, 8, K(Recurso.Piedra, 1));
+        Escondite("doble_fondo", "Doble fondo", dobleFondo, 10, 0, K(Recurso.Piedra, 3), K(Recurso.Hierro, 1));
+        c.capacidadCentral = 50;
         EditorUtility.SetDirty(c);
     }
 

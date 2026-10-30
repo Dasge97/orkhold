@@ -178,9 +178,17 @@ instancia con colliders y con `Enemigo` en los defensores.
 | `POST /mazmorra/resultado` | Cliente: botín de una entrada a la mazmorra (`{jefe_muerto, recursos}`). Validado contra límites por entrada. |
 | `GET /fuerte` · `PUT /fuerte` | Diseño del fuerte propio. `PUT` valida límites, coste y que las piezas sean suyas; descuenta recursos. |
 | `GET /catalogo` | Piezas del fuerte con coste y vida. |
-| `POST /asalto/buscar` | Elige rival ±100 puntos (o un fuerte del sistema si no hay), devuelve `{asalto_id, rival, diseño}`. Máximo 10 al día. |
-| `POST /asalto/resultado` | `{asalto_id, ganado, segundos, muros_rotos}`. Comprueba 5-90 s, aplica Elo y recompensas, guarda. |
-| `GET /asaltos/historial` | Últimos 10 hechos y recibidos. |
+| `POST /saqueo/preparar` | Rival (puntuación parecida, sin escudo, no saqueado por ti en 24 h, con algo guardado) o fuerte de prueba; cuántas piezas y escondites a la vista, tasa y herramientas (08 §4.1). |
+| `POST /saqueo/empezar` | Cobra tasa y herramientas; devuelve lo que se ve del fuerte (sin contenido, sin enterrados ni trampas) y las acciones. |
+| `POST /saqueo/mirar` | `{saqueo_id, x, z, t}` → "Pesa.", "Suena hueco.", "Tierra normal." o "Tierra removida." (con farol). |
+| `POST /saqueo/resolver` | `{saqueo_id, marcas, entradas}`: rehace la exploración, comprueba camino, mueve el botín, Elo, tasa, escudo e informe. |
+| `GET /saqueo/informes` · `POST /saqueo/informes/visto` · `GET /saqueo/historial` | Lo que ve el defensor; historial para el tablón. |
+| `GET /herramientas` · `POST /herramientas/fabricar` | Herramientas de saqueo de Ferra (08 §5). |
+| `PUT /fuerte/escondites` | Recolocar a mano el contenido de los escondites (tiene que cuadrar y caber). |
+| `GET /balance` · `GET /estado` | Números del juego (10-panel-admin.md) y estado del servidor (versión mínima, mantenimiento, avisos). |
+| `POST /cuenta/...` | Registro, entrar, salir, verificar, recuperar, cambiar contraseña y borrar (14-cuentas.md). |
+| `/admin/...` | Panel de administración (10-panel-admin.md); la web del panel en `/admin/`. |
+| `POST /servidor/latido` | Servidor de mundo: jugadores en el pueblo (clave de servidor). |
 | `GET /ranking` | 50 mejores y tu puesto. |
 | `GET /salud` | Para el Kit. |
 

@@ -20,7 +20,9 @@ const Casilla = z.object({ x: z.number().int().min(0).max(40), z: z.number().int
 const Entrada = z.object({
   t: z.number().min(0).max(1000), x: z.number().min(-5).max(45), z: z.number().min(-5).max(45),
   golpe: Casilla.optional(),
-});
+  // El móvil (JsonUtility) siempre manda "golpe"; "golpea" dice si va de verdad.
+  golpea: z.boolean().optional(),
+}).transform(e => (e.golpea === false ? { ...e, golpe: undefined } : e));
 const MINUTOS_PARA_RESOLVER = 10;
 
 /** Fuerte de prueba: el del sistema con escondites de mentira (no hay botín real). */
@@ -52,6 +54,8 @@ export default async function (app) {
   // ---------- preparar ----------
 
   app.post('/saqueo/preparar', sesion, async (req) => {
+    // Con la API en modo de pruebas (solo en local), se puede pedir un rival por nombre.
+    const pedido = app.opciones.pruebas ? String(req.body?.rival ?? '') : '';
     return enTransaccion(app.pool, async (c) => {
       const yo = (await c.query('SELECT id, puntuacion FROM jugadores WHERE id = $1 FOR UPDATE', [req.jugadorId])).rows[0];
       const hoy = await saqueosHoy(c, yo.id);
@@ -65,10 +69,11 @@ export default async function (app) {
           WHERE j.id <> $1 AND j.nombre IS NOT NULL AND j.bloqueado IS NULL
             AND (j.escudo_hasta IS NULL OR j.escudo_hasta < now())
             AND abs(j.puntuacion - $2) <= $3
+            AND ($5 = '' OR j.nombre = $5)
             AND NOT EXISTS (SELECT 1 FROM saqueos s WHERE s.atacante_id = $1 AND s.defensor_id = j.id
                               AND s.estado <> 'preparado' AND s.creado > now() - make_interval(hours => $4))
           ORDER BY random() LIMIT 20`,
-        [yo.id, yo.puntuacion, B('saqueo.margen_rival'), B('saqueo.horas_mismo_rival')])).rows;
+        [yo.id, yo.puntuacion, B('saqueo.margen_rival'), B('saqueo.horas_mismo_rival'), pedido])).rows;
       // Solo vale un rival que tenga algo guardado (decisión 115).
       const rival = rivales.find(r => ocupacion(limpiarDiseno(r.diseno_json)).guardado > 0);
       let defensor = null, prueba = false, diseno, nombre, puntos, estandarte = '';
@@ -230,12 +235,13 @@ export default async function (app) {
         await c.query('UPDATE jugadores SET puntuacion = greatest(0, puntuacion + $2) WHERE id = $1', [req.jugadorId, pa]);
         perdido = (await sumar(c, req.jugadorId, botin)).perdido;
       }
+      const rotos = [...r.rotos].map(k => { const [x, zz] = k.split(',').map(Number); return { x, z: zz }; });
       await c.query(
         `UPDATE saqueos SET estado = 'terminado', terminado = now(), marcas_json = $2, marcas = $3, encontrado = $4, descartadas = $5,
                 segundos_exploracion = $6, rotos_json = $7, entradas_json = $8, botin_json = $9, puntos_atacante_antes = $10,
                 puntos_atacante = $11, puntos_defensor_antes = $12, puntos_defensor = $13 WHERE id = $1`,
         [s.id, JSON.stringify(resultados), lista.length, aciertos, descartadas, Math.round(r.ultimo.t),
-          JSON.stringify([...r.rotos].map(k => k.split(',').map(Number))), JSON.stringify(entradas.slice(0, 1500)),
+          JSON.stringify(rotos), JSON.stringify(entradas.slice(0, 1500)),
           JSON.stringify(real ? botin : vacio()), yo.puntuacion, pa, puntosDefAntes, real ? pd : null]);
       return {
         prueba: !real,
@@ -244,7 +250,7 @@ export default async function (app) {
         botin: real ? botin : vacio(),
         botin_prueba: real ? undefined : botin,
         perdido,
-        rotos: [...r.rotos].map(k => k.split(',').map(Number)),
+        rotos,
         descartadas,
         puntos_antes: yo.puntuacion,
         puntos_despues: Math.max(0, yo.puntuacion + pa),

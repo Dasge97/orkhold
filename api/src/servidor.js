@@ -21,7 +21,7 @@ import { cargarBalance } from './balance.js';
 export const VERSION = '0.1.0';
 
 /**
- * opciones: { pool, secreto, claveServidor, puebloCliente, registro, smtpUrl, urlPublica }
+ * opciones: { pool, secreto, claveServidor, puebloCliente, pruebas, registro, smtpUrl, urlPublica }
  */
 export function crearServidor(opciones) {
   const app = Fastify({ logger: opciones.registro ?? false, bodyLimit: 64 * 1024 });

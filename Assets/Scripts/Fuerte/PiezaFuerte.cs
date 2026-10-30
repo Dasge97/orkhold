@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// Una pieza del fuerte en escena (01-diseno.md §5.1). Según el modo:
 /// - Propio (escena Fuerte): la puerta se abre sola al acercarse el dueño; los defensores están quietos.
-/// - Asalto: muros y puertas se rompen a golpes (cada golpe, 1 de vida); trampas ocultas; defensores atacan.
+/// - Asalto (saqueo): muros y puertas se rompen a golpes (cada golpe, 1 de vida); trampas y defensores, quietos.
 /// - Vista (hueco del fuerte en el pueblo): solo se ve.
 public class PiezaFuerte : MonoBehaviour, IGolpeable
 {
@@ -19,8 +19,10 @@ public class PiezaFuerte : MonoBehaviour, IGolpeable
     public Transform modelo;
     public bool esPuerta;
 
-    /// Muro o puerta rota en el asalto (para contar "muros rotos").
+    /// Muro o puerta rota en el saqueo.
     public static event Action<PiezaFuerte> AlRomper;
+    /// Cada golpe que recibe un muro o una puerta en el saqueo (el servidor rehace la exploración con ellos).
+    public static event Action<PiezaFuerte> AlGolpear;
 
     ControlJugador _jugador;
     Collider _col;
@@ -53,6 +55,7 @@ public class PiezaFuerte : MonoBehaviour, IGolpeable
     public void RecibirGolpe(int dano, Vector3 desde, ControlJugador quien)
     {
         if (!PuedeRecibirGolpe) return;
+        AlGolpear?.Invoke(this);
         vida.Danar(1, desde);
         Sonidos.Tocar(tipo == "muro_piedra" ? "golpe_roca" : "golpe_madera", transform.position);
         if (vida.Muerto) { Romper(); return; }

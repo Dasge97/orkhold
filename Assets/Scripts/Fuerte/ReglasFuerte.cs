@@ -52,11 +52,20 @@ public static class ReglasFuerte
         if (p == null) { motivo = "Pieza desconocida"; return false; }
         if (!CasillaConstruible(mapa, x, z)) { motivo = "Ahí no se puede construir"; return false; }
         if (d.En(x, z) != null) { motivo = "Casilla ocupada"; return false; }
-        int usadas = d.Contar(q => cat.Buscar(q.tipo)?.categoria == p.categoria);
-        if (usadas >= cat.Limite(p.categoria))
+        if (p.categoria == CatalogoPiezas.Categoria.Escondite)
         {
-            motivo = $"Límite alcanzado: {cat.Limite(p.categoria)} {NombreCategoria(p.categoria)}";
-            return false;
+            // Cada tipo de escondite tiene su límite (08 §3.2); 0 = todavía bloqueado.
+            if (p.limite <= 0) { motivo = $"{p.nombre}: todavía no se puede construir"; return false; }
+            if (d.Contar(q => q.tipo == p.id) >= p.limite) { motivo = $"Límite alcanzado: {p.limite} {p.nombre.ToLowerInvariant()}"; return false; }
+        }
+        else
+        {
+            int usadas = d.Contar(q => cat.Buscar(q.tipo)?.categoria == p.categoria);
+            if (usadas >= cat.Limite(p.categoria))
+            {
+                motivo = $"Límite alcanzado: {cat.Limite(p.categoria)} {NombreCategoria(p.categoria)}";
+                return false;
+            }
         }
         if (!string.IsNullOrEmpty(p.requiereUnidad))
         {
@@ -119,5 +128,6 @@ public static class ReglasFuerte
     }
 
     public static string NombreCategoria(CatalogoPiezas.Categoria c) =>
-        c == CatalogoPiezas.Categoria.Muro ? "muros" : c == CatalogoPiezas.Categoria.Trampa ? "trampas" : "defensores";
+        c == CatalogoPiezas.Categoria.Muro ? "muros" : c == CatalogoPiezas.Categoria.Trampa ? "trampas" :
+        c == CatalogoPiezas.Categoria.Escondite ? "escondites" : "defensores";
 }

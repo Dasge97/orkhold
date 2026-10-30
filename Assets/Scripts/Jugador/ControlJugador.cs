@@ -178,6 +178,9 @@ public class ControlJugador : MonoBehaviour
         if (pieza) pieza.RecibirGolpe(danoAtaque, transform.position, this);
     }
 
+    /// Interactuar sin nada al alcance. Si devuelve true, no se usa poción (lo usa el saqueo para mirar el suelo).
+    public static System.Func<ControlJugador, bool> SinNadaQueUsar;
+
     /// Lo de este lado: el dueño usa puertas, cofre PvP y tablón; quien tiene autoridad, los recogibles.
     void Interactuar()
     {
@@ -188,6 +191,8 @@ public class ControlJugador : MonoBehaviour
             if (a.sqrMagnitude > 0.01f) transform.rotation = Quaternion.LookRotation(a);
             cerca.Usar(this);
         }
+        // Sin nada cerca: quien escuche (el saqueo, para mirar el suelo) se lo queda; si no, poción.
+        else if (this == Local && SinNadaQueUsar != null && SinNadaQueUsar(this)) { }
         else if (TieneAutoridad && this == Local && _vida.actual < _vida.maxima && _inv && _inv.UsarPocion())
         {
             _vida.Curar(2);

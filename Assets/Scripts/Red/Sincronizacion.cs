@@ -6,7 +6,7 @@ using UnityEngine;
 /// - Lo recogido en el pueblo se envía en lotes cada 5 s (POST /pueblo/botin, hasta la fase 7).
 /// - Al salir de la mazmorra se envía su botín (POST /mazmorra/resultado).
 /// - "Listo" en el modo construir envía el fuerte (PUT /fuerte).
-/// - El asalto busca rival y manda su resultado a la API.
+/// - El saqueo lo llevan Saqueo y PantallaPrepararSaqueo; aquí, el reparto de escondites y los informes recibidos.
 public class Sincronizacion : MonoBehaviour
 {
     const float CadaSegundos = 5f;
@@ -14,7 +14,7 @@ public class Sincronizacion : MonoBehaviour
     static Sincronizacion _instancia;
     static DatosInventario _pendientePueblo = new DatosInventario();
     static bool _enviando;
-    static string _asaltoId = "";
+    static bool _lleno;
     float _siguiente;
 
     /// Lo recogido en el pueblo que aún no ha llegado a la API.
@@ -28,9 +28,6 @@ public class Sincronizacion : MonoBehaviour
         _instancia = go.AddComponent<Sincronizacion>();
         Transicion.AlLlegar += AlCambiarDeEscena;
         EditorFuerte.AlGuardar += EnviarFuerte;
-        // Se deciden al usarse: en modo local (sin URL de API) siguen haciendo lo de antes.
-        BuscarRival.BuscarEnServidor = BuscarRivalEnServidor;
-        Asalto.Procesar = ProcesarAsalto;
     }
 
     void Update()
@@ -56,8 +53,17 @@ public class Sincronizacion : MonoBehaviour
         inv.piedra = s.piedra + _pendientePueblo.piedra;
         inv.hierro = s.hierro + _pendientePueblo.hierro;
         inv.hueso = s.hueso + _pendientePueblo.hueso;
-        p.unidades.RemoveAll(u => u.tipo == Jefe.TipoUnidad);
-        for (int i = 0; i < s.orco_jefe; i++) p.unidades.Add(new DatosUnidad { tipo = Jefe.TipoUnidad });
+        // Unidades: orco jefe y herramientas de saqueo (08 §5).
+        void Unidades(string tipo, int n) { p.unidades.RemoveAll(u => u.tipo == tipo); for (int i = 0; i < n; i++) p.unidades.Add(new DatosUnidad { tipo = tipo }); }
+        Unidades(Jefe.TipoUnidad, s.orco_jefe);
+        Unidades("farol", s.farol); Unidades("cuarta_accion", s.cuarta_accion); Unidades("pico", s.pico);
+        Unidades("bomba", s.bomba); Unidades("sabueso", s.sabueso); Unidades("senuelo", s.senuelo);
+        p.capacidad = j.capacidad; p.guardado = j.guardado;
+        p.estandarte = j.estandarte ?? "";
+        // Escondites llenos: se avisa una vez cada vez que se llenan (08 §3.1).
+        bool lleno = j.capacidad > 0 && j.guardado >= j.capacidad;
+        if (lleno && !_lleno) Avisos.Mostrar("Escondites llenos: construye o gasta", 3f);
+        _lleno = lleno;
         p.puntuacion = j.puntuacion;
         if (!string.IsNullOrEmpty(j.nombre)) p.nombre = j.nombre;
         if (!string.IsNullOrEmpty(j.modelo)) p.modelo = j.modelo;
@@ -118,7 +124,8 @@ public class Sincronizacion : MonoBehaviour
     {
         if (Viaje.escenaAnterior == "Pueblo") EnviarPueblo();
         if (Viaje.escenaAnterior == "Mazmorra1") EnviarMazmorra();
-        if (escena == "Pueblo" && Sesion.Conectado) Balance.Descargar();
+        if (escena == "Pueblo" && Sesion.Conectado) { Balance.Descargar(); PedirInformes(); }
+        if (escena == "Fuerte" && Sesion.Conectado) PedirInformes();
         // Antes de construir, lo último de la API (inventario y fuerte).
         if (escena == "Fuerte") Refrescar(_ => { if (Fuerte.Actual) Fuerte.Actual.Reconstruir(); });
     }
@@ -160,47 +167,47 @@ public class Sincronizacion : MonoBehaviour
         });
     }
 
-    // ---------- asalto ----------
+    // ---------- escondites ----------
 
-    static void BuscarRivalEnServidor()
+    /// PUT /fuerte/escondites: el reparto hecho a mano (PantallaReparto). "fin(ok, mensaje)".
+    public static void EnviarReparto(DisenoFuerte d, System.Action<bool, string> fin)
     {
-        if (!Sesion.Conectado) { Avisos.Mostrar("Sin conexión: el asalto necesita el servidor", 2.5f); return; }
-        Avisos.Mostrar("Buscando rival...", 1.5f);
-        ApiCliente.Post("/asalto/buscar", null, r =>
+        var pet = new MensajesApi.PeticionReparto { central = d.central, escondites = new System.Collections.Generic.List<MensajesApi.EsconditeReparto>() };
+        var cat = CatalogoPiezas.Instancia;
+        foreach (var q in d.piezas)
+            if (cat.Buscar(q.tipo)?.categoria == CatalogoPiezas.Categoria.Escondite)
+                pet.escondites.Add(new MensajesApi.EsconditeReparto { x = q.x, z = q.z, contenido = q.contenido });
+        ApiCliente.Put("/fuerte/escondites", pet, r =>
         {
-            if (!r.Ok) { Avisos.Mostrar(r.Mensaje, 2.5f); return; }
-            var b = r.Leer<MensajesApi.RespuestaBuscar>();
-            _asaltoId = b.asalto_id;
-            Partida.Actual.asaltosHoy = b.asaltos_hoy;
-            BuscarRival.Ir(b.diseno, $"{b.rival.nombre} ({b.rival.puntuacion})");
+            if (r.Ok) { var f = r.Leer<MensajesApi.RespuestaFuerte>(); Partida.Actual.fuerte = f.diseno; AplicarJugador(f.jugador); }
+            fin?.Invoke(r.Ok, r.Ok ? "" : r.Mensaje);
         });
     }
 
-    static void ProcesarAsalto(Asalto.Resultado res, System.Action<Asalto.Resultado> listo)
+    // ---------- informes de saqueo ----------
+
+    /// Informes de saqueos recibidos sin ver (se rellena al volver al pueblo o al fuerte).
+    public static System.Collections.Generic.List<MensajesApi.Informe> InformesNuevos { get; private set; } = new System.Collections.Generic.List<MensajesApi.Informe>();
+    public static event System.Action AlLlegarInformes;
+
+    public static void PedirInformes(System.Action fin = null)
     {
-        if (!Sesion.Conectado || string.IsNullOrEmpty(_asaltoId)) { listo(Asalto.RecompensaLocal(res)); return; }
-        var pet = new MensajesApi.PeticionResultado { asalto_id = _asaltoId, ganado = res.ganado, segundos = res.segundos, muros_rotos = res.murosRotos };
-        _asaltoId = "";
-        ApiCliente.Post("/asalto/resultado", pet, r =>
+        if (!Sesion.Conectado) { fin?.Invoke(); return; }
+        ApiCliente.Get("/saqueo/informes", r =>
         {
+            InformesNuevos = new System.Collections.Generic.List<MensajesApi.Informe>();
             if (r.Ok)
-            {
-                var x = r.Leer<MensajesApi.RespuestaResultado>();
-                res.recompensa = new DatosInventario
-                {
-                    monedas = x.recompensa.moneda, madera = x.recompensa.madera, piedra = x.recompensa.piedra,
-                    hierro = x.recompensa.hierro, hueso = x.recompensa.hueso,
-                };
-                res.puntosAntes = x.puntos_antes;
-                res.puntosDespues = x.puntos_despues;
-                AplicarJugador(x.jugador);
-            }
-            else
-            {
-                Avisos.Mostrar("No se pudo enviar el resultado: " + r.Mensaje, 3f);
-                res.puntosAntes = res.puntosDespues = Partida.Actual.puntuacion;
-            }
-            listo(res);
+                foreach (var i in r.Leer<MensajesApi.RespuestaInformes>().informes ?? new System.Collections.Generic.List<MensajesApi.Informe>())
+                    if (!i.visto) InformesNuevos.Add(i);
+            if (InformesNuevos.Count > 0) AlLlegarInformes?.Invoke();
+            fin?.Invoke();
         });
+    }
+
+    /// El defensor ya ha visto sus informes.
+    public static void InformesVistos()
+    {
+        InformesNuevos.Clear();
+        if (Sesion.Conectado) ApiCliente.Post("/saqueo/informes/visto", null, null);
     }
 }

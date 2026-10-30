@@ -18,6 +18,8 @@ const app = crearServidor({
   secreto: requerida('API_SECRETO'),
   claveServidor: process.env.CLAVE_SERVIDOR ?? '',
   puebloCliente: process.env.PUEBLO_CLIENTE === '1',
+  // Solo en el Docker local: los tests de Unity eligen rival por nombre al preparar un saqueo.
+  pruebas: process.env.PRUEBAS === '1',
   smtpUrl: process.env.SMTP_URL ?? '',
   urlPublica: process.env.URL_PUBLICA ?? 'https://app.orkhold.com',
   registro: { level: process.env.REGISTRO ?? 'info' },

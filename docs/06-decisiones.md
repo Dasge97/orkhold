@@ -164,3 +164,8 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 120 | El cofre, el barril y el cofre central no se pueden pisar; el enterrado, sí. | Son piezas con cuerpo; el enterrado parece suelo. |
 | 121 | Herramientas como unidades del inventario (`farol`, `cuarta_accion`...), fabricadas con `POST /herramientas/fabricar`. | Ferra las fabrica antes; se gastan al empezar el saqueo (08 §5). |
 | 122 | Las rutas del asalto de 90 s se quitan; la tabla `asaltos` se queda como historia. La ruta pública conserva el campo `asaltos` (ahora cuenta saqueos) para la web. | Un solo PvP; la web de orkhold.com ya lee ese campo. |
+| 123 | El saqueo necesita el servidor: sin conexión, el cofre del saqueo avisa y no hay fuertes de prueba en local. | El servidor decide (08 §4.4); repetir las reglas en el móvil sería otra fuente de errores. |
+| 124 | Salir por la entrada durante la exploración pasa a la fase de marcar (no se pierde el saqueo sin poder marcar). | La tasa ya está pagada; salir es "Saquear" antes de tiempo. |
+| 125 | Las marcas se ven como un disco dorado con un estandarte pequeño; el resultado de cada marca sale como texto flotante, una cada 0,8 s. | La "secuencia corta" de 08 §4.4 sin animaciones nuevas. |
+| 126 | El informe del defensor sale al entrar en su fuerte; en el pueblo, Rook avisa con una línea. | 07-lore: Rook da los avisos de "te han saqueado"; el fuerte es donde se cambia lo quemado. |
+| 127 | La API local de Docker lleva `PRUEBAS=1`: "preparar" acepta un rival por nombre. En producción no existe. | La base local tiene muchos jugadores de pruebas y el test necesita saquear a uno concreto. |

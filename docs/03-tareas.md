@@ -136,19 +136,20 @@ Leer antes: `14-cuentas.md`.
 
 ## Fase 12 · Saqueo
 Leer antes: `08-formato-y-pvp.md` entero.
-- [ ] 12.1 API: escondites dentro del diseño con su contenido; todo el inventario de recursos vive en los escondites
+- [x] 12.1 API: escondites dentro del diseño con su contenido; todo el inventario de recursos vive en los escondites
   (depositar al ganar, sacar al gastar, "Escondites llenos"). Migración de los jugadores actuales al cofre central.
   Comprobar: tests (sumar, gastar, lleno, recolocar a mano).
-- [ ] 12.2 API: `/saqueo/preparar`, `/saqueo/empezar`, `/saqueo/mirar`, `/saqueo/resolver` e informes; rehacer la
+- [x] 12.2 API: `/saqueo/preparar`, `/saqueo/empezar`, `/saqueo/mirar`, `/saqueo/resolver` e informes; rehacer la
   exploración (velocidad, golpes, camino), tasa, Elo, escudo, rival sin repetir en 24 h, saqueos por día, fuerte de prueba.
   Comprobar: tests con exploraciones buenas y tramposas.
-- [ ] 12.3 Modo construir: cofre, barril y enterrado; tocar un escondite para repartir el contenido; aviso de lleno.
-- [ ] 12.4 Saqueo en el juego: preparar (rival, herramientas), explorar 120 s (romper, mirar), marcar 3 escondites,
+- [x] 12.3 Modo construir: cofre, barril y enterrado; tocar un escondite para repartir el contenido; aviso de lleno.
+- [x] 12.4 Saqueo en el juego: preparar (rival, herramientas), explorar 120 s (romper, mirar), marcar 3 escondites,
   secuencia de resultado. Trampas y defensores quietos. Sustituye al asalto de 90 s.
-- [ ] 12.5 Informe para el defensor (rejilla con lo roto, mirado, marcado y encontrado) y aviso al entrar.
-- [ ] 12.6 Herramientas: farol y cuarta acción (Ferra fabrica el farol); el resto, bloqueadas hasta su mazmorra.
-- [ ] 12.7 Temporadas: tramo y estandarte, cierre cada 4 semanas con compresión hacia 1000.
+- [x] 12.5 Informe para el defensor (rejilla con lo roto, mirado, marcado y encontrado) y aviso al entrar.
+- [x] 12.6 Herramientas: farol y cuarta acción (Ferra fabrica el farol); el resto, bloqueadas hasta su mazmorra.
+- [x] 12.7 Temporadas: tramo y estandarte, cierre cada 4 semanas con compresión hacia 1000.
   Comprobar la fase: bot de saqueo en PlayMode contra la API local (preparar → explorar → marcar → resultado) y capturas.
+  (2026-10-30: `PruebaSaqueo` de punta a punta, 55 tests de la API, capturas `Revision/70` a `75`. Ferra se pone en el pueblo en la fase 13.)
 
 ## Fase 13 · Lore en el juego
 Leer antes: `07-lore.md` §5-§7.

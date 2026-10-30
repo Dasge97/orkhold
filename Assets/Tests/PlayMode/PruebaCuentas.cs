@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-/// Fase 6: arranque y personaje, tablón, y el juego contra la API de verdad (docker compose en api/).
+/// Fase 6: arranque y personaje, tablón, y el juego contra la API de verdad (docker compose en api/): pueblo,
+/// mazmorra y fuerte. El saqueo, en PruebaSaqueo.
 public class PruebaCuentas
 {
     const string UrlLocal = "http://127.0.0.1:3100";
@@ -148,35 +149,8 @@ public class PruebaCuentas
         Assert.AreEqual(5, Partida.Actual.fuerte.piezas.Count, "La API no guardó el fuerte");
         Assert.AreEqual(0, Partida.Inventario.madera, "La API no descontó la madera");
 
-        // Jugador 2: busca rival en la API, asalta, gana y sube en el ranking.
-        yield return NuevaCuenta("Ata" + sufijo);
-        yield return Ayudas.Cargar("Pueblo");
-        var cofre = Ayudas.Puerta("asalto");
-        cofre.Usar(Ayudas.Jugador());
-        yield return Ayudas.EsperarEscena("Asalto", 10f);
-        Assert.IsNotNull(Fuerte.DisenoAsalto);
-        StringAssert.Contains("(", BuscarRival.Rival, "El rival no viene de la API");
-        int antes = Partida.Actual.puntuacion;
-        yield return new WaitForSeconds(5.5f);
-        GestorEscena.Colocar(Ayudas.Jugador().transform, Asalto.Actual.PosicionCofre + Vector3.left * 0.8f, 90f);
-        Asalto.Resultado res = null;
-        System.Action<Asalto.Resultado> f = r => res = r;
-        Asalto.AlTerminar += f;
-        yield return Esperar(() => res != null, 10f);
-        Asalto.AlTerminar -= f;
-        Assert.IsNotNull(res, "No llegó el resultado del asalto");
-        Assert.IsTrue(res.ganado);
-        Assert.Greater(res.puntosDespues, antes, "La API no subió la puntuación");
-        Assert.AreEqual(res.puntosDespues, Partida.Actual.puntuacion);
-        Assert.GreaterOrEqual(Partida.Inventario.monedas, 10, "La API no dio la recompensa");
-
-        // El ranking y el historial del atacante lo reflejan.
-        bool hecho = false; MensajesApi.RespuestaHistorial h = null;
-        ApiCliente.Get("/asaltos/historial", r => { h = r.Leer<MensajesApi.RespuestaHistorial>(); hecho = true; });
-        yield return Esperar(() => hecho);
-        Assert.AreEqual(1, h.hechos.Count);
-        Assert.IsTrue(h.hechos[0].ganado);
         Assert.IsNotEmpty(id1);
+        // El saqueo contra otro jugador está en PruebaSaqueo.
     }
 
     /// En git la configuración va sin URL (modo local); la URL solo se pone al compilar el APK.

@@ -67,7 +67,7 @@ public static class MontarEscenas
         {
             Configurar(r, 'E', "salida", "Pueblo", "asalto", true);
             PonerPradera(r);
-            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Asalto).gameObject.AddComponent<Asalto>();
+            PonerFuerte(r.raiz.transform, PiezaFuerte.Modo.Asalto).gameObject.AddComponent<Saqueo>();
         });
 
         if (File.Exists(CarpetaEscenas + "PvE.unity")) AssetDatabase.DeleteAsset(CarpetaEscenas + "PvE.unity");

@@ -6,6 +6,10 @@ using UnityEngine;
 public class Catalogo : ScriptableObject
 {
     public GameObject moneda, madera, piedra, hierro, hueso, pocion;
+    [Tooltip("Estandarte de la temporada (banner de Mini Dungeon): se tiñe con el color del tramo.")]
+    public GameObject estandarte;
+    [Tooltip("Marca de las casillas elegidas en la fase de marcar del saqueo.")]
+    public GameObject marcaSaqueo;
     [Tooltip("Fuertes del sistema para asaltar sin servidor: fácil, medio, difícil (Assets/Mapas/fuertes-prueba).")]
     public TextAsset[] fuertesPrueba = new TextAsset[0];
 

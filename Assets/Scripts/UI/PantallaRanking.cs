@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// Ranking (50 mejores y tu puesto) e historial (últimos 10 asaltos hechos y recibidos),
+/// Ranking (50 mejores y tu puesto) e historial (últimos 10 saqueos hechos y recibidos),
 /// desde el tablón del pueblo (01-diseno.md §6.5).
 public class PantallaRanking : MonoBehaviour
 {
@@ -31,7 +31,7 @@ public class PantallaRanking : MonoBehaviour
         _instancia = go.AddComponent<PantallaRanking>();
         var panel = Ui.PanelCentrado(go.transform, new Vector2(1700f, 940f), out _instancia._velo);
         Ui.Texto(panel, "Ranking", 52, new Vector2(-420f, 400f), new Vector2(760f, 70f), negrita: true);
-        Ui.Texto(panel, "Historial de asaltos", 52, new Vector2(420f, 400f), new Vector2(760f, 70f), negrita: true);
+        Ui.Texto(panel, "Historial de saqueos", 52, new Vector2(420f, 400f), new Vector2(760f, 70f), negrita: true);
         _instancia._ranking = Ui.Texto(panel, "", 30, new Vector2(-420f, -20f), new Vector2(760f, 740f), TextAnchor.UpperLeft);
         _instancia._historial = Ui.Texto(panel, "", 28, new Vector2(420f, -20f), new Vector2(760f, 740f), TextAnchor.UpperLeft);
         _instancia._estado = Ui.Texto(panel, "", 32, new Vector2(0f, -400f), new Vector2(1000f, 50f));
@@ -63,7 +63,7 @@ public class PantallaRanking : MonoBehaviour
             _ranking.text = sb.ToString();
             _estado.text = "";
         });
-        ApiCliente.Get("/asaltos/historial", r =>
+        ApiCliente.Get("/saqueo/historial", r =>
         {
             if (!r.Ok) { _historial.text = r.Mensaje; return; }
             var d = r.Leer<MensajesApi.RespuestaHistorial>();
@@ -80,11 +80,13 @@ public class PantallaRanking : MonoBehaviour
         if (filas == null || filas.Count == 0) { sb.AppendLine("  (ninguno)"); return; }
         foreach (var f in filas)
         {
-            // Para el defensor, ganar el atacante es perder.
-            bool bien = hechos ? f.ganado : !f.ganado;
-            string que = hechos ? (f.ganado ? "Ganaste a" : "Perdiste contra") : (f.ganado ? "Te asaltó y ganó" : "Te asaltó y perdió");
-            string puntos = hechos ? $" ({(f.puntos >= 0 ? "+" : "")}{f.puntos})" : "";
-            sb.AppendLine($"  <color={(bien ? "#7fe08a" : "#ff8a80")}>{que}</color> {f.rival} · {f.segundos} s · {f.muros_rotos} muros{puntos}");
+            // Para el defensor, que encuentren algo es malo.
+            bool algo = f.encontrado > 0;
+            bool bien = hechos ? algo : !algo;
+            string que = hechos ? (algo ? $"Saqueaste a {f.rival}: {MensajesApi.Texto(f.botin)}" : $"Saqueaste a {f.rival} y no encontraste nada")
+                                : (algo ? $"{f.rival} te saqueó: {MensajesApi.Texto(f.botin)}" : $"{f.rival} te saqueó sin encontrar nada");
+            string puntos = f.prueba ? " (prueba)" : $" ({(f.puntos >= 0 ? "+" : "")}{f.puntos})";
+            sb.AppendLine($"  <color={(bien ? "#7fe08a" : "#ff8a80")}>{que}</color>{puntos}");
         }
     }
 }

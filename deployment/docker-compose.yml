@@ -23,6 +23,10 @@ services:
       BD_URL: postgres://orkhold:${POSTGRES_PASSWORD}@postgres:5432/orkhold
       API_SECRETO: ${API_SECRETO:?falta API_SECRETO en .env}
       CLAVE_SERVIDOR: ${CLAVE_SERVIDOR:?falta CLAVE_SERVIDOR en .env}
+      URL_PUBLICA: https://app.orkhold.com
+      # Correos de cuenta (14-cuentas.md §3). Sin SMTP_URL, el enlace va al registro de la API.
+      SMTP_URL: ${SMTP_URL:-}
+      CORREO_REMITENTE: ${CORREO_REMITENTE:-Orkhold <no-responder@orkhold.com>}
     # Solo para el proxy de codehive (en 127.0.0.1); nunca abierto a internet directamente.
     ports: ["127.0.0.1:${PUERTO_API:-4152}:3000"]
     depends_on:

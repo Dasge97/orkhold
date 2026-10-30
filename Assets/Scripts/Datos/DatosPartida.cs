@@ -10,8 +10,12 @@ public class DatosPartida
     /// Personaje elegido en el arranque (01-diseno.md §6.1).
     public string nombre = "";
     public string modelo = "";
-    /// Asaltos hechos hoy según la API (máximo 10).
+    /// Saqueos hechos hoy según la API (máximo del balance, 10 al empezar).
     public int asaltosHoy;
+    /// Capacidad de los escondites y lo guardado en ellos (08 §3.1), según la API.
+    public int capacidad, guardado;
+    /// Estandarte de la última temporada (bronce, plata, oro, hierro_orco) o vacío.
+    public string estandarte = "";
     public DatosInventario inventario = new DatosInventario();
     public int bajas;
     /// Puntuación tipo Elo para elegir rival (empieza en 1000).

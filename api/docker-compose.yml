@@ -23,6 +23,7 @@ services:
       API_SECRETO: ${API_SECRETO:?falta API_SECRETO en api/.env}
       CLAVE_SERVIDOR: ${CLAVE_SERVIDOR:?falta CLAVE_SERVIDOR en api/.env}
       PUEBLO_CLIENTE: "1"
+      PRUEBAS: "1"
     ports: ["3100:3000"]
     depends_on:
       postgres: { condition: service_healthy }

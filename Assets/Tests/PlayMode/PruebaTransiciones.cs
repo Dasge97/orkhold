@@ -39,26 +39,20 @@ public class PruebaTransiciones
     }
 
     [UnityTest]
-    public IEnumerator AsaltoDesdeElCofre()
+    public IEnumerator ElCofreDelSaqueoSinServidorAvisa()
     {
         yield return Ayudas.Cargar("Pueblo");
         var cofre = Ayudas.Puerta("asalto");
-        Assert.IsFalse(cofre.alPisar, "El cofre PvP se usa con el botón, no pisándolo");
+        Assert.IsFalse(cofre.alPisar, "El cofre del saqueo se usa con el botón, no pisándolo");
         GestorEscena.Colocar(Ayudas.Jugador().transform, cofre.llegada, 0f);
         yield return null;
         Assert.AreEqual(cofre, Interactuable.MasCercano(Ayudas.Jugador().transform.position), "El cofre no es lo más cercano para interactuar");
         EntradaJuego.InteractuarPantalla = true;
         yield return null;
         yield return null;
-        var buscar = cofre.GetComponent<BuscarRival>();
-        Assert.IsTrue(buscar.Abierto, "El cofre PvP no abre el panel de buscar rival");
-        buscar.Elegir(0);
-        yield return Ayudas.EsperarEscena("Asalto");
-        // Salir por la entrada es rendirse: sale el resultado y se vuelve con su botón.
-        yield return Ayudas.Pisar(Ayudas.Puerta("salida"));
-        Assert.AreEqual(Asalto.Fin.Abandonado, Asalto.Actual.Estado);
-        Asalto.Actual.Volver();
-        yield return Ayudas.EsperarEscena("Pueblo");
-        Assert.Less(Ayudas.DistanciaPlana(Ayudas.Jugador().transform.position, Ayudas.Puerta("asalto").transform.position), 1.5f);
+        // Sin servidor no se saquea (08-formato-y-pvp.md: lo decide el servidor) y no se cambia de escena.
+        StringAssert.Contains("saqueo necesita el servidor", Avisos.Ultimo);
+        Assert.IsNull(PantallaPrepararSaqueo.Abierta);
+        Assert.AreEqual("Pueblo", UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 public class EditorFuerte : MonoBehaviour
 {
     public const string Mejorar = "mejorar";
+    /// Tocar un escondite para pasarle recursos desde el cofre central (PantallaReparto).
+    public const string Repartir = "repartir";
 
     public bool Construyendo { get; private set; }
     public string Seleccion { get; private set; } = "muro_madera";
@@ -117,6 +119,11 @@ public class EditorFuerte : MonoBehaviour
         bool ok;
         string motivo = "";
         string que;
+        if (Seleccion == Repartir)
+        {
+            if (!Sesion.Conectado) { Avisos.Mostrar("Sin conexión: el reparto lo guarda el servidor", 2f); return false; }
+            return PantallaReparto.Abrir(x, z, () => { _fuerte.Reconstruir(); _ui.Refrescar(); }) != null;
+        }
         if (Seleccion == Mejorar) { ok = ReglasFuerte.Mejorar(d, cat, partida, x, z, out motivo); que = "mejorado"; }
         else if (d.En(x, z) != null) { ok = ReglasFuerte.Quitar(d, cat, partida, x, z); que = "quitado"; }
         else { ok = ReglasFuerte.Poner(d, cat, Seleccion, _fuerte.Mapa, partida, x, z, out motivo); que = "puesto"; }

@@ -153,3 +153,8 @@ Lo más reciente arriba.
 - API: `/cuenta/...` con scrypt, tabla `sesiones` (el token lleva su id y se puede anular), enlaces de un solo uso guardados con hash, 5 intentos y 15 min, filtro de nombres. Sin SMTP el enlace va al registro.
 - Juego: `Sesion` guarda el token en el móvil; `PantallaCuenta` para entrar, guardar el progreso, cerrar sesión y borrar. El menú cambia "Reiniciar partida" por "Cuenta" cuando hay servidor.
 - Aprendido: un 401 por contraseña mala no es una sesión caducada (`ApiCliente` solo cierra con `sin_sesion`). Las fotos de los tests ya sacan la interfaz: los lienzos se ponen un momento delante de la cámara.
+
+## 30-10-2026 — fase 12: saqueo
+- API: escondites dentro del diseño (`escondites.js`), `saqueo.js` rehace la exploración y resuelve marcas, rutas `/saqueo`, herramientas y temporadas. Se quitan las rutas del asalto.
+- Juego: `Saqueo` (explorar, mirar, marcar, resultado), `PantallaPrepararSaqueo`, `PantallaInforme`, `PantallaReparto`, `PantallaFerra`; escondites en el modo construir.
+- Aprendido: JsonUtility manda siempre los campos de clase (un `golpe` vacío llegaba como (0,0) y el servidor descartaba todo): hace falta un booleano que diga si va de verdad. Para los tests de Unity, la API local acepta un rival por nombre (`PRUEBAS=1`, solo en local).

@@ -28,6 +28,11 @@ public class CatalogoPiezas : ScriptableObject
         public int vida;
         [Tooltip("Si no está vacío, no cuesta recursos: gasta una unidad de este tipo del inventario (orco jefe).")]
         public string requiereUnidad = "";
+        [Header("Escondites")]
+        [Tooltip("Unidades que caben (cofre 30, barril 15, enterrado 10).")]
+        public int capacidad;
+        [Tooltip("Cuántos se pueden construir. 0 = todavía bloqueado.")]
+        public int limite;
         public bool EsPuerta => id == "puerta";
 
         public string TextoCoste()
@@ -43,6 +48,8 @@ public class CatalogoPiezas : ScriptableObject
     public int maxMuros = 40;
     public int maxTrampas = 6;
     public int maxDefensores = 4;
+    [Tooltip("Capacidad del cofre central (casilla 'K').")]
+    public int capacidadCentral = 50;
     [Header("Mejora de defensores con hueso")]
     public int huesosPorMejora = 2;
     public int mejoraMaxima = 3;
@@ -81,9 +88,15 @@ public class CatalogoPiezas : ScriptableObject
         maxDefensores = Balance.Entero("fuerte.limite_defensor", maxDefensores);
         huesosPorMejora = Balance.Entero("fuerte.mejora_huesos", huesosPorMejora);
         mejoraMaxima = Balance.Entero("fuerte.mejora_maxima", mejoraMaxima);
+        capacidadCentral = Balance.Entero("escondite.central.capacidad", capacidadCentral);
         foreach (var p in piezas)
         {
             if (p.categoria != Categoria.Escondite) p.vida = Balance.Entero($"pieza.{p.id}.vida", p.vida);
+            else
+            {
+                p.capacidad = Balance.Entero($"escondite.{p.id}.capacidad", p.capacidad);
+                p.limite = Balance.Entero($"escondite.{p.id}.limite", p.limite);
+            }
             if (!string.IsNullOrEmpty(p.requiereUnidad)) continue;
             // Si el balance no trae ningún coste de esta pieza, se queda el del catálogo.
             var nuevos = new List<Coste>();
@@ -105,4 +118,12 @@ public class CatalogoPiezas : ScriptableObject
     }
 
     public int Limite(Categoria c) => c == Categoria.Muro ? maxMuros : c == Categoria.Trampa ? maxTrampas : maxDefensores;
+
+    /// Capacidad total de un diseño: el cofre central más cada escondite.
+    public int Capacidad(DisenoFuerte d)
+    {
+        int n = capacidadCentral;
+        foreach (var q in d.piezas) { var p = Buscar(q.tipo); if (p != null && p.categoria == Categoria.Escondite) n += p.capacidad; }
+        return n;
+    }
 }
