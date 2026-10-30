@@ -8,7 +8,7 @@ URL="${1:-https://orkhold.code-hive.space}"
 MUNDO="${2:-orkhold.code-hive.space:7777}"
 export ORKHOLD_KEYSTORE="$(cygpath -w "$USERPROFILE/.orkhold/orkhold.keystore")"
 [ -f "$USERPROFILE/.orkhold/orkhold.keystore" ] || { echo "Falta el almacén: pruebas/crear-keystore.sh" >&2; exit 1; }
-ORKHOLD_KEYSTORE_CLAVE=$(ssh codehive '/home/codehive/bin/vault-usar "orkhold - keystore" V -- printenv V') \
+ORKHOLD_KEYSTORE_CLAVE=$(ssh codehive '/home/codehive/bin/vault-usar "orkhold - keystore" CLAVE -- printenv CLAVE') \
   || { echo "No se pudo leer la contraseña (¿bóveda bloqueada?)" >&2; exit 1; }
 export ORKHOLD_KEYSTORE_CLAVE
 "/c/Program Files/Unity/Hub/Editor/6000.5.9f1/Editor/Unity.exe" -batchmode -projectPath "$(cygpath -w "$PWD")" \

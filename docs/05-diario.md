@@ -131,3 +131,8 @@ Lo más reciente arriba.
   monedas, pociones, joystick, 3 botones, HUD. APK compilado y probado en el emulador Medium Phone.
 - Comprobado: `Prototipo > Revisar` (fotos + Play automático) y capturas del emulador con `adb`.
 - Aprendido: ver "Cosas aprendidas" en `CLAUDE.md`.
+
+## 30-10-2026 — tarea 9.5: APK firmado
+- Almacén creado con `pruebas/crear-keystore.sh`; contraseña en la bóveda («orkhold - keystore»). APK firmado comprobado con apksigner: CN=Orkhold.
+- `vault-usar` exige nombres de variable de dos letras o más (su patrón `[A-Za-z_][A-Za-z0-9_]*` en un `case`): «V» fallaba, ahora «CLAVE».
+- El módulo Linux de Unity sigue sin instalar (la ventana de permisos caducó otra vez) y el despliegue lo bloquea el modo automático: los lanza Daniel.

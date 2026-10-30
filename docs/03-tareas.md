@@ -105,7 +105,7 @@ Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóve
 - [x] 9.3 Rendimiento en móvil gama media: menos sombras, LOD en árboles, 60 fps en emulador y en el móvil de Daniel. (2026-10-30)
 - [x] 9.4 Capturas reales para los README (`docs/img/`). (2026-10-30)
 - [ ] 9.5 APK firmado con keystore propio (guardado en la bóveda) e instalado en el móvil de Daniel.
-  (Preparado: `pruebas/crear-keystore.sh` y `pruebas/compilar-apk-firmado.sh`. Falta la bóveda desbloqueada, el servidor desplegado y el móvil de Daniel.)
+  (Hecho el 30-10-2026: almacén en `%USERPROFILE%/.orkhold/orkhold.keystore`, contraseña en la bóveda como «orkhold - keystore», `Builds/orkhold.apk` firmado con CN=Orkhold contra https://orkhold.code-hive.space. Falta el servidor desplegado y el móvil de Daniel. Haz copia del almacén: sin él no se pueden publicar actualizaciones.)
   Comprobar: una persona que no ha visto el juego lo entiende en 2 minutos sin ayuda.
   (Pendiente de Daniel: hace falta una persona de verdad.)
 
