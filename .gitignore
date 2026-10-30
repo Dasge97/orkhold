@@ -21,3 +21,7 @@
 /Assets/Mapas/Mallas/
 /Assets/Mapas/Mallas.meta
 /.utmp/
+
+# Despliegue: secretos y la compilación del servidor de mundo
+/deployment/.env
+/deployment/mundo/servidor/

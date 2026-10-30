@@ -82,8 +82,7 @@ public class Sonidos : MonoBehaviour
         if (donde.HasValue)
         {
             var oyente = Camera.main ? Camera.main.transform.position : Vector3.zero;
-            var jugador = FindAnyObjectByType<ControlJugador>();
-            if (jugador) oyente = jugador.transform.position;
+            if (ControlJugador.Local) oyente = ControlJugador.Local.transform.position;
             float d = Vector3.Distance(oyente, donde.Value);
             v *= Mathf.Clamp01(1f - d / 14f);
             if (v <= 0.01f) return;

@@ -28,13 +28,16 @@ public class FuenteRecurso : MonoBehaviour, IGolpeable
         _giro = transform.localRotation;
     }
 
+    /// En el pueblo online: el servidor avisa a los clientes de cada golpe y de cuándo se agota.
+    public static System.Action<FuenteRecurso, Vector3> AlGolpear;
+    public static System.Action<FuenteRecurso> AlAgotar;
+
     public void RecibirGolpe(int dano, Vector3 desde, ControlJugador quien)
     {
         if (Agotado) return;
         _golpes++;
-        Sonidos.Tocar(recurso == Recurso.Madera ? "golpe_madera" : "golpe_roca", transform.position);
-        if (_temblor != null) StopCoroutine(_temblor);
-        _temblor = StartCoroutine(Temblar(desde));
+        AlGolpear?.Invoke(this, desde);
+        Efecto(desde);
         if (_golpes < golpesNecesarios) return;
 
         _golpes = 0;
@@ -42,8 +45,20 @@ public class FuenteRecurso : MonoBehaviour, IGolpeable
         Vector3 hacia = desde - transform.position; hacia.y = 0f;
         Vector3 donde = transform.position + (hacia.sqrMagnitude > 0.01f ? hacia.normalized : Vector3.back) * 0.55f + Vector3.up * 0.1f;
         Catalogo.Soltar(recurso, donde);
+        AlAgotar?.Invoke(this);
         StartCoroutine(Agotar());
     }
+
+    /// Sonido y temblor de un golpe (en los clientes lo llama MundoRed).
+    public void Efecto(Vector3 desde)
+    {
+        Sonidos.Tocar(recurso == Recurso.Madera ? "golpe_madera" : "golpe_roca", transform.position);
+        if (_temblor != null) StopCoroutine(_temblor);
+        _temblor = StartCoroutine(Temblar(desde));
+    }
+
+    /// Se agota sin que nadie lo golpee aquí (en los clientes lo llama MundoRed).
+    public void AgotarDesdeRed() { if (!Agotado) StartCoroutine(Agotar()); }
 
     IEnumerator Temblar(Vector3 desde)
     {

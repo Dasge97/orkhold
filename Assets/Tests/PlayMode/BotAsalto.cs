@@ -38,6 +38,15 @@ public class BotAsalto : MonoBehaviour
             if (!_retirado && _j.Vida.actual <= 3 && _a.Restante > 35f) { _retirado = true; Retiradas++; }
             if (_retirado && (_j.Vida.actual >= _j.Vida.maxima - 1 || _a.Restante < 30f)) _retirado = false;
             EntradaJuego.CorrerPantalla = _retirado;
+            bool pegado = e0 && Plano(e0.transform.position - _j.transform.position).magnitude < 1.2f;
+            if (_retirado && pegado)
+            {
+                // Le han alcanzado: se defiende.
+                EntradaJuego.CorrerPantalla = false;
+                EntradaJuego.MoverPantalla = Vector2.zero;
+                Golpear();
+                return;
+            }
             if (_retirado)
             {
                 // Huye corriendo hacia la entrada por donde se pueda andar, sin romper nada; se queda

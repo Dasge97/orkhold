@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7679308147898646615
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5656129938996847421, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_Name
+      value: PiedraRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8102355979731835826, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5656129938996847421, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5393265112149710702}
+    - targetCorrespondingSourceObject: {fileID: 5656129938996847421, guid: 219f5c57da734194182d20569af4989a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1832450191446968370}
+  m_SourcePrefab: {fileID: 100100000, guid: 219f5c57da734194182d20569af4989a, type: 3}
+--- !u!1 &2660780913345487722 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5656129938996847421, guid: 219f5c57da734194182d20569af4989a, type: 3}
+  m_PrefabInstance: {fileID: 7679308147898646615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5393265112149710702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660780913345487722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 206312835
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  m_InScenePlaced: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1832450191446968370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660780913345487722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acbd163bf45d2604dab34f2a0f7ec615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Orkhold::RecogibleRed
+  ShowTopMostFoldoutHeaderGroup: 1

@@ -36,6 +36,7 @@ public static class CrearPrefabs
         CrearEnemigos();
         CrearTrampa();
         CrearPiezasFuerte();
+        CrearPrefabsRed();
         CrearPuerta();
         CrearCasa();
         CrearInterfaz();
@@ -212,6 +213,52 @@ public static class CrearPrefabs
         l.transform.localScale = Vector3.one * 0.7f;
         g.AddComponent<Proyectil>();
         return Guardar(g, "Proyectil");
+    }
+
+    public const string RutaPrefabsRed = "Assets/Resources/PrefabsRed.asset";
+
+    /// Variantes de red (con NetworkObject) para el pueblo online: jugador, orco, mundo y recogibles.
+    static void CrearPrefabsRed()
+    {
+        GameObject Variante(string original, string nombre, params System.Type[] componentes)
+        {
+            var g = (GameObject)PrefabUtility.InstantiatePrefab(Cargar(original));
+            g.name = nombre;
+            g.AddComponent<Unity.Netcode.NetworkObject>();
+            foreach (var t in componentes) g.AddComponent(t);
+            return Guardar(g, nombre);
+        }
+        var jugador = Variante("Jugador", "JugadorRed", typeof(JugadorRed));
+        var orcoG = (GameObject)PrefabUtility.InstantiatePrefab(Cargar("Orco"));
+        orcoG.name = "OrcoRed";
+        orcoG.AddComponent<Unity.Netcode.NetworkObject>();
+        var nt = orcoG.AddComponent<Unity.Netcode.Components.NetworkTransform>();
+        nt.SyncRotAngleX = false; nt.SyncRotAngleZ = false;
+        nt.SyncScaleX = nt.SyncScaleY = nt.SyncScaleZ = false;
+        orcoG.AddComponent<EnemigoRed>();
+        var orco = Guardar(orcoG, "OrcoRed");
+        var mundoG = new GameObject("MundoRed");
+        mundoG.AddComponent<Unity.Netcode.NetworkObject>();
+        mundoG.AddComponent<MundoRed>();
+        var mundo = Guardar(mundoG, "MundoRed");
+        var recogibles = new[] { "Moneda", "Madera", "Piedra", "Hierro", "Hueso", "Pocion" }
+            .Select(n => Variante(n, n + "Red", typeof(RecogibleRed))).ToArray();
+
+        var p = AssetDatabase.LoadAssetAtPath<PrefabsRed>(RutaPrefabsRed);
+        if (!p) { p = ScriptableObject.CreateInstance<PrefabsRed>(); AssetDatabase.CreateAsset(p, RutaPrefabsRed); }
+        p.jugador = jugador; p.orco = orco; p.mundo = mundo; p.recogibles = recogibles;
+        EditorUtility.SetDirty(p);
+        // NGO genera el identificador de red al validar el prefab, y al crearlo desde código no siempre pasa.
+        var validar = typeof(Unity.Netcode.NetworkObject).GetMethod("OnValidate",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+        foreach (var prefab in p.Todos())
+        {
+            var no = prefab.GetComponent<Unity.Netcode.NetworkObject>();
+            validar?.Invoke(no, null);
+            EditorUtility.SetDirty(no);
+            EditorUtility.SetDirty(prefab);
+        }
+        AssetDatabase.SaveAssets();
     }
 
     public const string RutaCatalogoPiezas = "Assets/Resources/CatalogoPiezas.asset";

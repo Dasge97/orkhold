@@ -10,6 +10,10 @@ public class Recogible : Interactuable
     float _y0;
 
     public override Icono IconoBoton => Icono.Recoger;
+    public override bool EnServidor => true;
+
+    /// En el pueblo online lo quita el servidor (RecogibleRed); si no, se destruye sin más.
+    public System.Action alUsar;
 
     void Start() { _y0 = transform.position.y; }
 
@@ -24,6 +28,7 @@ public class Recogible : Interactuable
     public override void Usar(ControlJugador jugador)
     {
         jugador.Recoger(this);
-        Destroy(gameObject);
+        if (alUsar != null) alUsar();
+        else Destroy(gameObject);
     }
 }

@@ -1,0 +1,39 @@
+# Orkhold en codehive (02-arquitectura.md §5): PostgreSQL 16, API y servidor de mundo.
+# Los secretos salen de deployment/.env, que no va en git; sus valores viven en la bóveda
+# ("juego - postgres", "juego - api secreto", "juego - clave servidor mundo").
+name: orkhold
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: orkhold
+      POSTGRES_USER: orkhold
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?falta POSTGRES_PASSWORD en .env}
+    volumes:
+      - datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orkhold"]
+      interval: 5s
+      retries: 30
+  api:
+    build: ../api
+    restart: unless-stopped
+    environment:
+      BD_URL: postgres://orkhold:${POSTGRES_PASSWORD}@postgres:5432/orkhold
+      API_SECRETO: ${API_SECRETO:?falta API_SECRETO en .env}
+      CLAVE_SERVIDOR: ${CLAVE_SERVIDOR:?falta CLAVE_SERVIDOR en .env}
+    # Solo para el proxy de codehive (en 127.0.0.1); nunca abierto a internet directamente.
+    ports: ["127.0.0.1:${PUERTO_API:-3110}:3000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+  mundo:
+    build: ./mundo
+    restart: unless-stopped
+    environment:
+      ORKHOLD_API: http://api:3000
+      ORKHOLD_CLAVE_SERVIDOR: ${CLAVE_SERVIDOR}
+    ports: ["${PUERTO_MUNDO:-7777}:7777/udp"]
+    depends_on: [api]
+volumes:
+  datos:

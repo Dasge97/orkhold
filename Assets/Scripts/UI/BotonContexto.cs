@@ -19,7 +19,8 @@ public class BotonContexto : MonoBehaviour
     {
         if (Time.unscaledTime < _siguiente) return;
         _siguiente = Time.unscaledTime + 0.1f;
-        if (!_jugador) { _jugador = FindAnyObjectByType<ControlJugador>(); if (!_jugador) return; }
+        _jugador = ControlJugador.Local;
+        if (!_jugador) return;
         var cerca = Interactuable.MasCercano(_jugador.transform.position);
         Actual = cerca ? cerca.IconoBoton : (Interactuable.Icono?)null;
         int i = (int)(Actual ?? Interactuable.Icono.Mano);

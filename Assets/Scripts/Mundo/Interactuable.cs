@@ -13,6 +13,8 @@ public abstract class Interactuable : MonoBehaviour
     public float alcance = 1.3f;
 
     public virtual Icono IconoBoton => Icono.Mano;
+    /// Lo decide el servidor en el pueblo online (recogibles). Lo demás (puertas, cofre, tablón) lo usa el dueño en su móvil.
+    public virtual bool EnServidor => false;
     public virtual bool Disponible => isActiveAndEnabled;
 
     /// Lo que pasa al usarlo.
@@ -22,13 +24,17 @@ public abstract class Interactuable : MonoBehaviour
     protected virtual void OnDisable() { Todos.Remove(this); }
 
     /// El más cercano a "posicion" que esté dentro de su alcance, o null.
-    public static Interactuable MasCercano(Vector3 posicion)
+    public static Interactuable MasCercano(Vector3 posicion) => MasCercano(posicion, true, true);
+
+    /// Igual, pero solo los de un lado: "deCliente" (puertas, tablón) y/o "deServidor" (recogibles).
+    public static Interactuable MasCercano(Vector3 posicion, bool deCliente, bool deServidor)
     {
         Interactuable mejor = null;
         float dMejor = float.MaxValue;
         foreach (var i in Todos)
         {
             if (!i || !i.Disponible) continue;
+            if (i.EnServidor ? !deServidor : !deCliente) continue;
             Vector3 d = i.transform.position - posicion; d.y = 0f;
             float dist = d.magnitude;
             if (dist <= i.alcance && dist < dMejor) { dMejor = dist; mejor = i; }

@@ -9,11 +9,7 @@ public class CamaraSigue : MonoBehaviour
 
     void Start()
     {
-        if (!objetivo)
-        {
-            var j = FindAnyObjectByType<ControlJugador>();
-            if (j) objetivo = j.transform;
-        }
+        if (!objetivo && ControlJugador.Local) objetivo = ControlJugador.Local.transform;
         Saltar();
     }
 
@@ -27,7 +23,14 @@ public class CamaraSigue : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!objetivo) return;
+        if (!objetivo)
+        {
+            // En el pueblo online el jugador aparece después.
+            if (!ControlJugador.Local) return;
+            objetivo = ControlJugador.Local.transform;
+            ControlJugador.Local.cameraRef = transform;
+            Saltar();
+        }
         Vector3 deseada = objetivo.position + desplazamiento;
         transform.position = Vector3.Lerp(transform.position, deseada, suavidad * Time.deltaTime);
         transform.LookAt(objetivo.position + Vector3.up * 0.5f);

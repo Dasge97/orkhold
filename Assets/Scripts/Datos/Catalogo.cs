@@ -33,9 +33,13 @@ public class Catalogo : ScriptableObject
         }
     }
 
+    /// En el pueblo online lo crea el servidor como objeto de red (RedPueblo).
+    public static System.Func<Recurso, Vector3, int, GameObject> SoltarEnRed;
+
     /// Pone en el suelo el recogible de un recurso. Devuelve null si el catálogo no lo tiene.
     public static GameObject Soltar(Recurso r, Vector3 donde, int cantidad = 1)
     {
+        if (SoltarEnRed != null) return SoltarEnRed(r, donde, cantidad);
         var c = Instancia;
         var p = c ? c.Recogible(r) : null;
         if (!p) return null;

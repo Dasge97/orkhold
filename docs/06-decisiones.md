@@ -92,3 +92,17 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 64 | Al entrar en el fuerte el cliente pide a la API el inventario y el fuerte. | Construir con los datos más recientes. |
 | 65 | En el asalto los defensores ven a 8 m y persiguen hasta 12 m; los del fuerte difícil del sistema llevan +3 de vida. | Equilibrio del asalto (`docs/04-pruebas-asalto.md`). |
 | 66 | La URL de la API va vacía en git y se pone solo al compilar el APK (`-urlApi`); un test lo comprueba. | Un APK de prueba dejó la URL del emulador en el commit de la fase 6. |
+
+## Fase 7
+| # | Decisión | Por qué |
+|---|---|---|
+| 67 | Netcode for GameObjects 2.13.1 (la que trae Unity 6000.5) en vez de la 2.4.x fijada en `CLAUDE.md`. | La 2.4.x no compila con Unity 6000.5 (usa APIs que ahora son error). |
+| 68 | El `NetworkManager` lo crea `RedPueblo` al cargar el pueblo y se destruye al salir por una puerta; sin gestión de escenas de Netcode. | Las otras escenas son de un solo jugador; así cada puerta desconecta y reconecta sin estado viejo. |
+| 69 | Sin dirección de mundo, o si no conecta en 6 s, el pueblo arranca como anfitrión local en un puerto al azar entre 21000 y 29000, con aviso. | §8 del diseño; Windows reserva puertos sueltos fuera de ese rango. |
+| 70 | Envío de entrada 30 veces por segundo y los toques al momento; corrección si la diferencia pasa de 0,35 m y salto si pasa de 3 m. | Valores habituales; con ellos el movimiento propio no tiembla. |
+| 71 | Los orcos persiguen al jugador vivo más cercano (lo buscan cada 0,5 s). | Con varios jugadores, perseguir siempre al primero no tiene sentido. |
+| 72 | En el servidor dedicado, cada jugador aparece con una separación al azar (hasta 0,6 m a los lados y 0,4 m adelante o atrás). | Si no, dos jugadores que entran a la vez aparecen uno encima del otro. |
+| 73 | La prueba de red (7.8) usa el ejecutable de Windows con bots en vez de ParrelSync en el editor. | Se puede lanzar sin ventanas y sin abrir varios Unity; ParrelSync duplica el proyecto y no hay disco. |
+| 74 | Con `-bot` las puertas no hacen nada. | Un bot que cruza una puerta sale del pueblo y estropea la prueba. |
+| 75 | El servidor de mundo lee la URL de la API y la clave de servidor de variables de entorno (`ORKHOLD_API`, `ORKHOLD_CLAVE_SERVIDOR`). | La clave no puede ir en la compilación ni en git. |
+| 76 | La API se publica en `127.0.0.1:3110` para el proxy de codehive, nunca directa a internet. | Que todo el tráfico pase por el proxy con HTTPS. |

@@ -77,15 +77,17 @@ Leer antes: `02-arquitectura.md` §1, §4, §4.1, §2.6.
 
 ## Fase 7 · Pueblo online
 Leer antes: `02-arquitectura.md` §1, §2.6, §3. Es la fase más difícil: si una tarea se atasca dos veces, preguntar.
-- [ ] 7.1 Instalar Netcode for GameObjects 2.x y Unity Transport. `NetworkManager` solo en la escena Pueblo.
-- [ ] 7.2 Jugador como `NetworkObject` con autoridad del servidor: el cliente manda entrada, el servidor mueve. Predicción local y corrección suave.
-- [ ] 7.3 Otros jugadores visibles con su modelo, nombre encima y animación sincronizada.
-- [ ] 7.4 Enemigos del pueblo solo en el servidor; estado replicado. Daño y botín se deciden en el servidor y van a la API (`POST /inventario/sumar` con clave de servidor).
-- [ ] 7.5 Puertas (mazmorra, fuerte, asalto) desconectan del pueblo con transición y reconectan al volver.
-- [ ] 7.6 Modo sin conexión: NGO en modo host local y aviso en pantalla; fuerte y asalto bloqueados.
+- [x] 7.1 Instalar Netcode for GameObjects 2.x y Unity Transport. `NetworkManager` solo en la escena Pueblo. (2026-10-30)
+- [x] 7.2 Jugador como `NetworkObject` con autoridad del servidor: el cliente manda entrada, el servidor mueve. Predicción local y corrección suave. (2026-10-30)
+- [x] 7.3 Otros jugadores visibles con su modelo, nombre encima y animación sincronizada. (2026-10-30)
+- [x] 7.4 Enemigos del pueblo solo en el servidor; estado replicado. Daño y botín se deciden en el servidor y van a la API (`POST /inventario/sumar` con clave de servidor). (2026-10-30)
+- [x] 7.5 Puertas (mazmorra, fuerte, asalto) desconectan del pueblo con transición y reconectan al volver. (2026-10-30)
+- [x] 7.6 Modo sin conexión: NGO en modo host local y aviso en pantalla; fuerte y asalto bloqueados. (2026-10-30)
 - [ ] 7.7 Build "Dedicated Server" Linux; Dockerfile; `docker-compose` junto a la API; UDP 7777.
-- [ ] 7.8 Script de prueba: servidor local + 2 clientes en editor (ParrelSync) se ven y se mueven.
+  (Dockerfile y compose hechos en `deployment/`; falta compilar: el módulo de Unity pide permisos de administrador.)
+- [x] 7.8 Script de prueba: servidor local + 2 clientes en editor (ParrelSync) se ven y se mueven. (2026-10-30)
   Comprobar: dos emuladores conectados al servidor de codehive se ven moverse; matar un orco en uno suma monedas en la API.
+  (Comprobado en local: dos clientes y un servidor se ven moverse, y lo que recoge un cliente llega a la API. Con codehive, en la fase 8.)
 
 ## Fase 8 · Despliegue y avisos
 Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóveda, ntfy y Kit.

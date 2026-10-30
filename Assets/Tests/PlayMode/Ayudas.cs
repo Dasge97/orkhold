@@ -17,11 +17,23 @@ public static class Ayudas
         Assert.AreEqual(escena, SceneManager.GetActiveScene().name);
     }
 
-    public static ControlJugador Jugador() => Object.FindAnyObjectByType<ControlJugador>();
+    /// El jugador de este móvil (en el pueblo con red puede haber más copias).
+    public static ControlJugador Jugador()
+    {
+        var todos = Object.FindObjectsByType<ControlJugador>();
+        if (todos.Length > 1)
+            Debug.LogWarning("PRUEBA: hay " + todos.Length + " jugadores: " + string.Join(", ", todos.Select(j =>
+                $"{j.name}@{j.transform.position} escena={j.gameObject.scene.name} local={j == ControlJugador.Local}")));
+        return ControlJugador.Local ? ControlJugador.Local : (todos.Length > 0 ? todos[0] : null);
+    }
 
     public static Puerta Puerta(string id)
     {
-        var p = Object.FindObjectsByType<Puerta>().FirstOrDefault(x => x.id == id);
+        var todas = Object.FindObjectsByType<Puerta>().Where(x => x.id == id).ToArray();
+        if (todas.Length > 1)
+            Debug.LogWarning("PRUEBA: hay " + todas.Length + " puertas " + id + ": " + string.Join(", ", todas.Select(x =>
+                $"{x.name}@{x.transform.position} llegada={x.llegada} escena={x.gameObject.scene.name}")));
+        var p = todas.FirstOrDefault();
         Assert.IsNotNull(p, "No hay puerta con id " + id + " en " + SceneManager.GetActiveScene().name);
         return p;
     }

@@ -35,6 +35,8 @@ public class GestorEscena : MonoBehaviour
     {
         Actual = this;
         if (esMazmorra) Partida.EmpezarEntrada();
+        // En el pueblo online el jugador lo crea la red (RedPueblo lo coloca al aparecer).
+        if (FindAnyObjectByType<RedPueblo>()) return;
         var jugador = FindAnyObjectByType<ControlJugador>();
         if (!jugador) return;
         Vector3 donde = aparicion;
@@ -60,8 +62,12 @@ public class GestorEscena : MonoBehaviour
         switch (alMorir)
         {
             case Muerte.Reaparecer:
-                Avisos.Mostrar("Has muerto", 1.5f);
-                Transicion.Fundido(() => jugador.Revivir(aparicion, giroAparicion), 1f);
+                if (jugador == ControlJugador.Local)
+                {
+                    Avisos.Mostrar("Has muerto", 1.5f);
+                    Transicion.Fundido(() => { if (jugador.TieneAutoridad) jugador.Revivir(aparicion, giroAparicion); }, 1f);
+                }
+                else if (jugador.TieneAutoridad) StartCoroutine(RevivirLuego(jugador, 1.5f));   // servidor: jugador de otro móvil
                 break;
             case Muerte.SalirConMitad:
                 int perdido = Partida.PerderMitadDeLaEntrada();
@@ -76,14 +82,38 @@ public class GestorEscena : MonoBehaviour
         }
     }
 
+    System.Collections.IEnumerator RevivirLuego(ControlJugador j, float segundos)
+    {
+        yield return new WaitForSeconds(segundos);
+        if (j) j.Revivir(aparicion, giroAparicion);
+    }
+
     /// Mueve al jugador sin que el CharacterController lo devuelva a su sitio.
-    public static void Colocar(Transform jugador, Vector3 donde, float giro)
+    public static void Colocar(Transform jugador, Vector3 donde, float giro) => Colocar(jugador, donde, giro, true);
+
+    public static void Colocar(Transform jugador, Vector3 donde, float giro, bool moverCamara)
     {
         var cc = jugador.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
         jugador.SetPositionAndRotation(donde + Vector3.up * 0.05f, Quaternion.Euler(0f, giro, 0f));
         if (cc) cc.enabled = true;
+        if (!moverCamara) return;
         var cam = FindAnyObjectByType<CamaraSigue>();
         if (cam) cam.Saltar();
+    }
+
+    /// Dónde aparece quien llega por la puerta "llegarA" (vacío = aparición normal). Lo usa el servidor del pueblo.
+    public void Llegada(string llegarA, out Vector3 donde, out float giro)
+    {
+        donde = aparicion; giro = giroAparicion;
+        if (string.IsNullOrEmpty(llegarA)) return;
+        foreach (var p in FindObjectsByType<Puerta>())
+            if (p.id == llegarA)
+            {
+                donde = p.llegada;
+                Vector3 fuera = p.llegada - p.transform.position; fuera.y = 0f;
+                if (fuera.sqrMagnitude > 0.01f) giro = Quaternion.LookRotation(fuera).eulerAngles.y;
+                return;
+            }
     }
 }

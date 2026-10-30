@@ -41,6 +41,9 @@ public class Enemigo : MonoBehaviour, IGolpeable
     public bool PuedeRecibirGolpe => Vida && !Vida.Muerto;
     public Transform Transform => transform;
     public Vector3 Casa => _casa;
+    /// Animación actual y si se ve (EnemigoRed los copia a los clientes).
+    public string EstadoAnim => _anim;
+    public bool Visible => _renders == null || _renders.Length == 0 || !_renders[0] || _renders[0].enabled;
 
     public static readonly List<Enemigo> Todos = new List<Enemigo>();
     /// Cualquier enemigo que muere (para el jefe, los tests y el servidor).
@@ -80,16 +83,27 @@ public class Enemigo : MonoBehaviour, IGolpeable
         BuscarJugador();
     }
 
+    /// El jugador vivo más cercano (en el pueblo online hay varios).
     void BuscarJugador()
     {
-        var j = FindAnyObjectByType<ControlJugador>();
-        if (j) { _jugador = j.transform; _vidaJugador = j.GetComponent<Vida>(); }
+        ControlJugador mejor = null; float dMejor = float.MaxValue;
+        foreach (var j in ControlJugador.Todos)
+        {
+            if (!j || j.Vida.Muerto) continue;
+            float d = (j.transform.position - transform.position).sqrMagnitude;
+            if (d < dMejor) { dMejor = d; mejor = j; }
+        }
+        if (mejor) { _jugador = mejor.transform; _vidaJugador = mejor.Vida; }
+        else { _jugador = null; _vidaJugador = null; }
     }
+
+    float _siguienteBusqueda;
 
     protected virtual void Update()
     {
         if (EstadoActual == Estado.Muerto) return;
-        if (!_jugador) { BuscarJugador(); if (!_jugador) return; }
+        if (!_jugador || Time.time >= _siguienteBusqueda) { _siguienteBusqueda = Time.time + 0.5f; BuscarJugador(); }
+        if (!_jugador) { Caer(); Animar("idle"); return; }
         if (Time.time < _ocupadoHasta) { Caer(); return; }
 
         Vector3 aJugador = _jugador.position - transform.position; aJugador.y = 0f;
@@ -224,6 +238,10 @@ public class Enemigo : MonoBehaviour, IGolpeable
         _haciaPunto = true;
         Animar("idle", true);
     }
+
+    /// Copias en los clientes del pueblo online: animación y visibilidad que dice el servidor.
+    public void AnimarDesdeRed(string estado) => Animar(estado);
+    public void MostrarDesdeRed(bool si) { foreach (var r in _renders) if (r) r.enabled = si; }
 
     // ---------- ayudas ----------
 

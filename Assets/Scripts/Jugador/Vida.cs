@@ -45,6 +45,20 @@ public class Vida : MonoBehaviour
 
     public void CurarDelTodo() => Curar(maxima);
 
+    /// Pone la vida que dice el servidor (copias en los clientes), con los mismos avisos que un daño o una cura.
+    public void Establecer(int nueva, Vector3 desde)
+    {
+        nueva = Mathf.Clamp(nueva, 0, maxima);
+        if (nueva == actual) return;
+        bool estabaMuerto = Muerto;
+        int antes = actual;
+        actual = nueva;
+        if (nueva < antes) { UltimoDano = Time.time; AlRecibirDano?.Invoke(antes - nueva, desde); }
+        else if (!estabaMuerto) AlCurar?.Invoke(nueva - antes);
+        AlCambiar?.Invoke();
+        if (Muerto && !estabaMuerto) AlMorir?.Invoke();
+    }
+
     /// Vuelve a la vida con la vida al máximo.
     public void Revivir()
     {

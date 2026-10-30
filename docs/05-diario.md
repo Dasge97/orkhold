@@ -3,6 +3,19 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 7 (7.1 a 7.6 y 7.8; 7.7 a medias)
+- Hecho: pueblo online con Netcode 2.13.1: `RedPueblo` (servidor, cliente o anfitrión local),
+  `JugadorRed` (entrada al servidor, predicción y corrección), `EnemigoRed`, `RecogibleRed`,
+  `MundoRed`, `NombreEncima`, `ApiServidor`; ejecutable de Windows para pruebas y `BotRed`;
+  `deployment/` con compose y Dockerfile del mundo. 7.7 queda a medias: el módulo de servidor Linux
+  de Unity pide permisos de administrador y la ventana caducó dos veces.
+- Comprobado: 43/43 tests de Unity; `pruebas/red-local.ps1` (servidor y dos bots: se ven moverse en
+  13-14 de 14 informes); un bot con `-bot-golpear` tala, mata orcos y recoge, y la API guarda su
+  madera y monedas (consulta a PostgreSQL).
+- Aprendido: la 2.4.x de Netcode no compila con Unity 6000.5; el `CharacterController` guarda una
+  posición interna que hay que reiniciar al aparecer en red; Windows reserva puertos sueltos (el
+  anfitrión usa 21000-29000); un `MonoBehaviour` que simula toques tiene que ir antes del que los limpia.
+
 ## 2026-10-30 — Fase 6 cerrada (tareas 6.1 a 6.9)
 - Hecho: API en `api/` (Node 22, Fastify 5, Zod, pg, PostgreSQL 16 en docker compose, migraciones
   numeradas, 31 tests con `node:test`); cliente con `Configuracion`, `ApiCliente`, `Sesion`,

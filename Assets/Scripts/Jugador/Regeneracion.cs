@@ -20,6 +20,7 @@ public class Regeneracion : MonoBehaviour
 
     void Update()
     {
+        if (!_jugador.TieneAutoridad) return;   // la vida la lleva el servidor
         bool enCombate = Time.time - _jugador.UltimoCombate < sinCombateSegundos;
         if (_vida.Muerto || enCombate || _vida.actual >= _vida.maxima) { _acumulado = 0f; return; }
         _acumulado += Time.deltaTime;

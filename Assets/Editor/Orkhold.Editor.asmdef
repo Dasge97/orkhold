@@ -1,8 +1,16 @@
 {
     "name": "Orkhold.Editor",
     "rootNamespace": "",
-    "references": ["Orkhold", "UnityEngine.UI"],
-    "includePlatforms": ["Editor"],
+    "references": [
+        "Orkhold",
+        "UnityEngine.UI",
+        "Unity.Netcode.Runtime",
+        "Unity.Networking.Transport",
+        "Unity.Collections"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

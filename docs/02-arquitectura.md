@@ -132,9 +132,17 @@ para el asalto. `EditorFuerte` lo edita (poner, quitar, validar límites y coste
 instancia con colliders y con `Enemigo` en los defensores.
 
 ### 2.6 Red en el cliente
-- `ClienteRed`: conecta con NGO al servidor de mundo en la escena Pueblo. El jugador es un
-  `NetworkObject` con autoridad del servidor: el cliente manda la entrada, el servidor mueve.
-  Predicción local del propio movimiento y corrección suave.
+- `RedPueblo` (objeto de la escena Pueblo): crea el `NetworkManager` con Unity Transport al cargar
+  el pueblo y lo destruye al salir por una puerta. Tres modos: servidor (`-servidor`), cliente
+  (`Configuracion.HostMundo`, o `-mundo host:puerto`) y anfitrión local si no hay mundo o no conecta
+  en 6 s. La conexión lleva `DatosConexion` (token, nombre, modelo, puerta de llegada) en JSON.
+- `JugadorRed`: el jugador es un `NetworkObject` con autoridad del servidor. El dueño manda la
+  entrada (`EntradaRpc`, 30 veces por segundo y los toques al momento), predice su movimiento y se
+  corrige si se separa más de 0,35 m (salta si pasa de 3 m). Posición, giro, animación, vida,
+  nombre y modelo van en `NetworkVariable`. `NombreEncima` pone el nombre sobre los demás.
+- `EnemigoRed`, `RecogibleRed` y `MundoRed` (golpes y agotado de árboles y rocas): el servidor
+  decide; los clientes solo dibujan. Los prefabs de red salen de `Resources/PrefabsRed.asset`.
+- Versión de Netcode: 2.13.1 (la 2.4.x no compila con Unity 6000.5).
 - `ApiCliente`: `UnityWebRequest`, JSON con `JsonUtility`, token en cabecera. URL en
   `Resources/Configuracion.asset` (vacía = modo local, como en los tests); el APK se compila con
   `-urlApi <url>`.
@@ -145,7 +153,12 @@ instancia con colliders y con `Enemigo` en los defensores.
   fuerte y asalto no (necesitan la API).
 
 ## 3. Servidor de mundo
-- Mismo proyecto Unity, build "Dedicated Server" Linux x86_64. Solo carga la escena Pueblo.
+- Mismo proyecto Unity, build "Dedicated Server" Linux x86_64 (`CompilarEscritorio.ServidorLinuxEnBatch`,
+  necesita el módulo "Linux Dedicated Server Build Support"). Solo carga la escena Pueblo.
+- Variables de entorno: `ORKHOLD_API` (URL de la API vista desde el contenedor) y
+  `ORKHOLD_CLAVE_SERVIDOR`. Argumentos: `-servidor`, `-puerto N`.
+- El servidor resuelve el jugador de cada cliente con su token (`GET /jugador`) y le suma lo que
+  recoge (`POST /inventario/sumar`, cabecera `X-Clave-Servidor`); el cliente solo lo muestra.
 - Enemigos solo en el servidor; el cliente recibe posición, animación y vida.
 - Cuando un jugador recoge o mata, el servidor llama a la API (`POST /inventario/sumar`) con una
   clave de servidor; el cliente nunca suma inventario por su cuenta en el pueblo.
@@ -197,7 +210,8 @@ botin_pueblo(id, jugador_id, recursos_json, creado)                -- provisiona
 ```
 
 ## 5. Despliegue en codehive
-- Carpeta `deployment/` con `docker-compose.yml`: `postgres`, `api`, `mundo`. Red interna; la API
+- Carpeta `deployment/` con `docker-compose.yml`: `postgres`, `api`, `mundo` (`deployment/mundo/Dockerfile`,
+  que copia la compilación de `Builds/Servidor/` en `deployment/mundo/servidor/`). Secretos en `deployment/.env`. Red interna; la API
   sale por el proxy existente (443) y el mundo por UDP 7777.
 - Credenciales en la bóveda Vaultwarden (`juego - postgres`, `juego - api secreto`, `juego - clave servidor mundo`).
 - `kit-estado juego-api` y `kit-estado juego-mundo`; añadir los dos al paquete `kit-codehive`.
@@ -206,5 +220,7 @@ botin_pueblo(id, jugador_id, recursos_json, creado)                -- provisiona
 ## 6. Pruebas
 - Cliente: `RevisionPrototipo` (fotos + Play automático) se amplía con un caso por pantalla.
 - API: tests de cada ruta con base de datos de prueba.
-- Red: servidor local + 2 clientes en editor (ParrelSync) o 2 emuladores.
+- Red: `pruebas/red-local.ps1` lanza un servidor y dos clientes bot (`-bot`) con el ejecutable de
+  Windows (`CompilarEscritorio.WindowsEnBatch`) y comprueba en sus registros que se ven moverse.
+  Con `-bot-golpear` el bot tala, mata orcos y recoge, para probar el botín contra la API.
 - APK: `CompilarAndroid` + emulador Medium Phone con `adb`.

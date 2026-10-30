@@ -25,17 +25,14 @@ public class Puerta : Interactuable
     bool _armada;   // hay que salir de la puerta antes de que vuelva a funcionar
 
     public override Icono IconoBoton => icono;
+    /// Los bots de la prueba de red no cruzan puertas.
+    static readonly bool EsBot = Configuracion.Bandera("-bot");
     public override bool Disponible => base.Disponible && !alPisar;
-
-    void Start()
-    {
-        var j = FindAnyObjectByType<ControlJugador>();
-        if (j) _jugador = j.transform;
-    }
 
     void Update()
     {
-        if (!alPisar || !_jugador || Transicion.Ocupada) return;
+        if (ControlJugador.Local) _jugador = ControlJugador.Local.transform;
+        if (!alPisar || !_jugador || Transicion.Ocupada || EsBot) return;
         Vector3 d = _jugador.position - transform.position;
         // Zona cuadrada como la casilla: cuenta aunque el jugador se quede pegado al muro de al lado.
         float dist = Mathf.Max(Mathf.Abs(d.x), Mathf.Abs(d.z));
@@ -51,6 +48,7 @@ public class Puerta : Interactuable
         _armada = false;
         Sonidos.Tocar("puerta");
         Viaje.llegarA = llegarA ?? "";
+        RedPueblo.Salir();   // en el pueblo online: se desconecta antes de irse
         Transicion.Ir(destino);
     }
 

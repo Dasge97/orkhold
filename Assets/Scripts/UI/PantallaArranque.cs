@@ -20,6 +20,17 @@ public class PantallaArranque : MonoBehaviour
 
     void Start()
     {
+        // Servidor de mundo o bot de pruebas: directos al pueblo, sin pantalla.
+        if (RedPueblo.EsServidorDedicado || Configuracion.Bandera("-bot"))
+        {
+            Partida.Actual.nombre = Configuracion.Argumento("-nombre") ?? (RedPueblo.EsServidorDedicado ? "servidor" : "Bot");
+            Partida.Actual.modelo = Configuracion.Argumento("-modelo") ?? "character-male-c";
+            Guardado.Activo = false;
+            if (RedPueblo.EsServidorDedicado) { Application.targetFrameRate = 30; UnityEngine.SceneManagement.SceneManager.LoadScene("Pueblo"); return; }
+            if (!Configuracion.ModoLocal) { Sesion.Iniciar((ok, e) => UnityEngine.SceneManagement.SceneManager.LoadScene("Pueblo")); return; }
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Pueblo");
+            return;
+        }
         var go = Ui.Lienzo("Arranque", 100);
         go.transform.SetParent(transform, false);
         Ui.Texto(go.transform, "ORKHOLD", 120, new Vector2(0f, 400f), new Vector2(1400f, 160f), negrita: true).color = Ui.Dorado;

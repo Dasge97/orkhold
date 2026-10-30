@@ -11,14 +11,21 @@ public class HUD : MonoBehaviour
 
     void Start()
     {
-        var j = FindAnyObjectByType<ControlJugador>();
-        if (j)
-        {
-            if (!vida) vida = j.GetComponent<Vida>();
-            if (!inventario) inventario = j.GetComponent<Inventario>();
-        }
-        if (vida) { vida.AlCambiar += Refrescar; vida.AlMorir += Refrescar; }
         Partida.AlCambiar += Refrescar;
+        Enganchar();
+        Refrescar();
+    }
+
+    /// En el pueblo online el jugador aparece después: se engancha cuando haya uno.
+    void Update() { if (!vida) Enganchar(); }
+
+    void Enganchar()
+    {
+        var j = ControlJugador.Local;
+        if (!j) return;
+        vida = j.GetComponent<Vida>();
+        inventario = j.GetComponent<Inventario>();
+        vida.AlCambiar += Refrescar; vida.AlMorir += Refrescar;
         Refrescar();
     }
 

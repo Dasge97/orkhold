@@ -20,7 +20,7 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
   Nunca cambiar el diseño por cuenta propia.
 - **Cuando algo falle dos veces** de la misma forma, parar, escribir en el diario qué se probó y
   preguntar. No seguir probando variantes a ciegas.
-- Versiones fijas: Unity 6000.5.9f1; Netcode for GameObjects 2.4.x; Unity Transport 2.4.x;
+- Versiones fijas: Unity 6000.5.9f1; Netcode for GameObjects 2.13.1; Unity Transport 2.x (el que trae Netcode);
   Node 22; Fastify 5; PostgreSQL 16. No subir de versión sin que Daniel lo pida.
 - Cada tarea debe dejar el proyecto compilando y la escena montándose. Si una tarea se queda a
   medias al acabar la sesión, se anota en el diario en qué punto está.
@@ -52,6 +52,9 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 | Probar en emulador | `emulator -avd Medium_Phone_API_36.0 -gpu host`, luego `adb install -r Builds/orkhold.apk`, `adb shell monkey -p com.orkhold.game 1`, `adb exec-out screencap -p > foto.png` |
 | Registro de Unity | Unity escribe en `%LOCALAPPDATA%\Unity\Editor\Editor.log`; buscar `error CS`, `Exception`, `Escenas montadas`, `APK: resultado` |
 | FPS en el móvil | `adb logcat -s Unity` muestra `FPS media=... escena=...` cada 5 s (`MedidorFps`) |
+| Ejecutable de Windows | `CompilarEscritorio.WindowsEnBatch` (con `-buildTarget Win64`): `Builds/Windows/Orkhold.exe`. Argumentos: `-servidor -puerto N` (servidor de mundo), `-mundo host:puerto` (cliente), `-api URL`, `-nombre X`, `-bot` y `-bot-golpear` (jugador automático) |
+| Prueba de red local | `powershell -File pruebas/red-local.ps1`: servidor y dos bots sin ventana; dice `RED: OK` si se ven moverse. Registros en `Revision/red/` |
+| Servidor de mundo Linux | `CompilarEscritorio.ServidorLinuxEnBatch` (con `-buildTarget Linux64 -standaloneBuildSubtarget Server`): `Builds/Servidor/`. Necesita el módulo de Unity "Linux Dedicated Server Build Support". Despliegue en `deployment/` |
 | MCP de Unity | Paquete `com.coplaydev.unity-mcp` instalado. Arrancar desde `Window > MCP For Unity`; Claude Code lo tiene registrado como `UnityMCP` (http://127.0.0.1:8080/mcp) |
 
 ## Cosas aprendidas (no volver a tropezar)
@@ -68,4 +71,7 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 - El emulador necesita 4 GB de RAM (`hw.ramSize` en `%USERPROFILE%\.android\avd\Medium_Phone.avd\config.ini`); con 2 GB va a 5-15 fps.
 - Cada compilación de Unity reinicia `adb`; esperar a que `adb get-state` diga `device` antes de instalar.
 - Las vallas del Nature Kit van en el borde de la casilla, no en el centro; el río y el puente, sin girar, van de norte a sur.
+- Netcode for GameObjects va en la 2.13.1: la 2.4.x no compila con Unity 6000.5.
+- En red, el `CharacterController` guarda su posición interna: al aparecer, apagarlo y encenderlo.
+- Windows reserva puertos sueltos; el anfitrión local usa 21000-29000.
 - Decisiones tomadas sin Daniel: `docs/06-decisiones.md`.

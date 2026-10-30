@@ -110,8 +110,11 @@ public static class MontarEscenas
         }
         else Debug.LogWarning($"{escena}: no hay '{letraAparicion}' para la aparición");
 
-        var jugador = (GameObject)PrefabUtility.InstantiatePrefab(CrearPrefabs.Cargar("Jugador"));
-        jugador.transform.SetPositionAndRotation(gestor.aparicion + Vector3.up * 0.05f, Quaternion.Euler(0f, gestor.giroAparicion, 0f));
+        // En el pueblo el jugador lo crea la red (RedPueblo); en las demás escenas va horneado.
+        bool enRed = escena == "Pueblo";
+        if (enRed) new GameObject("RedPueblo").AddComponent<RedPueblo>();
+        var jugador = enRed ? null : (GameObject)PrefabUtility.InstantiatePrefab(CrearPrefabs.Cargar("Jugador"));
+        if (jugador) jugador.transform.SetPositionAndRotation(gestor.aparicion + Vector3.up * 0.05f, Quaternion.Euler(0f, gestor.giroAparicion, 0f));
 
         var cam = new GameObject("Camara").AddComponent<Camera>();
         cam.tag = "MainCamera";
@@ -121,10 +124,14 @@ public static class MontarEscenas
         cam.backgroundColor = RenderSettings.fogColor;
         cam.gameObject.AddComponent<AudioListener>();
         var sigue = cam.gameObject.AddComponent<CamaraSigue>();
-        sigue.objetivo = jugador.transform;
-        cam.transform.position = jugador.transform.position + sigue.desplazamiento;
-        cam.transform.LookAt(jugador.transform.position + Vector3.up * 0.5f);
-        jugador.GetComponent<ControlJugador>().cameraRef = cam.transform;
+        Vector3 mira = jugador ? jugador.transform.position : gestor.aparicion;
+        cam.transform.position = mira + sigue.desplazamiento;
+        cam.transform.LookAt(mira + Vector3.up * 0.5f);
+        if (jugador)
+        {
+            sigue.objetivo = jugador.transform;
+            jugador.GetComponent<ControlJugador>().cameraRef = cam.transform;
+        }
 
         PrefabUtility.InstantiatePrefab(CrearPrefabs.Cargar("Interfaz"));
         var ev = new GameObject("EventSystem");
