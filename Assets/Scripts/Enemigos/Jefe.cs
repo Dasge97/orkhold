@@ -39,6 +39,7 @@ public class Jefe : Enemigo
         {
             _enCombate = true;
             _siguienteArea = Time.time + intervaloArea;
+            if (deMazmorra) Avisos.Mostrar("Urzog: \"Cien años. Nadie pasó.\"", 3f);
             BarraVidaJefe.Mostrar(Vida, nombre);
         }
         if (_enCombate && d <= distanciaCombate && Time.time >= _siguienteArea)
@@ -75,8 +76,8 @@ public class Jefe : Enemigo
         {
             // Con servidor, la unidad o los huesos los da la API al salir de la mazmorra.
             Avisos.Mostrar(p.Progreso(ClaveProgreso) != "1"
-                ? "¡Orco jefe derrotado! Consigues un Orco jefe defensor para tu fuerte"
-                : "¡Orco jefe derrotado! +3 huesos", 4f);
+                ? "Urzog: \"Eres más fuerte. Entonces mandas. Así es la ley.\" Urzog defenderá tu fuerte"
+                : "Urzog: \"Eres más fuerte. Entonces mandas.\" Su botín te espera al salir", 4f);
             return;
         }
         if (p.Progreso(ClaveProgreso) != "1")

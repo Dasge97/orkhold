@@ -153,9 +153,9 @@ Leer antes: `08-formato-y-pvp.md` entero.
 
 ## Fase 13 · Lore en el juego
 Leer antes: `07-lore.md` §5-§7.
-- [ ] 13.1 Textos de carga del §6 y "Vado Gris" en la pantalla de carga.
-- [ ] 13.2 NPC con su sitio y frases: Maela, Tobin y Rook dicen el tutorial (sustituyen a los carteles); Gruk, Ferra y Ansel con frase.
-- [ ] 13.3 Urzog con sus tres frases. Comprobar la fase: capturas del pueblo con los NPC.
+- [x] 13.1 Textos de carga del §6 y "Vado Gris" en la pantalla de carga.
+- [x] 13.2 NPC con su sitio y frases: Maela, Tobin y Rook dicen el tutorial (sustituyen a los carteles); Gruk, Ferra y Ansel con frase.
+- [x] 13.3 Urzog con sus tres frases. Comprobar la fase: capturas del pueblo con los NPC. (2026-10-30: `PruebaLore`, `Revision/80-maela-tutorial.png`.)
 
 ## Después de la versión 2 (no empezar)
 Herramientas de asalto, repeticiones, tiempos de construcción, segunda mazmorra, más piezas y

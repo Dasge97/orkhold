@@ -93,10 +93,11 @@ public static class CrearPaletaMapa
         Agregar(p, '$', "moneda", new GameObject[0], entidad: CrearPrefabs.Cargar("Moneda"));
         Agregar(p, 'p', "poción", new GameObject[0], entidad: CrearPrefabs.Cargar("Pocion"));
         Agregar(p, 'X', "trampa", new GameObject[0], entidad: CrearPrefabs.Cargar("Trampa"));
-        // Carteles del tutorial (tarea 9.2): el texto va en la cabecera del mapa (cartel1 ... cartel5).
+        // Carteles del tutorial (tarea 9.2 y 07-lore.md §7): el texto va en la cabecera del mapa (cartel1 ... cartel5)
+        // y lo dice un personaje del pueblo que pone MontarEscenas. 'G': Gruk, el orco mercenario.
         for (char n = '1'; n <= '5'; n++)
-            Agregar(p, n, "cartel del tutorial " + n, Modelos(Natura, "sign"), escala: 1.6f, marca: true, giroY: 180f,
-                    colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.2f, 0.8f, 0f));
+            Agregar(p, n, "personaje del tutorial " + n, new GameObject[0], marca: true);
+        Agregar(p, 'G', "Gruk", new GameObject[0], marca: true);
         Agregar(p, 'K', "cofre del tesoro", Modelos(Dungeon, "chest"), escala: 1.6f, marca: true,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.45f, 0.7f, 0f));
 

@@ -102,6 +102,9 @@ public static class ConstructorFuerte
                     e.enabled = modo == PiezaFuerte.Modo.Asalto;
                     var jefe = e as Jefe;
                     if (jefe) jefe.deMazmorra = false;
+                    // Urzog en tu fuerte (07-lore.md §5.7).
+                    if (jefe && modo == PiezaFuerte.Modo.Propio)
+                        g.AddComponent<Cartel>().texto = "Urzog: \"Guardé a un rey muerto. Guardaré a uno vivo.\"";
                 }
                 break;
         }

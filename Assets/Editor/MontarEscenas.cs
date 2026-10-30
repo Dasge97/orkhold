@@ -327,18 +327,47 @@ public static class MontarEscenas
 
     /// Hierba alrededor del fuerte para que no se vea el vacío.
     /// Carteles del tutorial: letras 1-5 del mapa con su texto en la cabecera (cartel1 ... cartel5).
+    /// Quién dice cada cartel (07-lore.md §7): Maela junto a la fogata, Rook, Ferra en su forja, Ansel hacia la
+    /// mazmorra y Tobin junto al tablón.
+    static readonly string[] Hablantes = { "", "Maela", "Rook", "Ferra", "Ansel", "Tobin" };
+
     static void PonerCarteles(CargadorMapa.Resultado r)
     {
         foreach (var m in r.marcas)
         {
+            if (m.letra == 'G') { PonerGruk(r, m.posicion); continue; }
             if (m.letra < '1' || m.letra > '5') continue;
             string texto = r.mapa.Valor("cartel" + m.letra);
             if (string.IsNullOrEmpty(texto)) { Debug.LogWarning($"Mapa {r.mapa.Nombre}: falta el texto cartel{m.letra}"); continue; }
-            var go = new GameObject("Cartel " + m.letra);
-            go.transform.SetParent(r.raiz.transform, false);
-            go.transform.position = m.posicion;
+            string quien = Hablantes[m.letra - '0'];
+            var go = Personaje(quien, r, m.posicion);
+            go.name = $"Cartel {m.letra} ({quien})";
             go.AddComponent<Cartel>().texto = texto;
+            if (quien == "Ferra") go.AddComponent<Herreria>().alcance = 1.6f;
         }
+    }
+
+    static GameObject Personaje(string quien, CargadorMapa.Resultado r, Vector3 donde)
+    {
+        var prefab = CrearPrefabs.Cargar("Npc" + quien);
+        var go = prefab ? (GameObject)PrefabUtility.InstantiatePrefab(prefab) : new GameObject();
+        go.transform.SetParent(r.raiz.transform, false);
+        go.transform.SetPositionAndRotation(donde, Quaternion.Euler(0f, 180f, 0f));
+        return go;
+    }
+
+    /// Gruk Mediopaga, el orco mercenario, a la entrada de las Tierras del Este (07-lore.md §5.3).
+    static void PonerGruk(CargadorMapa.Resultado r, Vector3 donde)
+    {
+        var go = Personaje("Gruk", r, donde);
+        go.name = "Gruk";
+        go.transform.rotation = Quaternion.Euler(0f, 270f, 0f);
+        var n = go.AddComponent<Npc>();
+        n.nombre = "Gruk";
+        n.frases = new[] { "Un orco sin rey sirve a quien paga. Yo soy el que cobra.",
+                           "Te los vendo fieles. Lo que hagan en tu fuerte ya es cosa tuya.",
+                           "Mis orcos y esqueletos los compras al construir tu fuerte. Yo solo cobro." };
+        n.alcance = 1.6f;
     }
 
     static void PonerPradera(CargadorMapa.Resultado r)

@@ -158,3 +158,7 @@ Lo más reciente arriba.
 - API: escondites dentro del diseño (`escondites.js`), `saqueo.js` rehace la exploración y resuelve marcas, rutas `/saqueo`, herramientas y temporadas. Se quitan las rutas del asalto.
 - Juego: `Saqueo` (explorar, mirar, marcar, resultado), `PantallaPrepararSaqueo`, `PantallaInforme`, `PantallaReparto`, `PantallaFerra`; escondites en el modo construir.
 - Aprendido: JsonUtility manda siempre los campos de clase (un `golpe` vacío llegaba como (0,0) y el servidor descartaba todo): hace falta un booleano que diga si va de verdad. Para los tests de Unity, la API local acepta un rival por nombre (`PRUEBAS=1`, solo en local).
+
+## 30-10-2026 — fase 13: lore en el juego
+- Los cinco carteles los dicen Maela, Rook, Ferra (con la forja), Ansel y Tobin, con su modelo de Mini Characters delante; Gruk con sus frases al este. Textos de carga del lore y "Vado Gris" en la carga del pueblo. Urzog habla al empezar el combate, al caer y en tu fuerte.
+- 42 tests de Unity y 55 de la API en verde.

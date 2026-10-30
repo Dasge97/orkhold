@@ -36,6 +36,7 @@ public static class CrearPrefabs
         CrearEnemigos();
         CrearTrampa();
         CrearPiezasFuerte();
+        CrearNpcs();
         CrearPrefabsRed();
         CrearPuerta();
         CrearCasa();
@@ -172,7 +173,7 @@ public static class CrearPrefabs
         // Jefe: orco al 150 %, vida 15, daño 2, golpe en área cada 6 s.
         var jefe = CrearEnemigo<Jefe>("Jefe", Dungeon + "character-orc.fbx", ctrlOrco, 1.5f, null, e =>
         {
-            e.nombre = "Orco jefe"; e.distanciaVer = 7f; e.distanciaPegar = 1.3f; e.velocidad = 1.8f; e.cadenciaAtaque = 1.6f; e.dano = 2;
+            e.nombre = "Urzog, Guardián de la Cripta"; e.distanciaVer = 7f; e.distanciaPegar = 1.3f; e.velocidad = 1.8f; e.cadenciaAtaque = 1.6f; e.dano = 2;
             e.distanciaPerder = 12f; e.reaparecerSegundos = 0f; e.monedasMin = 5; e.monedasMax = 5;
         }, 15);
         Guardar(jefe, "Jefe");
@@ -327,6 +328,30 @@ public static class CrearPrefabs
         Escondite("doble_fondo", "Doble fondo", dobleFondo, 10, 0, K(Recurso.Piedra, 3), K(Recurso.Hierro, 1));
         c.capacidadCentral = 50;
         EditorUtility.SetDirty(c);
+    }
+
+    /// Personajes del pueblo (07-lore.md §5): modelo de Mini Characters (Gruk, el orco de Mini Dungeon),
+    /// animación de reposo y un cuerpo para no atravesarlos.
+    static void CrearNpcs()
+    {
+        void Npc(string id, string fbx, float escala)
+        {
+            var g = new GameObject("Npc" + id);
+            var m = Poner(fbx, g.transform, Vector3.zero, 0f);
+            m.transform.localScale = Vector3.one * escala;
+            var an = Animador(m);
+            an.runtimeAnimatorController = CrearControlador(fbx, Anim + "npc-" + id.ToLowerInvariant() + ".controller");
+            an.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            var cc = g.AddComponent<CapsuleCollider>();
+            cc.center = new Vector3(0f, 0.5f, 0f); cc.height = 1f; cc.radius = 0.3f;
+            Guardar(g, "Npc" + id);
+        }
+        Npc("Maela", Personajes + "character-female-e.fbx", 1.12f);
+        Npc("Tobin", Personajes + "character-male-b.fbx", 1.12f);
+        Npc("Ferra", Personajes + "character-female-b.fbx", 1.12f);
+        Npc("Ansel", Personajes + "character-male-e.fbx", 1.12f);
+        Npc("Rook", Personajes + "character-male-d.fbx", 1.12f);
+        Npc("Gruk", Dungeon + "character-orc.fbx", 1f);
     }
 
     static void CrearTrampa()

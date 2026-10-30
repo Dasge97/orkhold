@@ -859,16 +859,15 @@ MonoBehaviour:
     unirColision: 0
     debajo: 0
   - letra: 49
-    descripcion: cartel del tutorial 1
-    modelos:
-    - {fileID: 919132149155446097, guid: a3e733f9e047dba44b458b5b48140146, type: 3}
-    escala: 1.6
+    descripcion: personaje del tutorial 1
+    modelos: []
+    escala: 1
     altura: 0
-    giroY: 180
+    giroY: 0
     giroAleatorio: 0
     conSuelo: 1
-    colision: 2
-    tamano: {x: 0.2, y: 0.8, z: 0}
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
     bloque: 1
     marca: 1
     union:
@@ -891,16 +890,15 @@ MonoBehaviour:
     unirColision: 0
     debajo: 0
   - letra: 50
-    descripcion: cartel del tutorial 2
-    modelos:
-    - {fileID: 919132149155446097, guid: a3e733f9e047dba44b458b5b48140146, type: 3}
-    escala: 1.6
+    descripcion: personaje del tutorial 2
+    modelos: []
+    escala: 1
     altura: 0
-    giroY: 180
+    giroY: 0
     giroAleatorio: 0
     conSuelo: 1
-    colision: 2
-    tamano: {x: 0.2, y: 0.8, z: 0}
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
     bloque: 1
     marca: 1
     union:
@@ -923,16 +921,15 @@ MonoBehaviour:
     unirColision: 0
     debajo: 0
   - letra: 51
-    descripcion: cartel del tutorial 3
-    modelos:
-    - {fileID: 919132149155446097, guid: a3e733f9e047dba44b458b5b48140146, type: 3}
-    escala: 1.6
+    descripcion: personaje del tutorial 3
+    modelos: []
+    escala: 1
     altura: 0
-    giroY: 180
+    giroY: 0
     giroAleatorio: 0
     conSuelo: 1
-    colision: 2
-    tamano: {x: 0.2, y: 0.8, z: 0}
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
     bloque: 1
     marca: 1
     union:
@@ -955,16 +952,15 @@ MonoBehaviour:
     unirColision: 0
     debajo: 0
   - letra: 52
-    descripcion: cartel del tutorial 4
-    modelos:
-    - {fileID: 919132149155446097, guid: a3e733f9e047dba44b458b5b48140146, type: 3}
-    escala: 1.6
+    descripcion: personaje del tutorial 4
+    modelos: []
+    escala: 1
     altura: 0
-    giroY: 180
+    giroY: 0
     giroAleatorio: 0
     conSuelo: 1
-    colision: 2
-    tamano: {x: 0.2, y: 0.8, z: 0}
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
     bloque: 1
     marca: 1
     union:
@@ -987,16 +983,46 @@ MonoBehaviour:
     unirColision: 0
     debajo: 0
   - letra: 53
-    descripcion: cartel del tutorial 5
-    modelos:
-    - {fileID: 919132149155446097, guid: a3e733f9e047dba44b458b5b48140146, type: 3}
-    escala: 1.6
+    descripcion: personaje del tutorial 5
+    modelos: []
+    escala: 1
     altura: 0
-    giroY: 180
+    giroY: 0
     giroAleatorio: 0
     conSuelo: 1
-    colision: 2
-    tamano: {x: 0.2, y: 0.8, z: 0}
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
+    bloque: 1
+    marca: 1
+    union:
+      recto: {fileID: 0}
+      curva: {fileID: 0}
+      final: {fileID: 0}
+      te: {fileID: 0}
+      cruce: {fileID: 0}
+      aislado: {fileID: 0}
+      unidaCon: 
+      brazo: {fileID: 0}
+      brazoPosicion: {x: 0, y: 0, z: 0}
+      brazoGiro: {x: 0, y: 0, z: 0}
+      brazoEscala: {x: 1, y: 1, z: 1}
+    entidad: {fileID: 0}
+    combinar: 1
+    combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
+    unirColision: 0
+    debajo: 0
+  - letra: 71
+    descripcion: Gruk
+    modelos: []
+    escala: 1
+    altura: 0
+    giroY: 0
+    giroAleatorio: 0
+    conSuelo: 1
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
     bloque: 1
     marca: 1
     union:

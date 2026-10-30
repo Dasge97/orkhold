@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9519f4002e049648aee31cc9fd13fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Orkhold::Jefe
-  nombre: Orco jefe
+  nombre: "Urzog, Guardi\xE1n de la Cripta"
   distanciaVer: 7
   distanciaPegar: 1.3
   velocidad: 1.8
