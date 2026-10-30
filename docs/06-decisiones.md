@@ -171,3 +171,4 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 127 | La API local de Docker lleva `PRUEBAS=1`: "preparar" acepta un rival por nombre. En producción no existe. | La base local tiene muchos jugadores de pruebas y el test necesita saquear a uno concreto. |
 | 128 | Carteles: 1 Maela (fogata), 2 Rook (atacar), 3 Ferra (recoger; también abre la forja), 4 Ansel (mazmorra), 5 Tobin (fuerte y saqueo). Gruk, aparte, en la entrada de las Tierras del Este. | 07-lore §7 pide Maela, Tobin y Rook; los cinco sitios ya existían y Ansel y Ferra encajan donde están sus carteles. |
 | 129 | El jefe se llama "Urzog, Guardián de la Cripta" en su barra de vida. | 07-lore §5.7. |
+| 130 | Los correos de cuenta salen por `smtp.ionos.es:465` con el buzón `no-responder@orkhold.com` (contraseña en la bóveda: «ionos mail orkhold»). | Buzón creado por Daniel el 30-10-2026. |
