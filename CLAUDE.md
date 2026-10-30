@@ -56,6 +56,8 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 | Prueba de red local | `powershell -File pruebas/red-local.ps1`: servidor y dos bots sin ventana; dice `RED: OK` si se ven moverse. Registros en `Revision/red/` |
 | Servidor de mundo Linux | `CompilarEscritorio.ServidorLinuxEnBatch` (con `-buildTarget Linux64 -standaloneBuildSubtarget Server`): `Builds/Servidor/`. Necesita el módulo de Unity "Linux Dedicated Server Build Support". Despliegue en `deployment/` |
 | Desplegar en codehive | `deployment/desplegar.sh` (Git Bash): sube API, compose y servidor de mundo, crea secretos, Traefik, cron y arranca. Scripts del servidor en `deployment/codehive/` |
+| Icono y logo | `CrearIcono.EnBatch`: `Assets/Iconos/icono.png` y `logo.png`, y los pone en el proyecto |
+| APK firmado | `pruebas/crear-keystore.sh` (una vez, con la bóveda desbloqueada) y `pruebas/compilar-apk-firmado.sh [url] [host:puerto]` |
 | MCP de Unity | Paquete `com.coplaydev.unity-mcp` instalado. Arrancar desde `Window > MCP For Unity`; Claude Code lo tiene registrado como `UnityMCP` (http://127.0.0.1:8080/mcp) |
 
 ## Cosas aprendidas (no volver a tropezar)
@@ -75,4 +77,5 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 - Netcode for GameObjects va en la 2.13.1: la 2.4.x no compila con Unity 6000.5.
 - En red, el `CharacterController` guarda su posición interna: al aparecer, apagarlo y encenderlo.
 - Windows reserva puertos sueltos; el anfitrión local usa 21000-29000.
+- Con `adb shell input swipe` largo, el dedo sigue pulsado tras cambiar de escena: usar gestos cortos cerca de puertas.
 - Decisiones tomadas sin Daniel: `docs/06-decisiones.md`.

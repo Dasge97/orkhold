@@ -46,6 +46,7 @@ public static class MontarEscenas
             Configurar(r, 'C', "asalto", "Asalto", "", false);
             PonerHuecoFuerte(r, paleta);
             PonerPatrullas(r, paleta);
+            PonerCarteles(r);
         });
         Montar("Mazmorra1", "catacumbas", Ambiente.Mazmorra, paleta, g =>
         {
@@ -95,6 +96,7 @@ public static class MontarEscenas
         extra?.Invoke(r);
         int trozos = CombinarMallas.Combinar(r.raiz.transform, escena, r.sueltas);
         MarcarEstatico(r.raiz, r.sueltas);
+        PonerLod(r.sueltas);
 
         // Aparición: la letra de la cabecera. Si es una puerta, su casilla de llegada; si no, al sur de la casilla.
         var gestor = new GameObject("GestorEscena").AddComponent<GestorEscena>();
@@ -324,6 +326,21 @@ public static class MontarEscenas
     }
 
     /// Hierba alrededor del fuerte para que no se vea el vacío.
+    /// Carteles del tutorial: letras 1-5 del mapa con su texto en la cabecera (cartel1 ... cartel5).
+    static void PonerCarteles(CargadorMapa.Resultado r)
+    {
+        foreach (var m in r.marcas)
+        {
+            if (m.letra < '1' || m.letra > '5') continue;
+            string texto = r.mapa.Valor("cartel" + m.letra);
+            if (string.IsNullOrEmpty(texto)) { Debug.LogWarning($"Mapa {r.mapa.Nombre}: falta el texto cartel{m.letra}"); continue; }
+            var go = new GameObject("Cartel " + m.letra);
+            go.transform.SetParent(r.raiz.transform, false);
+            go.transform.position = m.posicion;
+            go.AddComponent<Cartel>().texto = texto;
+        }
+    }
+
     static void PonerPradera(CargadorMapa.Resultado r)
     {
         var g = CrearPrefabs.Poner(CrearPrefabs.Natura + "ground_grass.fbx", r.raiz.transform,
@@ -333,6 +350,20 @@ public static class MontarEscenas
     }
 
     /// Lo que no se mueve, estático. Las piezas sueltas (árboles y rocas) tiemblan y encogen: no.
+    /// Árboles y rocas sueltos: dejan de dibujarse cuando ocupan menos del 3 % de la pantalla (tarea 9.3).
+    static void PonerLod(ICollection<GameObject> sueltas)
+    {
+        foreach (var g in sueltas)
+        {
+            if (!g || g.GetComponent<LODGroup>()) continue;
+            var rs = g.GetComponentsInChildren<Renderer>();
+            if (rs.Length == 0) continue;
+            var lod = g.AddComponent<LODGroup>();
+            lod.SetLODs(new[] { new LOD(0.03f, rs) });
+            lod.RecalculateBounds();
+        }
+    }
+
     static void MarcarEstatico(GameObject raiz, ICollection<GameObject> sueltas)
     {
         var moviles = new HashSet<Transform>();

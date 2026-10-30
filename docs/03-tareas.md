@@ -100,12 +100,14 @@ Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóve
   en IONOS y desbloquear la bóveda para `orkhold-secretos guardar`. Servicios ya añadidos a `kit-codehive/kit.json`, sin importar.)
 
 ## Fase 9 · Pulido para enseñar
-- [ ] 9.1 Icono de la app y pantalla de carga.
-- [ ] 9.2 Tutorial de 1 minuto: 5 carteles en el pueblo (moverse, atacar, recoger, mazmorra, fuerte).
-- [ ] 9.3 Rendimiento en móvil gama media: menos sombras, LOD en árboles, 60 fps en emulador y en el móvil de Daniel.
-- [ ] 9.4 Capturas reales para los README (`docs/img/`).
+- [x] 9.1 Icono de la app y pantalla de carga. (2026-10-30)
+- [x] 9.2 Tutorial de 1 minuto: 5 carteles en el pueblo (moverse, atacar, recoger, mazmorra, fuerte). (2026-10-30)
+- [x] 9.3 Rendimiento en móvil gama media: menos sombras, LOD en árboles, 60 fps en emulador y en el móvil de Daniel. (2026-10-30)
+- [x] 9.4 Capturas reales para los README (`docs/img/`). (2026-10-30)
 - [ ] 9.5 APK firmado con keystore propio (guardado en la bóveda) e instalado en el móvil de Daniel.
+  (Preparado: `pruebas/crear-keystore.sh` y `pruebas/compilar-apk-firmado.sh`. Falta la bóveda desbloqueada, el servidor desplegado y el móvil de Daniel.)
   Comprobar: una persona que no ha visto el juego lo entiende en 2 minutos sin ayuda.
+  (Pendiente de Daniel: hace falta una persona de verdad.)
 
 ## Después de la primera versión (no empezar)
 Herramientas de asalto, repeticiones, tiempos de construcción, segunda mazmorra, más piezas y

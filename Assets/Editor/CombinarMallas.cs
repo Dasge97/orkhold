@@ -13,6 +13,12 @@ public static class CombinarMallas
     public const string Carpeta = "Assets/Mapas/Mallas/";
 
     /// "excluir": objetos (y sus hijos) que no se tocan, como árboles, rocas y entidades.
+    static bool BajoSuelo(Transform t, Transform raiz)
+    {
+        for (var x = t; x && x != raiz; x = x.parent) if (x.name == "Suelo") return true;
+        return false;
+    }
+
     public static int Combinar(Transform raiz, string nombre, ICollection<GameObject> excluir, int trozo = 16)
     {
         var excluidos = new HashSet<Transform>();
@@ -27,13 +33,15 @@ public static class CombinarMallas
         var filtros = raiz.GetComponentsInChildren<MeshFilter>(true)
             .Where(f => f.sharedMesh && f.GetComponent<MeshRenderer>() && !Excluido(f.transform)).ToList();
 
-        // Por trozo y por material.
-        var grupos = new Dictionary<Vector2Int, Dictionary<Material, List<CombineInstance>>>();
+        // Por trozo, por si proyecta sombra y por material. El suelo y lo muy bajo (flores, hierba)
+        // no proyectan sombra: no se ve y en el móvil la pasada de sombras es lo más caro (tarea 9.3).
+        var grupos = new Dictionary<Vector3Int, Dictionary<Material, List<CombineInstance>>>();
         foreach (var f in filtros)
         {
             var mr = f.GetComponent<MeshRenderer>();
             var p = raiz.InverseTransformPoint(f.transform.position);
-            var clave = new Vector2Int(Mathf.FloorToInt((p.x + 0.5f) / trozo), Mathf.FloorToInt((p.z + 0.5f) / trozo));
+            bool sombra = !BajoSuelo(f.transform, raiz) && mr.bounds.size.y > 0.4f;
+            var clave = new Vector3Int(Mathf.FloorToInt((p.x + 0.5f) / trozo), Mathf.FloorToInt((p.z + 0.5f) / trozo), sombra ? 1 : 0);
             if (!grupos.TryGetValue(clave, out var porMat)) grupos[clave] = porMat = new Dictionary<Material, List<CombineInstance>>();
             var mats = mr.sharedMaterials;
             for (int s = 0; s < f.sharedMesh.subMeshCount && s < mats.Length; s++)
@@ -60,7 +68,7 @@ public static class CombinarMallas
                 sub.CombineMeshes(kv.Value[m].ToArray(), true, true);
                 partes.Add(new CombineInstance { mesh = sub, transform = Matrix4x4.identity });
             }
-            var malla = new Mesh { name = $"{nombre}_{kv.Key.x}_{kv.Key.y}", indexFormat = IndexFormat.UInt32 };
+            var malla = new Mesh { name = $"{nombre}_{kv.Key.x}_{kv.Key.y}" + (kv.Key.z == 1 ? "" : "_sinsombra"), indexFormat = IndexFormat.UInt32 };
             malla.CombineMeshes(partes.ToArray(), false, true);
             malla.RecalculateBounds();
             foreach (var pt in partes) Object.DestroyImmediate(pt.mesh);
@@ -71,6 +79,7 @@ public static class CombinarMallas
             g.AddComponent<MeshFilter>().sharedMesh = malla;
             var mr = g.AddComponent<MeshRenderer>();
             mr.sharedMaterials = mats;
+            if (kv.Key.z == 0) mr.shadowCastingMode = ShadowCastingMode.Off;
             GameObjectUtility.SetStaticEditorFlags(g, StaticEditorFlags.BatchingStatic);
             n++;
         }

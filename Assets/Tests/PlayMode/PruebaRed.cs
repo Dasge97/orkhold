@@ -55,5 +55,10 @@ public class PruebaRed
         Assert.IsTrue(NetworkManager.Singleton.IsHost);
         Assert.Less(Ayudas.DistanciaPlana(ControlJugador.Local.transform.position, Ayudas.Puerta("mazmorra1").llegada), 1f,
             "Al volver no aparece junto a la puerta de la mazmorra");
+        yield return new WaitForSeconds(1.2f);
+        var yo = ControlJugador.Local;
+        Ayudas.Foto("red-vuelta-mazmorra");
+        Assert.IsTrue(yo.gameObject.activeInHierarchy, "El jugador está desactivado al volver");
+        Assert.IsTrue(yo.GetComponentsInChildren<Renderer>().Any(r => r.enabled && r.gameObject.activeInHierarchy), "El jugador no se ve al volver");
     }
 }

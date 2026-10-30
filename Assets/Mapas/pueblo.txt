@@ -2,6 +2,11 @@ nombre: pueblo
 tipo: exterior
 aparicion: F
 relleno: flores
+cartel1: Mueve a tu personaje con el joystick de la izquierda. Mantén pulsado el botón de correr para ir más rápido.
+cartel2: Toca la espada para golpear. Los árboles dan madera, las rocas piedra y los orcos monedas.
+cartel3: Lo que cae al suelo se recoge con el botón de la mano. Junto a la fogata recuperas vida.
+cartel4: Al norte está la mazmorra: lo que recojas dentro es tuyo, pero si mueres pierdes la mitad.
+cartel5: Al este está tu fuerte: constrúyelo con lo que recojas. El cofre de la plaza busca fuertes de otros para asaltar.
 ---
 TTTTTTTTT~TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 TTTTTTTTT~TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -11,7 +16,7 @@ TTT......~.............=..............T.......TT
 TTT......~...r.........=..............TpT.TT.TTT
 TT.......~.............=...........o.TT.T..TT.TT
 TTT......~.............=..........T....T......TT
-TTT......~.....o.......=.......T.T..T$....T...TT
+TTT......~.....o.......=4......T.T..T$....T...TT
 TT.......~......$......=.......T...T.....T.T.TTT
 TTT......~.............=.......T......T.To...TTT
 TT.......~.............=...........T...T.TT.TTTT
@@ -23,11 +28,11 @@ TT.........~........hh.=.hh...[,,,,,,,,,,,,,,,TT
 TTT........~........hh.=.hh...,,,,,,,,,,,,,,,,TT
 TT.........~...........=......,,,,,,,,,,,,,,,,TT
 TTT...r....~.....hh....=......,,,,,,,,,,,,,,,,TT
-TT..r......~.....hh...........,,,,,,,,,,,,,,,,TT
+TT..r......~.....hh..3........,,,,,,,,,,,,,,,,TT
 TT...$r....~.........C....B...,,,,,,,,,,,,,,,,TT
-TTTr.......~..................,,,,,,,,,,,,,,,,TT
+TTTr.......~..............1.5.,,,,,,,,,,,,,,,,TT
 TTT...-----_--------...F....--,,,,,,,,,,,,,,,,TT
-TTT........~..................,,,,,,,,,,,,,,,,TT
+TTT........~.....2............,,,,,,,,,,,,,,,,TT
 TT.r.r.....~..................,,,,,,,,,,,,,,,,TT
 TT.....r...~.....hh...........,,,,,,,,,,,,,,,,TT
 TTT.r......~.....hh....=......,,,,,,,,,,,,,,,,TT

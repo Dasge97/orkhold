@@ -117,3 +117,14 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 81 | Los secretos de producción se generan en el servidor (`orkhold-secretos generar`) y se guardan en la bóveda con `orkhold-secretos guardar`. | Nadie los ve; la bóveda estaba bloqueada al preparar el despliegue. |
 | 82 | La copia diaria (04:15, 14 días) avisa al móvil con `kit-avisar juego-api` si falla, sin cambiar el estado del servicio. | `orkhold-vigilar` pondría el estado otra vez en verde a los 5 minutos y el fallo se perdería. |
 | 83 | En producción `PUEBLO_CLIENTE` va apagado: el botín del pueblo solo lo suma el servidor de mundo. | Con el servidor de mundo, el cliente no debe sumar nada por su cuenta (§3). |
+
+## Fase 9
+| # | Decisión | Por qué |
+|---|---|---|
+| 84 | Icono: el orco de Mini Dungeon de cuerpo entero sobre un degradado verde, generado por `CrearIcono`. Logo del arranque: el orco y el nombre; sin el logo de Unity. | El diseño no dice nada; el orco es lo más reconocible del juego. |
+| 85 | Pantalla de carga: la pantalla negra de cada cambio de escena muestra el nombre y uno de 7 consejos al azar. | Ya existía el fundido; así no hay una escena de carga más. |
+| 86 | Carteles del tutorial como letras `1`-`5` del mapa del pueblo, con su texto en la cabecera (`cartel1`...`cartel5`); el texto sale arriba en un recuadro a menos de 2,4 m. Los cinco están cerca de la fogata, en el camino natural. | Se editan en el mapa de texto como lo demás; un tutorial de 1 minuto no puede obligar a cruzar el mapa. |
+| 87 | Rendimiento: el suelo y lo que mide menos de 0,4 m no proyectan sombra; árboles y rocas sueltos con LOD que los quita por debajo del 3 % de pantalla. Sombras duras a 18 m sin cambios. | Con la cámara fija desde arriba el LOD casi no actúa; lo que más ahorra es la pasada de sombras. Resultado: de 56-59 a 59-60 fps en el emulador. |
+| 88 | Capturas del README: arranque, carga, pueblo, tutorial y mazmorra nuevas del emulador; construir y asalto, del emulador en la fase 6 (no han cambiado). | El asalto necesita dos cuentas y la API; las de la fase 6 son reales y actuales. |
+| 89 | La firma del APK lee la contraseña del almacén de la bóveda por SSH y la pasa a Unity por el entorno; la ruta no se queda en ProjectSettings. El almacén vive en `%USERPROFILE%/.orkhold/`. | Regla de credenciales: nada en el repositorio ni en ficheros sueltos con la contraseña. |
+| 90 | El color cian del césped no se toca. | Es como se ven los materiales del pack de naturaleza desde la fase 0; cambiarlo es una decisión de aspecto para Daniel. |

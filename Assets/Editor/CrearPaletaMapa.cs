@@ -93,6 +93,10 @@ public static class CrearPaletaMapa
         Agregar(p, '$', "moneda", new GameObject[0], entidad: CrearPrefabs.Cargar("Moneda"));
         Agregar(p, 'p', "poción", new GameObject[0], entidad: CrearPrefabs.Cargar("Pocion"));
         Agregar(p, 'X', "trampa", new GameObject[0], entidad: CrearPrefabs.Cargar("Trampa"));
+        // Carteles del tutorial (tarea 9.2): el texto va en la cabecera del mapa (cartel1 ... cartel5).
+        for (char n = '1'; n <= '5'; n++)
+            Agregar(p, n, "cartel del tutorial " + n, Modelos(Natura, "sign"), escala: 1.6f, marca: true, giroY: 180f,
+                    colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.2f, 0.8f, 0f));
         Agregar(p, 'K', "cofre del tesoro", Modelos(Dungeon, "chest"), escala: 1.6f, marca: true,
                 colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.45f, 0.7f, 0f));
 

@@ -74,7 +74,21 @@ public static class CompilarAndroid
         // OpenGL ES 3 en vez de Vulkan: el Vulkan del emulador se cae (VK_ERROR_DEVICE_LOST).
         PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.Android, false);
         PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, new[] { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 });
-        PlayerSettings.Android.useCustomKeystore = false;
+        // Firma (tarea 9.5): con ORKHOLD_KEYSTORE (ruta) y ORKHOLD_KEYSTORE_CLAVE en el entorno se firma con el
+        // almacén propio (alias "orkhold"); si no, con la clave de depuración. La contraseña vive en la bóveda
+        // ("orkhold - keystore") y la pasa pruebas/compilar-apk-firmado.sh; nunca se guarda en el proyecto.
+        string almacen = System.Environment.GetEnvironmentVariable("ORKHOLD_KEYSTORE");
+        string claveAlmacen = System.Environment.GetEnvironmentVariable("ORKHOLD_KEYSTORE_CLAVE");
+        bool firmar = !string.IsNullOrEmpty(almacen) && File.Exists(almacen) && !string.IsNullOrEmpty(claveAlmacen);
+        PlayerSettings.Android.useCustomKeystore = firmar;
+        if (firmar)
+        {
+            PlayerSettings.Android.keystoreName = almacen;
+            PlayerSettings.Android.keystorePass = claveAlmacen;
+            PlayerSettings.Android.keyaliasName = "orkhold";
+            PlayerSettings.Android.keyaliasPass = claveAlmacen;
+        }
+        Debug.Log("APK: firma=" + (firmar ? "propia" : "depuración"));
         // URL de la API: argumento -urlApi (vacío = modo local). En http (emulador) hay que permitir tráfico sin cifrar.
         // Servidor de mundo: argumento -mundoApk host[:puerto] (vacío = el pueblo se juega solo).
         string url = Argumento("-urlApi");
@@ -106,6 +120,14 @@ public static class CompilarAndroid
         BuildReport informe;
         try { informe = BuildPipeline.BuildPlayer(opciones); }
         catch { if (cambia) RestaurarUrl(urlAntes, mundoAntes, puertoAntes); throw; }
+        if (firmar)
+        {
+            // Que la ruta del almacén no se quede en ProjectSettings (va en git).
+            PlayerSettings.Android.useCustomKeystore = false;
+            PlayerSettings.Android.keystoreName = "";
+            PlayerSettings.Android.keystorePass = PlayerSettings.Android.keyaliasPass = "";
+            AssetDatabase.SaveAssets();
+        }
         var r = informe.summary;
         UltimoResultado = r.result;
         // La compilación recarga los assets: la referencia "conf" ya no vale, se vuelve a cargar.

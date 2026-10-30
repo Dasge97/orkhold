@@ -3,6 +3,15 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 9 (9.1 a 9.4; 9.5 preparada)
+- Hecho: icono y logo generados (`CrearIcono`), pantalla de carga con consejos, 5 carteles de tutorial
+  (`Cartel`, letras 1-5 del mapa), sin sombras en suelo y flores, LOD en árboles y rocas, README nuevos
+  con 7 capturas; firma del APK con almacén propio preparada.
+- Comprobado: 44/44 tests (uno nuevo del tutorial); en el emulador, arranque, carga, cartel y mazmorra
+  vistos en capturas; 59-60 fps de media en el pueblo (antes 56-59).
+- Aprendido: un gesto largo con `adb` sigue pulsado tras cambiar de escena y mete al jugador por la
+  puerta de vuelta; las fotos de los tests no muestran la interfaz superpuesta.
+
 ## 2026-10-30 — Fase 8 preparada, sin desplegar
 - Hecho: `deployment/` completo (compose, Dockerfile Linux y con Wine, ruta de Traefik, `desplegar.sh`,
   `orkhold-secretos`, `orkhold-vigilar`, `orkhold-copia`); el servidor de mundo escribe su estado cada
