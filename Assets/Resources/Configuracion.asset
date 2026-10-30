@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Configuracion
   m_EditorClassIdentifier: Orkhold::Configuracion
   urlApi: 
+  hostMundo: 
+  puertoMundo: 7777
