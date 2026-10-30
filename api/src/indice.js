@@ -1,6 +1,7 @@
 // Arranque: migraciones y servidor en el puerto 3000.
 import { crearPool, migrar } from './bd.js';
 import { crearServidor } from './servidor.js';
+import { comprobarTemporada } from './temporadas.js';
 
 const requerida = n => {
   const v = process.env[n];
@@ -24,6 +25,10 @@ const app = crearServidor({
 
 const puerto = Number(process.env.PUERTO ?? 3000);
 await app.listen({ host: '0.0.0.0', port: puerto });
+
+// Temporadas: se cierran solas (al arrancar, ya con el balance cargado, y cada hora).
+await comprobarTemporada(pool);
+setInterval(() => comprobarTemporada(pool).catch(e => app.log.error(e, 'Temporada')), 3600 * 1000).unref();
 
 for (const s of ['SIGTERM', 'SIGINT'])
   process.on(s, async () => { await app.close(); await pool.end(); process.exit(0); });

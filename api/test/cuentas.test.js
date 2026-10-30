@@ -62,6 +62,6 @@ test('personaje con datos malos: 400', async () => {
 
 test('una petición sin cuerpo JSON da 4xx, no 500', async () => {
   const a = await jugador(ctx.app, 'SinCuerpo');
-  const r = await ctx.app.inject({ method: 'POST', url: '/asalto/buscar', headers: { ...a.cab, 'content-type': 'application/x-www-form-urlencoded' }, payload: 'x=1' });
+  const r = await ctx.app.inject({ method: 'POST', url: '/saqueo/preparar', headers: { ...a.cab, 'content-type': 'application/x-www-form-urlencoded' }, payload: 'x=1' });
   assert.equal(r.statusCode, 415);
 });

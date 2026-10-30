@@ -156,3 +156,11 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 112 | Lista de nombres prohibidos corta y solo con palabras que no forman parte de nombres normales. | Evitar rechazar nombres legítimos; la lista se amplía en `api/src/datos/nombres-prohibidos.txt`. |
 | 113 | `PUT /fuerte` reparte solo el contenido de los escondites (los que siguen en su casilla conservan lo suyo); `PUT /fuerte/escondites` es para recolocar a mano. | El jugador construye sin hacer cuentas; recolocar es una acción aparte (08 §3.1). |
 | 114 | El contenido de antes de la versión 2 pasa entero al cofre central aunque pase de 50; no entra más hasta que haya sitio. | No quitar nada a nadie al cambiar de modelo. |
+| 115 | Solo sale como rival quien tiene algo guardado; si no hay nadie, fuerte de prueba. | Saquear un fuerte vacío no enseña nada y cuesta la tasa. |
+| 116 | Las marcas necesitan camino libre desde la entrada (con lo roto), no que el atacante haya pisado al lado; las miradas sí tienen que hacerse a 1,8 casillas como mucho. | 08 §4.3 habla de camino; mirar es acercarse. |
+| 117 | El servidor rehace la exploración revisando cada cuarto de casilla del recorrido, con un golpe cada 0,5 s como mucho y velocidad máxima del balance. | Sin eso, un salto rápido atravesaría un muro; el ataque dura 0,6 s. |
+| 118 | El botín se calcula contra el fuerte del defensor tal como está al resolver; el muro roto y el camino, con el fuerte que vio el atacante al empezar. | El servidor decide con lo que hay de verdad; si el defensor recoloca mientras, le sirve. |
+| 119 | Fuerte de prueba: el del sistema con 2 cofres, 2 barriles y 2 enterrados al azar (la mitad vacíos) y 12 monedas en el central. | Para practicar mirar y marcar aunque no haya rivales. |
+| 120 | El cofre, el barril y el cofre central no se pueden pisar; el enterrado, sí. | Son piezas con cuerpo; el enterrado parece suelo. |
+| 121 | Herramientas como unidades del inventario (`farol`, `cuarta_accion`...), fabricadas con `POST /herramientas/fabricar`. | Ferra las fabrica antes; se gastan al empezar el saqueo (08 §5). |
+| 122 | Las rutas del asalto de 90 s se quitan; la tabla `asaltos` se queda como historia. La ruta pública conserva el campo `asaltos` (ahora cuenta saqueos) para la web. | Un solo PvP; la web de orkhold.com ya lee ese campo. |

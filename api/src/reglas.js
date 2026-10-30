@@ -11,7 +11,9 @@ const datos = join(dirname(fileURLToPath(import.meta.url)), 'datos');
 
 const BASE = JSON.parse(readFileSync(join(datos, 'catalogo.json'), 'utf8'));
 export const RECURSOS = ['moneda', 'madera', 'piedra', 'hierro', 'hueso'];
-export const UNIDADES = ['orco_jefe'];
+/** Herramientas de saqueo (08 §5): se fabrican, se guardan como unidades y se gastan al usarlas. */
+export const HERRAMIENTAS = ['farol', 'cuarta_accion', 'pico', 'bomba', 'sabueso', 'senuelo'];
+export const UNIDADES = ['orco_jefe', ...HERRAMIENTAS];
 export const TODO = [...RECURSOS, ...UNIDADES];
 export const MATERIALES = ['madera', 'piedra', 'hierro', 'hueso'];
 export const maxSaqueosDia = () => B('saqueo.saqueos_dia');
@@ -138,13 +140,7 @@ export function limpiarDiseno(d, conContenido = true) {
   return { version: 1, central: conContenido ? limpiarContenido(d?.central) : vacio(), piezas: (d?.piezas ?? []).map(pieza) };
 }
 
-// ---------- asaltos ----------
-
-/** Probabilidad de ganar del atacante (Elo). */
-export const esperado = (ra, rb) => 1 / (1 + 10 ** ((rb - ra) / 400));
-/** Ganar: +20 entre iguales, más contra uno mejor. Perder: -15 entre iguales, menos contra uno mejor. */
-export const puntosGanar = (ra, rb) => Math.round(40 * (1 - esperado(ra, rb)));
-export const puntosPerder = (ra, rb) => -Math.round(30 * esperado(ra, rb));
+// ---------- saqueo ----------
 
 /** Fuerte del sistema según la puntuación del atacante, con su puntuación de referencia. */
 export function fuerteSistema(puntuacion) {
@@ -152,16 +148,6 @@ export function fuerteSistema(puntuacion) {
   const puntos = { facil: 900, medio: 1000, dificil: 1100 }[nombre];
   const diseno = JSON.parse(readFileSync(join(datos, 'fuertes-sistema', nombre + '.json'), 'utf8'));
   return { nombre, puntos, diseno: limpiarDiseno(diseno) };
-}
-
-/** Recompensa: ganar 10 monedas + 2 materiales al azar; perder 3 monedas. */
-export function recompensa(ganado, azar = Math.random) {
-  const r = Object.fromEntries(RECURSOS.map(k => [k, 0]));
-  if (ganado) {
-    r.moneda = 10;
-    for (let i = 0; i < 2; i++) r[MATERIALES[Math.floor(azar() * MATERIALES.length)]]++;
-  } else r.moneda = 3;
-  return r;
 }
 
 // ---------- límites de botín ----------
