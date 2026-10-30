@@ -8,7 +8,7 @@ qué es cada bloque, qué decisión ya está tomada y en qué orden van.
 |---|---|---|---|---|
 | 1 | Saqueo (PvP nuevo) | Esconder recursos, acciones contadas, el servidor decide | `08-formato-y-pvp.md` | Aprobado el 30-10-2026 |
 | 2 | Balance fuera del código y panel de administración | Los números del juego se ajustan sin tocar código, desde un panel web con más cosas | `10-panel-admin.md` (por escribir) | Por diseñar |
-| 3 | Mazmorras 2, 3 y 4 | Diseñadas por escrito (plano, enemigos, jefe, qué desbloquean) para que el modelo las pinte e implemente | `11-mazmorras.md` (por escribir) | Por diseñar |
+| 3 | Mazmorras 2, 3 y 4 | Diseñadas por escrito (plano, enemigos, jefe, qué desbloquean) para que el modelo las pinte e implemente | `11-mazmorras.md` | Propuesta escrita, pendiente de aprobar |
 | 4 | Tutorial guiado | Un minitutorial paso a paso en los primeros minutos | — | Más adelante |
 | 5 | Eventos del pueblo | 2-3 eventos diseñados ahora; más con el tiempo | `12-eventos.md` (por escribir) | Por diseñar |
 | 6 | Social: chat, amigos, gremios | Todo tiene que existir. Es un MMORPG al uso con el método de juego de Orkhold | `13-social.md` (por escribir) | Por diseñar |
