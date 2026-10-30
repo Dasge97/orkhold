@@ -1,7 +1,8 @@
 // Construye la aplicación Fastify con todas las rutas (02-arquitectura.md §4).
 import Fastify from 'fastify';
 import { timingSafeEqual } from 'node:crypto';
-import { verificar, leerToken, claveAdmin } from './autenticacion.js';
+import { leerToken, claveAdmin } from './autenticacion.js';
+import { configurarCorreo } from './correo.js';
 import { ErrorJuego } from './inventario.js';
 import rutasSesion from './rutas/sesion.js';
 import rutasJugador from './rutas/jugador.js';
@@ -13,17 +14,19 @@ import rutasBalance from './rutas/balance.js';
 import rutasEstado from './rutas/estado.js';
 import rutasAdmin from './rutas/admin.js';
 import rutasPanel from './rutas/panel.js';
+import rutasCuenta from './rutas/cuenta.js';
 import { cargarBalance } from './balance.js';
 
 export const VERSION = '0.1.0';
 
 /**
- * opciones: { pool, secreto, claveServidor, puebloCliente, registro }
+ * opciones: { pool, secreto, claveServidor, puebloCliente, registro, smtpUrl, urlPublica }
  */
 export function crearServidor(opciones) {
   const app = Fastify({ logger: opciones.registro ?? false, bodyLimit: 64 * 1024 });
   app.decorate('pool', opciones.pool);
   app.decorate('opciones', opciones);
+  configurarCorreo(opciones.smtpUrl);
   // El balance se carga (y se crean las filas que falten) antes de atender nada.
   app.addHook('onReady', async () => { await cargarBalance(opciones.pool); });
 
@@ -40,12 +43,15 @@ export function crearServidor(opciones) {
       req.admin = { id: d.j, correo: d.c };
       return;
     }
-    const id = verificar(opciones.secreto, token);
-    if (!id) return reply.code(401).send({ error: 'sin_sesion', mensaje: 'Sesión no válida o caducada' });
-    const j = (await opciones.pool.query('SELECT bloqueado FROM jugadores WHERE id = $1', [id])).rows[0];
-    if (!j) return reply.code(401).send({ error: 'sin_sesion', mensaje: 'La cuenta ya no existe' });
+    const d = leerToken(opciones.secreto, token);
+    if (!d?.s) return reply.code(401).send({ error: 'sin_sesion', mensaje: 'Sesión no válida o caducada' });
+    const j = (await opciones.pool.query(
+      `SELECT j.bloqueado, s.anulada, s.caduca < now() AS caducada
+         FROM sesiones s JOIN jugadores j ON j.id = s.jugador_id WHERE s.id = $1 AND j.id = $2`, [d.s, d.j])).rows[0];
+    if (!j || j.anulada || j.caducada) return reply.code(401).send({ error: 'sin_sesion', mensaje: 'Sesión no válida o caducada' });
     if (j.bloqueado) return reply.code(403).send({ error: 'cuenta_bloqueada', mensaje: 'Esta cuenta está bloqueada' });
-    req.jugadorId = id;
+    req.jugadorId = d.j;
+    req.sesionId = d.s;
   });
 
   app.setErrorHandler((err, req, reply) => {
@@ -73,6 +79,7 @@ export function crearServidor(opciones) {
   app.register(rutasEstado);
   app.register(rutasAdmin);
   app.register(rutasPanel);
+  app.register(rutasCuenta);
   return app;
 }
 

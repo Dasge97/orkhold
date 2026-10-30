@@ -9,13 +9,15 @@ public class PantallaArranque : MonoBehaviour
     public Transform pedestal;
 
     Text _estado, _modeloTexto, _error;
-    GameObject _crear;
+    GameObject _crear, _bloqueo, _aviso;
+    readonly System.Collections.Generic.List<MensajesApi.AvisoApi> _avisos = new System.Collections.Generic.List<MensajesApi.AvisoApi>();
+    const string ClaveAvisosVistos = "avisos_vistos";
     InputField _nombre;
     int _elegido;
     GameObject _vista;
     float _giro;
 
-    public enum Fase { Conectando, CrearPersonaje, Entrando }
+    public enum Fase { Conectando, Bloqueado, Avisos, CrearPersonaje, Entrando }
     public Fase Estado { get; private set; } = Fase.Conectando;
 
     void Start()
@@ -65,21 +67,67 @@ public class PantallaArranque : MonoBehaviour
             Siguiente();
             return;
         }
-        Sesion.Iniciar((ok, error) =>
+        Estado = Fase.Conectando;
+        _estado.text = "Conectando...";
+        if (_bloqueo) _bloqueo.SetActive(false);
+        // Antes de nada, si el servidor está en mantenimiento o pide una versión más nueva (10-panel-admin.md §2.2).
+        ApiCliente.Get("/estado", re =>
         {
-            if (!ok)
+            if (re.Ok)
             {
-                _estado.text = "Sin conexión: juegas sin servidor (fuerte y asalto bloqueados)";
-                Siguiente();
-                return;
+                var e = re.Leer<MensajesApi.Estado>();
+                if (!string.IsNullOrEmpty(e.mantenimiento)) { Bloquear("Orkhold está en mantenimiento", e.mantenimiento); return; }
+                if (e.version_minima > Configuracion.VersionJuego) { Bloquear("Hay una versión nueva", "Actualiza Orkhold para seguir jugando."); return; }
+                _avisos.Clear();
+                var vistos = PlayerPrefs.GetString(ClaveAvisosVistos, "");
+                if (e.avisos != null) foreach (var a in e.avisos) if (!vistos.Contains("|" + a.id + "|")) _avisos.Add(a);
             }
-            _estado.text = "Conectado";
-            Sincronizacion.Refrescar(_ => Siguiente());
+            Sesion.Iniciar((ok, error) =>
+            {
+                if (!ok)
+                {
+                    _estado.text = "Sin conexión: juegas sin servidor (fuerte y saqueo bloqueados)";
+                    Siguiente();
+                    return;
+                }
+                _estado.text = "Conectado";
+                Balance.Descargar(_ => Sincronizacion.Refrescar(__ => Siguiente()));
+            });
         });
     }
 
+    /// El servidor no deja entrar: se enseña el motivo y un botón para volver a probar.
+    void Bloquear(string titulo, string texto)
+    {
+        Estado = Fase.Bloqueado;
+        _estado.text = "";
+        if (_bloqueo) Destroy(_bloqueo);
+        _bloqueo = Panel(titulo, texto, "Reintentar", Conectar);
+    }
+
+    GameObject Panel(string titulo, string texto, string boton, System.Action alPulsar)
+    {
+        var raiz = _crear.transform.parent;
+        var p = Ui.Caja(raiz, "Panel", new Color(0.08f, 0.09f, 0.12f, 0.96f), Vector2.zero, new Vector2(1200f, 560f)).gameObject;
+        Ui.Texto(p.transform, titulo, 56, new Vector2(0f, 180f), new Vector2(1100f, 80f), negrita: true).color = Ui.Dorado;
+        Ui.Texto(p.transform, texto, 38, new Vector2(0f, 20f), new Vector2(1060f, 220f));
+        Ui.Boton(p.transform, boton, new Vector2(0f, -190f), new Vector2(420f, 110f), Ui.Verde, () => alPulsar(), 46);
+        return p;
+    }
+
+    /// Avisos del panel que este móvil aún no ha visto, uno detrás de otro; después, a jugar.
     void Siguiente()
     {
+        if (_aviso) Destroy(_aviso);
+        if (_avisos.Count > 0)
+        {
+            Estado = Fase.Avisos;
+            var a = _avisos[0];
+            _avisos.RemoveAt(0);
+            PlayerPrefs.SetString(ClaveAvisosVistos, PlayerPrefs.GetString(ClaveAvisosVistos, "|") + a.id + "|");
+            _aviso = Panel(a.titulo, a.texto, "Entendido", Siguiente);
+            return;
+        }
         if (string.IsNullOrEmpty(Partida.Actual.nombre)) MostrarCrear();
         else Entrar();
     }

@@ -22,6 +22,12 @@ public class FuenteRecurso : MonoBehaviour, IGolpeable
     public bool PuedeRecibirGolpe => !Agotado;
     public Transform Transform => transform;
 
+    void Start()
+    {
+        if (GestorEscena.Actual && GestorEscena.Actual.esPueblo && Balance.Cargado)
+            segundosAgotado = Balance.Real("mundo.recursos_reaparecer", segundosAgotado);
+    }
+
     void Awake()
     {
         _escala = transform.localScale;

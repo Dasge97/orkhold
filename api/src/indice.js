@@ -17,6 +17,8 @@ const app = crearServidor({
   secreto: requerida('API_SECRETO'),
   claveServidor: process.env.CLAVE_SERVIDOR ?? '',
   puebloCliente: process.env.PUEBLO_CLIENTE === '1',
+  smtpUrl: process.env.SMTP_URL ?? '',
+  urlPublica: process.env.URL_PUBLICA ?? 'https://app.orkhold.com',
   registro: { level: process.env.REGISTRO ?? 'info' },
 });
 

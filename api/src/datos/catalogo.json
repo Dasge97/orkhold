@@ -1,14 +1,16 @@
 {
-  "version": 1,
-  "limites": { "muro": 40, "trampa": 6, "defensor": 4 },
-  "mejora": { "huesos": 2, "maxima": 3 },
+  "version": 2,
   "piezas": [
-    { "id": "muro_madera", "nombre": "Muro de madera", "categoria": "muro", "vida": 5, "costes": { "madera": 2 } },
-    { "id": "muro_piedra", "nombre": "Muro de piedra", "categoria": "muro", "vida": 10, "costes": { "piedra": 3 } },
-    { "id": "puerta", "nombre": "Puerta", "categoria": "muro", "vida": 6, "costes": { "madera": 2, "hierro": 1 } },
-    { "id": "trampa", "nombre": "Trampa", "categoria": "trampa", "vida": 0, "costes": { "hierro": 2 } },
-    { "id": "orco_defensor", "nombre": "Orco defensor", "categoria": "defensor", "vida": 3, "costes": { "moneda": 10 } },
-    { "id": "esqueleto_defensor", "nombre": "Esqueleto defensor", "categoria": "defensor", "vida": 4, "costes": { "moneda": 15 } },
-    { "id": "orco_jefe", "nombre": "Orco jefe", "categoria": "defensor", "vida": 15, "costes": {}, "requiere_unidad": "orco_jefe" }
+    { "id": "muro_madera", "nombre": "Muro de madera", "categoria": "muro" },
+    { "id": "muro_piedra", "nombre": "Muro de piedra", "categoria": "muro" },
+    { "id": "puerta", "nombre": "Puerta", "categoria": "muro" },
+    { "id": "trampa", "nombre": "Trampa", "categoria": "trampa" },
+    { "id": "orco_defensor", "nombre": "Orco defensor", "categoria": "defensor" },
+    { "id": "esqueleto_defensor", "nombre": "Esqueleto defensor", "categoria": "defensor" },
+    { "id": "orco_jefe", "nombre": "Orco jefe", "categoria": "defensor", "requiere_unidad": "orco_jefe" },
+    { "id": "cofre", "nombre": "Cofre", "categoria": "escondite", "visible": true },
+    { "id": "barril", "nombre": "Barril", "categoria": "escondite", "visible": true },
+    { "id": "enterrado", "nombre": "Enterrado", "categoria": "escondite", "visible": false },
+    { "id": "doble_fondo", "nombre": "Doble fondo", "categoria": "escondite", "visible": false }
   ]
 }

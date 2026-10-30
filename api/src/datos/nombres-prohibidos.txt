@@ -1,0 +1,60 @@
+# Palabras que no pueden aparecer en un nombre de personaje (14-cuentas.md §2).
+# Una por línea; se comparan sin tildes, mayúsculas, espacios ni números puestos como letras.
+# Solo palabras que no forman parte de nombres normales.
+# Castellano
+puta
+puto
+putita
+gilipollas
+subnormal
+maricon
+mariquita
+zorra
+cabron
+cabrona
+follar
+follador
+polla
+pollon
+coño
+chocho
+mierda
+cagon
+mamon
+mamona
+pendejo
+pendeja
+culero
+chinga
+chingada
+verga
+retrasado
+retrasada
+sudaca
+panchito
+moraco
+negrata
+nazi
+hitler
+violador
+violar
+pederasta
+pedofilo
+# Inglés
+fuck
+fucker
+shit
+bitch
+cunt
+whore
+slut
+nigger
+nigga
+faggot
+retard
+rapist
+pedo
+dick
+cock
+pussy
+asshole

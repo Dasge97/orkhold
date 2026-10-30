@@ -147,3 +147,4 @@ Lo más reciente arriba.
 - Tabla `balance` con 101 números, `GET /balance`; reglas de la API, catálogo y jefe leen de ahí. Rutas `/admin` con tokens propios y bloqueo de jugadores.
 - Panel en `/admin/` (Vue desde CDN, sin compilar), capturas con Chrome sin ventana y puppeteer-core en la carpeta temporal: escritorio y móvil, claro y oscuro.
 - Aprendido: la imagen de la API copia `src` al construir; antes de `npm test` hay que `docker compose build api`.
+- 10.4: `Balance.cs` descarga `GET /balance` (en forma de lista: JsonUtility no lee diccionarios), lo guarda en el móvil y lo aplica a una copia en memoria del catálogo (cambiar el asset en Play Mode lo ensucia). Enemigos y árboles del pueblo toman su tiempo al arrancar, porque en el pueblo los crea la red después de cargar la escena.

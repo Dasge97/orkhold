@@ -25,4 +25,14 @@ public static class Nombres
             default: return De(r);
         }
     }
+
+    /// Nombre del recurso en la API y en el balance (moneda, madera, piedra, hierro, hueso).
+    public static string Clave(Recurso r) => r == Recurso.Pocion ? "pocion" : De(r);
+
+    /// Recurso a partir de su nombre en la API; null si no es un recurso.
+    public static Recurso? DeClave(string clave)
+    {
+        foreach (Recurso r in System.Enum.GetValues(typeof(Recurso))) if (Clave(r) == clave) return r;
+        return null;
+    }
 }

@@ -227,6 +227,20 @@ public class RedPueblo : MonoBehaviour
             _arrancado = DateTime.UtcNow;
             InvokeRepeating(nameof(EscribirEstado), 0f, 30f);
         }
+        // Servidor dedicado: balance de la API al arrancar y cada 5 minutos; latido para el panel cada 30 s.
+        if (ModoActual == Modo.Servidor)
+        {
+            InvokeRepeating(nameof(PedirBalance), 1f, 300f);
+            InvokeRepeating(nameof(Latir), 5f, 30f);
+        }
+    }
+
+    void PedirBalance() => ApiServidor.DescargarBalance();
+
+    void Latir()
+    {
+        var nm = NetworkManager.Singleton;
+        ApiServidor.Latido(nm && nm.IsServer ? nm.ConnectedClientsIds.Count : 0);
     }
 
     /// Fichero de estado del servidor dedicado (variable ORKHOLD_ESTADO): lo lee el vigilante de codehive

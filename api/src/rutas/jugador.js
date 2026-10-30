@@ -1,12 +1,14 @@
 // GET /jugador y PUT /jugador/personaje.
 import { z } from 'zod';
 import { validar } from '../servidor.js';
+import { nombreOfensivo } from '../nombres.js';
 import { leerJugador, ErrorJuego } from '../inventario.js';
 
 export const MODELOS = ['character-male-a', 'character-female-a', 'character-male-c', 'character-female-c'];
 
 export const NombrePersonaje = z.string().trim().min(3, 'mínimo 3 letras').max(16, 'máximo 16 letras')
-  .regex(/^[\p{L}\p{N} _-]+$/u, 'solo letras, números, espacio, _ y -');
+  .regex(/^[\p{L}\p{N} _-]+$/u, 'solo letras, números, espacio, _ y -')
+  .refine(n => !nombreOfensivo(n), 'ese nombre no está permitido');
 
 const Personaje = z.object({ nombre: NombrePersonaje, modelo: z.enum(MODELOS) });
 

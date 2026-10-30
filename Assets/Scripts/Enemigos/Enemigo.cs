@@ -77,6 +77,9 @@ public class Enemigo : MonoBehaviour, IGolpeable
 
     protected virtual void Start()
     {
+        // En el pueblo, el tiempo de reaparecer sale del balance (los defensores del fuerte no reaparecen).
+        if (reaparecerSegundos > 0f && GestorEscena.Actual && GestorEscena.Actual.esPueblo && Balance.Cargado)
+            reaparecerSegundos = Balance.Real("mundo.enemigos_reaparecer", reaparecerSegundos);
         _casa = transform.position;
         _giroCasa = transform.rotation;
         EstadoActual = patrulla ? Estado.Patrulla : Estado.Quieto;

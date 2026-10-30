@@ -48,6 +48,9 @@ public static class MensajesApi
     [Serializable] public class FilaHistorial { public string id, rival; public bool ganado; public int segundos, muros_rotos, puntos; public string creado; }
     [Serializable] public class RespuestaHistorial { public List<FilaHistorial> hechos, recibidos; }
 
+    [Serializable] public class AvisoApi { public string id, titulo, texto, creado; }
+    [Serializable] public class Estado { public int version_minima; public string mantenimiento; public List<AvisoApi> avisos; }
+
     public static Recursos DeInventario(DatosInventario d) =>
         new Recursos { moneda = d.monedas, madera = d.madera, piedra = d.piedra, hierro = d.hierro, hueso = d.hueso };
 }

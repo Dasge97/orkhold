@@ -11,6 +11,9 @@ public class Configuracion : ScriptableObject
     public string hostMundo = "";
     public int puertoMundo = 7777;
 
+    /// Versión del juego para la API (GET /estado: versión mínima). Se sube con cada APK publicado.
+    public const int VersionJuego = 2;
+
     static Configuracion _instancia;
     public static Configuracion Instancia => _instancia ? _instancia : (_instancia = Resources.Load<Configuracion>("Configuracion"));
 

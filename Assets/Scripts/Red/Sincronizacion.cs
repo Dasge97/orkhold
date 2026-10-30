@@ -118,6 +118,7 @@ public class Sincronizacion : MonoBehaviour
     {
         if (Viaje.escenaAnterior == "Pueblo") EnviarPueblo();
         if (Viaje.escenaAnterior == "Mazmorra1") EnviarMazmorra();
+        if (escena == "Pueblo" && Sesion.Conectado) Balance.Descargar();
         // Antes de construir, lo último de la API (inventario y fuerte).
         if (escena == "Fuerte") Refrescar(_ => { if (Fuerte.Actual) Fuerte.Actual.Reconstruir(); });
     }

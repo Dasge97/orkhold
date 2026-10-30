@@ -10,9 +10,11 @@ after(async () => { await ctx.cerrar(); });
 const poner = (cab, piezas) => ctx.app.inject({ method: 'PUT', url: '/fuerte', headers: cab, payload: { diseno: { version: 1, piezas } } });
 const muro = (x, z, tipo = 'muro_madera', vida_extra = 0) => ({ x, z, tipo, vida_extra });
 
-test('catálogo con las 7 piezas y los límites del diseño', async () => {
+test('catálogo con las 11 piezas (7 + 4 escondites) y los límites del diseño', async () => {
   const r = (await ctx.app.inject({ method: 'GET', url: '/catalogo' })).json();
-  assert.equal(r.piezas.length, 7);
+  assert.equal(r.piezas.length, 11);
+  assert.equal(r.piezas.find(p => p.id === 'cofre').capacidad, 30);
+  assert.equal(r.central.porcentaje, 75);
   assert.deepEqual(r.limites, { muro: 40, trampa: 6, defensor: 4 });
   assert.equal(r.piezas.find(p => p.id === 'muro_piedra').vida, 10);
 });

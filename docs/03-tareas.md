@@ -122,8 +122,8 @@ Leer antes: `10-panel-admin.md`.
 - [x] 10.3 Web del panel en `/admin/` con las pestañas de §2.2. Script `orkhold-admin crear` en codehive.
   Comprobar: capturas del panel en escritorio y móvil, modo claro y oscuro. (2026-10-30: `Revision/panel/`, sin desplazamiento
   horizontal ni errores de consola; las rutas de saqueos del panel leen la tabla `saqueos` de la fase 12.)
-- [ ] 10.4 Cliente y servidor de mundo leen `GET /balance` (costes del catálogo, tiempos de reaparición) y `GET /estado`
-  (versión mínima, mantenimiento, avisos). Comprobar: test PlayMode con un balance cambiado.
+- [x] 10.4 Cliente y servidor de mundo leen `GET /balance` (costes del catálogo, tiempos de reaparición) y `GET /estado`
+  (versión mínima, mantenimiento, avisos). Comprobar: test PlayMode con un balance cambiado. (2026-10-30: `PruebaBalance`.)
 
 ## Fase 11 · Cuentas con registro
 Leer antes: `14-cuentas.md`.

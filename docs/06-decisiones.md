@@ -149,3 +149,5 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 105 | Jefe de la mazmorra: la unidad la primera vez; hueso y hierro la primera vez de cada día (UTC); monedas las demás. | 08 §1.2; antes daba 3 huesos siempre. |
 | 106 | Administradores aparte de los jugadores (tabla `administradores`), con token firmado con otra clave y 12 h. | Un token de jugador nunca vale para el panel. |
 | 107 | El servidor de mundo manda un latido con los jugadores del pueblo a la API cada 30 s. | Así el panel sabe cuántos hay sin leer ficheros del servidor. |
+| 108 | Versión del juego como número fijo en `Configuracion.VersionJuego` (empieza en 2); el panel pone la mínima. | Hace falta un número que compare la API; se sube con cada APK publicado. |
+| 109 | Árboles y rocas del pueblo reaparecen a los 300 s (antes 60) y lo marca el balance. | 08 §1.2 aprobado: "Árboles y rocas: cada 5 min". |

@@ -4,6 +4,8 @@ import { todos, versionBalance } from '../balance.js';
 export default async function (app) {
   app.get('/balance', async (req, reply) => {
     reply.header('Cache-Control', 'no-cache');
-    return { version: versionBalance(), valores: todos() };
+    const valores = todos();
+    // "lista" es lo mismo en forma de lista, para Unity (JsonUtility no lee diccionarios).
+    return { version: versionBalance(), valores, lista: Object.entries(valores).map(([clave, valor]) => ({ clave, valor })) };
   });
 }

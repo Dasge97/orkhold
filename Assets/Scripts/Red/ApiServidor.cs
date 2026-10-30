@@ -44,6 +44,22 @@ public class ApiServidor : MonoBehaviour
         Instancia.StartCoroutine(Instancia.Hacer("POST", "/inventario/sumar", JsonUtility.ToJson(p), "", true, (ok, _) => fin?.Invoke(ok)));
     }
 
+    /// GET /balance para el servidor de mundo (tiempos de reaparición).
+    public static void DescargarBalance()
+    {
+        if (string.IsNullOrEmpty(Url)) return;
+        Instancia.StartCoroutine(Instancia.Hacer("GET", "/balance", null, "", false, (ok, cuerpo) => { if (ok) Balance.Recibir(cuerpo); }));
+    }
+
+    [Serializable] class PeticionLatido { public int jugadores; }
+
+    /// POST /servidor/latido: cuántos jugadores hay en el pueblo (lo enseña el panel).
+    public static void Latido(int jugadores)
+    {
+        if (!Activa) return;
+        Instancia.StartCoroutine(Instancia.Hacer("POST", "/servidor/latido", JsonUtility.ToJson(new PeticionLatido { jugadores = jugadores }), "", true, (_, __) => { }));
+    }
+
     static string Nombre(Recurso r) => r == Recurso.Moneda ? "moneda" : r.ToString().ToLowerInvariant();
 
     IEnumerator Hacer(string metodo, string ruta, string cuerpo, string token, bool conClave, Action<bool, string> fin)

@@ -3,6 +3,7 @@
 // Los números salen del balance (balance.js); catalogo.json solo dice qué piezas hay y de qué tipo.
 import { readFileSync } from 'node:fs';
 import { B, Bo, versionBalance } from './balance.js';
+import { esEscondite, limpiarContenido, vacio } from './escondites.js';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,7 +31,11 @@ export function catalogo() {
     version: BASE.version,
     limites: { muro: B('fuerte.limite_muro'), trampa: B('fuerte.limite_trampa'), defensor: B('fuerte.limite_defensor') },
     mejora: { huesos: B('fuerte.mejora_huesos'), maxima: B('fuerte.mejora_maxima') },
-    piezas: BASE.piezas.map(p => ({ ...p, vida: B(`pieza.${p.id}.vida`), costes: costeDe(`pieza.${p.id}`) })),
+    piezas: BASE.piezas.map(p => p.categoria === 'escondite'
+      ? { ...p, vida: 0, costes: costeDe(`escondite.${p.id}`), capacidad: B(`escondite.${p.id}.capacidad`),
+          porcentaje: B(`escondite.${p.id}.porcentaje`), limite: B(`escondite.${p.id}.limite`) }
+      : { ...p, vida: B(`pieza.${p.id}.vida`), costes: costeDe(`pieza.${p.id}`) }),
+    central: { capacidad: B('escondite.central.capacidad'), porcentaje: B('escondite.central.porcentaje') },
   };
   _piezasPorId = new Map(_catalogo.piezas.map(p => [p.id, p]));
   _versionCatalogo = versionBalance();
@@ -87,7 +92,8 @@ export function construible(x, z) {
 export function errorDiseno(diseno) {
   if (!diseno || !Array.isArray(diseno.piezas)) return 'Diseño sin piezas';
   const vistas = new Set();
-  const cuenta = { muro: 0, trampa: 0, defensor: 0 };
+  const cuenta = { muro: 0, trampa: 0, defensor: 0, escondite: 0 };
+  const porTipo = {};
   for (const q of diseno.piezas) {
     const p = pieza(q.tipo);
     if (!p) return `Pieza desconocida: ${q.tipo}`;
@@ -99,9 +105,13 @@ export function errorDiseno(diseno) {
     if (!Number.isInteger(extra) || extra < 0 || extra > catalogo().mejora.maxima) return `Mejora fuera de rango en (${clave})`;
     if (extra > 0 && p.categoria !== 'defensor') return `Solo se mejoran defensores (${clave})`;
     cuenta[p.categoria]++;
+    porTipo[p.id] = (porTipo[p.id] ?? 0) + 1;
   }
-  for (const k of Object.keys(cuenta))
+  for (const k of ['muro', 'trampa', 'defensor'])
     if (cuenta[k] > catalogo().limites[k]) return `Límite de ${k}: ${catalogo().limites[k]}`;
+  for (const p of catalogo().piezas)
+    if (p.categoria === 'escondite' && (porTipo[p.id] ?? 0) > p.limite)
+      return p.limite ? `Límite de ${p.nombre.toLowerCase()}: ${p.limite}` : `${p.nombre}: todavía no se puede construir`;
   return null;
 }
 
@@ -118,9 +128,14 @@ export function coste(diseno) {
   return t;
 }
 
-/** Diseño limpio (solo los campos que se guardan). */
-export function limpiarDiseno(d) {
-  return { version: 1, piezas: (d?.piezas ?? []).map(q => ({ x: q.x, z: q.z, tipo: q.tipo, vida_extra: q.vida_extra ?? 0 })) };
+/** Diseño limpio (solo los campos que se guardan). Con "conContenido", guarda lo que hay en los escondites. */
+export function limpiarDiseno(d, conContenido = true) {
+  const pieza = q => {
+    const l = { x: q.x, z: q.z, tipo: q.tipo, vida_extra: q.vida_extra ?? 0 };
+    if (esEscondite(q.tipo)) l.contenido = conContenido ? limpiarContenido(q.contenido) : vacio();
+    return l;
+  };
+  return { version: 1, central: conContenido ? limpiarContenido(d?.central) : vacio(), piezas: (d?.piezas ?? []).map(pieza) };
 }
 
 // ---------- asaltos ----------

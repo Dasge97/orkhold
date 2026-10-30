@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Orkhold/Catálogo de piezas", fileName = "CatalogoPiezas")]
 public class CatalogoPiezas : ScriptableObject
 {
-    public enum Categoria { Muro, Trampa, Defensor }
+    public enum Categoria { Muro, Trampa, Defensor, Escondite }
 
     [Serializable]
     public class Coste
@@ -50,7 +50,53 @@ public class CatalogoPiezas : ScriptableObject
     public List<Pieza> piezas = new List<Pieza>();
 
     static CatalogoPiezas _instancia;
-    public static CatalogoPiezas Instancia => _instancia ? _instancia : (_instancia = Resources.Load<CatalogoPiezas>("CatalogoPiezas"));
+    /// Copia en memoria del asset (el balance la cambia sin tocar el fichero del proyecto).
+    public static CatalogoPiezas Instancia
+    {
+        get
+        {
+            if (_instancia) return _instancia;
+            var asset = Resources.Load<CatalogoPiezas>("CatalogoPiezas");
+            if (!asset) return null;
+            _instancia = Instantiate(asset);
+            _instancia.AplicarBalance();
+            return _instancia;
+        }
+    }
+
+    /// Prefijo de la pieza en el balance: "pieza.<id>" o, si es escondite, "escondite.<id>".
+    static string PrefijoBalance(Pieza p) => (p.categoria == Categoria.Escondite ? "escondite." : "pieza.") + p.id;
+
+    /// La próxima vez que se pida, se vuelve a copiar del asset.
+    public static void Reiniciar() => _instancia = null;
+
+    static readonly Recurso[] RecursosConCoste = { Recurso.Moneda, Recurso.Madera, Recurso.Piedra, Recurso.Hierro, Recurso.Hueso };
+
+    /// Costes, vidas, límites y mejoras del balance de la API (10-panel-admin.md §1.3), si lo hay.
+    public void AplicarBalance()
+    {
+        if (!Balance.Cargado) return;
+        maxMuros = Balance.Entero("fuerte.limite_muro", maxMuros);
+        maxTrampas = Balance.Entero("fuerte.limite_trampa", maxTrampas);
+        maxDefensores = Balance.Entero("fuerte.limite_defensor", maxDefensores);
+        huesosPorMejora = Balance.Entero("fuerte.mejora_huesos", huesosPorMejora);
+        mejoraMaxima = Balance.Entero("fuerte.mejora_maxima", mejoraMaxima);
+        foreach (var p in piezas)
+        {
+            if (p.categoria != Categoria.Escondite) p.vida = Balance.Entero($"pieza.{p.id}.vida", p.vida);
+            if (!string.IsNullOrEmpty(p.requiereUnidad)) continue;
+            // Si el balance no trae ningún coste de esta pieza, se queda el del catálogo.
+            var nuevos = new List<Coste>();
+            foreach (var r in RecursosConCoste)
+            {
+                string clave = $"{PrefijoBalance(p)}.coste.{Nombres.Clave(r)}";
+                if (Balance.Tiene(clave) && Balance.Entero(clave, 0) > 0) nuevos.Add(new Coste { recurso = r, cantidad = Balance.Entero(clave, 0) });
+            }
+            bool alguno = false;
+            foreach (var r in RecursosConCoste) alguno |= Balance.Tiene($"{PrefijoBalance(p)}.coste.{Nombres.Clave(r)}");
+            if (alguno) p.costes = nuevos;
+        }
+    }
 
     public Pieza Buscar(string id)
     {
