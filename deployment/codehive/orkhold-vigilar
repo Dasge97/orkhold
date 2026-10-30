@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Vigila Orkhold en codehive y deja su estado para el Kit (servicios juego-api y juego-mundo).
+
+Se instala como /home/codehive/bin/orkhold-vigilar y lo ejecuta cron cada 5 minutos.
+- juego-api: GET /salud de la API. Error si no responde o no llega a la base de datos.
+- juego-mundo: el servidor de mundo reescribe su fichero de estado cada 30 s. Error si el
+  contenedor no está en marcha o el fichero tiene más de 2 minutos.
+Solo usa la biblioteca estándar de Python.
+"""
+import datetime
+import json
+import subprocess
+import urllib.request
+
+URL_SALUD = "http://127.0.0.1:4152/salud"
+ESTADO_MUNDO = "/home/codehive/codehive-app-state/deployments/orkhold/estado/mundo.json"
+CONTENEDOR_MUNDO = "deployment_orkhold-mundo-1"
+KIT_ESTADO = "/home/codehive/bin/kit-estado"
+
+
+def kit(servicio, titulo, estado, mensaje, indicadores):
+    orden = [KIT_ESTADO, servicio, estado, mensaje, "--titulo", titulo]
+    for i in indicadores:
+        orden += ["-i", i]
+    subprocess.run(orden, check=False)
+
+
+def vigilar_api():
+    try:
+        with urllib.request.urlopen(URL_SALUD, timeout=10) as r:
+            salud = json.load(r)
+        if not salud.get("bd"):
+            return "error", "La API responde pero no llega a PostgreSQL", []
+        return "ok", f"API {salud.get('version')} en marcha", [f"Cuentas={salud.get('jugadores')}"]
+    except Exception as e:
+        return "error", f"La API no responde ({type(e).__name__})", []
+
+
+def vigilar_mundo():
+    r = subprocess.run(["docker", "inspect", "-f", "{{.State.Running}}", CONTENEDOR_MUNDO],
+                       capture_output=True, text=True, check=False)
+    if r.stdout.strip() != "true":
+        return "error", "El contenedor del servidor de mundo no está en marcha", []
+    try:
+        with open(ESTADO_MUNDO, encoding="utf-8-sig") as f:
+            estado = json.load(f)
+        # El servidor escribe la hora en UTC ("o" de C#: 2026-10-30T04:26:12.5992239Z); bastan los segundos.
+        actualizado = datetime.datetime.strptime(estado["actualizado"][:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=datetime.timezone.utc)
+    except Exception as e:
+        return "error", f"El servidor de mundo no ha escrito su estado ({type(e).__name__})", []
+    edad = (datetime.datetime.now(datetime.timezone.utc) - actualizado).total_seconds()
+    if edad > 120:
+        return "error", f"El servidor de mundo no da señales desde hace {int(edad // 60)} min", []
+    indicadores = [f"Jugadores={estado.get('jugadores', 0)}", "API=" + ("sí" if estado.get("api") else "no")]
+    if not estado.get("api"):
+        return "aviso", "El servidor de mundo no tiene la clave de la API: el botín no se guarda", indicadores
+    return "ok", f"{estado.get('jugadores', 0)} jugadores en el pueblo", indicadores
+
+
+def main():
+    kit("juego-api", "Orkhold · API", *vigilar_api())
+    kit("juego-mundo", "Orkhold · servidor de mundo", *vigilar_mundo())
+
+
+if __name__ == "__main__":
+    main()

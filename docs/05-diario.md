@@ -3,6 +3,15 @@
 Una entrada por tarea cerrada o por sesión. Tres líneas: qué se hizo, cómo se comprobó, qué se aprendió.
 Lo más reciente arriba.
 
+## 2026-10-30 — Fase 8 preparada, sin desplegar
+- Hecho: `deployment/` completo (compose, Dockerfile Linux y con Wine, ruta de Traefik, `desplegar.sh`,
+  `orkhold-secretos`, `orkhold-vigilar`, `orkhold-copia`); el servidor de mundo escribe su estado cada
+  30 s; `-mundoApk` al compilar el APK; `juego-api` y `juego-mundo` en `kit-codehive/kit.json`.
+- Comprobado: 43/43 tests; el fichero de estado se escribe con el ejecutable de Windows. El despliegue
+  no se lanzó: el control de permisos lo paró por tocar codehive, y faltan el DNS y la bóveda.
+- Aprendido: codehive publica cada proyecto con un fichero de Traefik en `infrastructure/traefik/dynamic`
+  y un puerto 41xx en 127.0.0.1; el DNS de `code-hive.space` está en IONOS y no tiene comodín.
+
 ## 2026-10-30 — Fase 7 (7.1 a 7.6 y 7.8; 7.7 a medias)
 - Hecho: pueblo online con Netcode 2.13.1: `RedPueblo` (servidor, cliente o anfitrión local),
   `JugadorRed` (entrada al servidor, predicción y corrección), `EnemigoRed`, `RecogibleRed`,

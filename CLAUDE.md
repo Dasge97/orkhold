@@ -55,6 +55,7 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 | Ejecutable de Windows | `CompilarEscritorio.WindowsEnBatch` (con `-buildTarget Win64`): `Builds/Windows/Orkhold.exe`. Argumentos: `-servidor -puerto N` (servidor de mundo), `-mundo host:puerto` (cliente), `-api URL`, `-nombre X`, `-bot` y `-bot-golpear` (jugador automático) |
 | Prueba de red local | `powershell -File pruebas/red-local.ps1`: servidor y dos bots sin ventana; dice `RED: OK` si se ven moverse. Registros en `Revision/red/` |
 | Servidor de mundo Linux | `CompilarEscritorio.ServidorLinuxEnBatch` (con `-buildTarget Linux64 -standaloneBuildSubtarget Server`): `Builds/Servidor/`. Necesita el módulo de Unity "Linux Dedicated Server Build Support". Despliegue en `deployment/` |
+| Desplegar en codehive | `deployment/desplegar.sh` (Git Bash): sube API, compose y servidor de mundo, crea secretos, Traefik, cron y arranca. Scripts del servidor en `deployment/codehive/` |
 | MCP de Unity | Paquete `com.coplaydev.unity-mcp` instalado. Arrancar desde `Window > MCP For Unity`; Claude Code lo tiene registrado como `UnityMCP` (http://127.0.0.1:8080/mcp) |
 
 ## Cosas aprendidas (no volver a tropezar)

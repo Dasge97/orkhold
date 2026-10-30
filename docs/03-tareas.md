@@ -95,6 +95,9 @@ Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóve
 - [ ] 8.2 `kit-estado` para `juego-api` y `juego-mundo`; añadirlos a `kit-codehive/kit.json` e importar.
 - [ ] 8.3 Copia de seguridad diaria de PostgreSQL (cron) con aviso si falla.
   Comprobar: el Kit muestra los dos servicios en verde; apagar la API lo pone en rojo y llega el aviso.
+  (Preparado y sin desplegar, 2026-10-30: `deployment/desplegar.sh` lo hace todo, pero el control de
+  permisos no dejó tocar codehive sin Daniel. Faltan además el registro DNS de `orkhold.code-hive.space`
+  en IONOS y desbloquear la bóveda para `orkhold-secretos guardar`. Servicios ya añadidos a `kit-codehive/kit.json`, sin importar.)
 
 ## Fase 9 · Pulido para enseñar
 - [ ] 9.1 Icono de la app y pantalla de carga.

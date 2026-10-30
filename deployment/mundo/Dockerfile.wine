@@ -1,0 +1,16 @@
+# Servidor de mundo con el ejecutable de Windows y Wine (solución provisional, decisión 78):
+# mientras falte el módulo "Linux Dedicated Server Build Support" de Unity en el PC de compilación.
+# servidor/ lleva Builds/Windows/ (CompilarEscritorio.WindowsEnBatch). Se usa con MUNDO_DOCKERFILE=Dockerfile.wine.
+FROM debian:bookworm-slim
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends wine wine64 ca-certificates \
+ && rm -rf /var/lib/apt/lists/* \
+ && useradd --create-home mundo
+USER mundo
+ENV WINEDEBUG=-all WINEPREFIX=/home/mundo/.wine
+# Crea el prefijo de Wine al construir para que el arranque sea rápido.
+RUN wineboot --init && wineserver --wait
+WORKDIR /home/mundo/servidor
+COPY --chown=mundo servidor/ ./
+EXPOSE 7777/udp
+ENTRYPOINT ["wine", "Orkhold.exe", "-batchmode", "-nographics", "-servidor", "-puerto", "7777", "-logFile", "-"]

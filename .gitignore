@@ -25,3 +25,4 @@
 # Despliegue: secretos y la compilación del servidor de mundo
 /deployment/.env
 /deployment/mundo/servidor/
+/deployment/estado/

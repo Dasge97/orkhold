@@ -1,7 +1,7 @@
 # Orkhold en codehive (02-arquitectura.md §5): PostgreSQL 16, API y servidor de mundo.
 # Los secretos salen de deployment/.env, que no va en git; sus valores viven en la bóveda
 # ("juego - postgres", "juego - api secreto", "juego - clave servidor mundo").
-name: orkhold
+name: deployment_orkhold
 services:
   postgres:
     image: postgres:16-alpine
@@ -24,15 +24,22 @@ services:
       API_SECRETO: ${API_SECRETO:?falta API_SECRETO en .env}
       CLAVE_SERVIDOR: ${CLAVE_SERVIDOR:?falta CLAVE_SERVIDOR en .env}
     # Solo para el proxy de codehive (en 127.0.0.1); nunca abierto a internet directamente.
-    ports: ["127.0.0.1:${PUERTO_API:-3110}:3000"]
+    ports: ["127.0.0.1:${PUERTO_API:-4152}:3000"]
     depends_on:
       postgres: { condition: service_healthy }
   mundo:
-    build: ./mundo
+    build:
+      context: ./mundo
+      dockerfile: ${MUNDO_DOCKERFILE:-Dockerfile}
     restart: unless-stopped
     environment:
       ORKHOLD_API: http://api:3000
       ORKHOLD_CLAVE_SERVIDOR: ${CLAVE_SERVIDOR}
+      # Fichero que el servidor reescribe cada 30 s; lo lee deployment/codehive/orkhold-vigilar.
+      # Con Wine la ruta va en formato Windows (Z: es la raíz de Linux).
+      ORKHOLD_ESTADO: ${MUNDO_ESTADO:-/estado/mundo.json}
+    volumes:
+      - ${DIR_ESTADO:-./estado}:/estado
     ports: ["${PUERTO_MUNDO:-7777}:7777/udp"]
     depends_on: [api]
 volumes:

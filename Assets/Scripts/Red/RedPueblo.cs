@@ -222,6 +222,32 @@ public class RedPueblo : MonoBehaviour
             var p = _prefabs.Recogible(r);
             return p ? Spawn(p, donde, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), n) : null;
         };
+        if (ModoActual == Modo.Servidor && !string.IsNullOrEmpty(RutaEstado))
+        {
+            _arrancado = DateTime.UtcNow;
+            InvokeRepeating(nameof(EscribirEstado), 0f, 30f);
+        }
+    }
+
+    /// Fichero de estado del servidor dedicado (variable ORKHOLD_ESTADO): lo lee el vigilante de codehive
+    /// para el Kit (servicio juego-mundo). Si no se escribe en 2 minutos, el servidor está colgado.
+    static string RutaEstado => Environment.GetEnvironmentVariable("ORKHOLD_ESTADO");
+    DateTime _arrancado;
+
+    void EscribirEstado()
+    {
+        try
+        {
+            var nm = NetworkManager.Singleton;
+            int jugadores = nm && nm.IsServer ? nm.ConnectedClientsIds.Count : 0;
+            string json = "{\"actualizado\":\"" + DateTime.UtcNow.ToString("o") + "\",\"arrancado\":\"" + _arrancado.ToString("o") +
+                          "\",\"jugadores\":" + jugadores + ",\"api\":" + (ApiServidor.Activa ? "true" : "false") + "}";
+            string tmp = RutaEstado + ".tmp";
+            System.IO.File.WriteAllText(tmp, json);
+            if (System.IO.File.Exists(RutaEstado)) System.IO.File.Delete(RutaEstado);
+            System.IO.File.Move(tmp, RutaEstado);
+        }
+        catch (Exception e) { Debug.LogWarning("Red: no se pudo escribir el estado: " + e.Message); }
     }
 
     GameObject Spawn(GameObject prefab, Vector3 pos, Quaternion rot, int cantidad = 1, bool patrulla = false, Vector3 punto = default)

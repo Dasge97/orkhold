@@ -184,6 +184,7 @@ public class PruebaCuentas
     public void LaConfiguracionDelRepositorioEsModoLocal()
     {
         Assert.IsEmpty(Configuracion.Instancia.urlApi, "Resources/Configuracion.asset tiene una URL de API: debería ir vacía en git");
+        Assert.IsEmpty(Configuracion.Instancia.hostMundo, "Resources/Configuracion.asset tiene un servidor de mundo: debería ir vacío en git");
     }
 
     /// La API tiene su copia de catálogo, mapa del fuerte y fuertes del sistema: tienen que coincidir con el cliente.

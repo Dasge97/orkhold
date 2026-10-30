@@ -24,14 +24,16 @@ public static class CompilarAndroid
     public static BuildResult UltimoResultado = BuildResult.Unknown;
 
     /// Deja la URL de la API como estaba antes de compilar (en git va vacía: modo local).
-    static void RestaurarUrl(string valor)
+    static void RestaurarUrl(string valor, string mundo, int puerto)
     {
         var c = AssetDatabase.LoadAssetAtPath<Configuracion>(CrearPrefabs.RutaConfiguracion);
         if (!c) return;
         c.urlApi = valor;
+        c.hostMundo = mundo;
+        c.puertoMundo = puerto;
         EditorUtility.SetDirty(c);
         AssetDatabase.SaveAssets();
-        Debug.Log("APK: urlApi restaurada a '" + valor + "'");
+        Debug.Log("APK: urlApi restaurada a '" + valor + "' y mundo a '" + mundo + "'");
     }
 
     /// Valor del argumento de línea de órdenes "nombre valor", o null si no está.
@@ -74,12 +76,23 @@ public static class CompilarAndroid
         PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, new[] { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 });
         PlayerSettings.Android.useCustomKeystore = false;
         // URL de la API: argumento -urlApi (vacío = modo local). En http (emulador) hay que permitir tráfico sin cifrar.
+        // Servidor de mundo: argumento -mundoApk host[:puerto] (vacío = el pueblo se juega solo).
         string url = Argumento("-urlApi");
+        string mundo = Argumento("-mundoApk");
         var conf = AssetDatabase.LoadAssetAtPath<Configuracion>(CrearPrefabs.RutaConfiguracion);
-        string urlAntes = conf ? conf.urlApi : "";
-        if (url != null && conf) { conf.urlApi = url; EditorUtility.SetDirty(conf); AssetDatabase.SaveAssets(); }
+        string urlAntes = conf ? conf.urlApi : "", mundoAntes = conf ? conf.hostMundo : "";
+        int puertoAntes = conf ? conf.puertoMundo : 7777;
+        bool cambia = url != null || mundo != null;
+        if (conf && url != null) conf.urlApi = url;
+        if (conf && mundo != null)
+        {
+            var partes = mundo.Split(':');
+            conf.hostMundo = partes[0];
+            if (partes.Length > 1 && int.TryParse(partes[1], out var pm)) conf.puertoMundo = pm;
+        }
+        if (conf && cambia) { EditorUtility.SetDirty(conf); AssetDatabase.SaveAssets(); }
         PlayerSettings.insecureHttpOption = (conf && conf.urlApi.StartsWith("http://")) ? InsecureHttpOption.AlwaysAllowed : InsecureHttpOption.NotAllowed;
-        Debug.Log("APK: urlApi=" + (conf ? conf.urlApi : "(sin configuración)"));
+        Debug.Log("APK: urlApi=" + (conf ? conf.urlApi : "(sin configuración)") + " mundo=" + (conf ? conf.hostMundo + ":" + conf.puertoMundo : ""));
         EditorUserBuildSettings.buildAppBundle = false;
 
         Directory.CreateDirectory("Builds");
@@ -92,11 +105,11 @@ public static class CompilarAndroid
         };
         BuildReport informe;
         try { informe = BuildPipeline.BuildPlayer(opciones); }
-        catch { if (url != null) RestaurarUrl(urlAntes); throw; }
+        catch { if (cambia) RestaurarUrl(urlAntes, mundoAntes, puertoAntes); throw; }
         var r = informe.summary;
         UltimoResultado = r.result;
         // La compilación recarga los assets: la referencia "conf" ya no vale, se vuelve a cargar.
-        if (url != null) RestaurarUrl(urlAntes);
+        if (cambia) RestaurarUrl(urlAntes, mundoAntes, puertoAntes);
         Debug.Log($"APK: resultado={r.result} tamaño={r.totalSize / 1048576} MB errores={r.totalErrors} tiempo={r.totalTime.TotalSeconds:F0}s ruta={Salida}");
     }
 }

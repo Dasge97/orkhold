@@ -1,0 +1,19 @@
+#!/bin/bash
+# Copia diaria de la base de datos de Orkhold. Se guardan las de los últimos 14 días.
+# Se instala como /home/codehive/bin/orkhold-copia; cron la lanza cada noche. Si falla, avisa al móvil.
+set -u -o pipefail
+DIR=/home/codehive/codehive-app-state/deployments/orkhold/workspace/deployment
+DESTINO=/home/codehive/backups/orkhold
+mkdir -p "$DESTINO"
+fichero="$DESTINO/orkhold-$(date +%Y%m%d).sql.gz"
+if docker compose -f "$DIR/docker-compose.yml" --env-file "$DIR/.env" exec -T postgres pg_dump -U orkhold -d orkhold \
+    | gzip -6 > "$fichero.tmp" && [ "$(gzip -cd "$fichero.tmp" | head -c 100 | wc -c)" -gt 0 ]; then
+  mv "$fichero.tmp" "$fichero"
+  find "$DESTINO" -name 'orkhold-*.sql.gz' -mtime +14 -delete
+  echo "$(date -Is) copia hecha: $fichero ($(du -h "$fichero" | cut -f1))"
+else
+  rm -f "$fichero.tmp"
+  echo "$(date -Is) la copia ha fallado"
+  /home/codehive/bin/kit-avisar juego-api "Orkhold: copia fallida" "La copia diaria de PostgreSQL de Orkhold ha fallado. Mira /home/codehive/logs/orkhold-copia.log" -p 4
+  exit 1
+fi

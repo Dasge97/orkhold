@@ -105,4 +105,15 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 73 | La prueba de red (7.8) usa el ejecutable de Windows con bots en vez de ParrelSync en el editor. | Se puede lanzar sin ventanas y sin abrir varios Unity; ParrelSync duplica el proyecto y no hay disco. |
 | 74 | Con `-bot` las puertas no hacen nada. | Un bot que cruza una puerta sale del pueblo y estropea la prueba. |
 | 75 | El servidor de mundo lee la URL de la API y la clave de servidor de variables de entorno (`ORKHOLD_API`, `ORKHOLD_CLAVE_SERVIDOR`). | La clave no puede ir en la compilación ni en git. |
-| 76 | La API se publica en `127.0.0.1:3110` para el proxy de codehive, nunca directa a internet. | Que todo el tráfico pase por el proxy con HTTPS. |
+| 76 | La API se publica en `127.0.0.1:4152` para el proxy de codehive, nunca directa a internet. | Que todo el tráfico pase por el proxy con HTTPS. |
+| 77 | Al compilar el APK, `-mundoApk host:puerto` pone el servidor de mundo en la configuración y luego la deja vacía, igual que `-urlApi`. | En git la configuración va vacía (modo local); un test lo comprueba. |
+
+## Fase 8
+| # | Decisión | Por qué |
+|---|---|---|
+| 78 | Mientras falte el módulo de servidor Linux de Unity, el servidor de mundo corre en codehive con el ejecutable de Windows y Wine (`deployment/mundo/Dockerfile.wine`). `desplegar.sh` elige el Dockerfile de Linux en cuanto exista `Builds/Servidor/`. | El módulo pide permisos de administrador en el PC y no se pudo instalar. |
+| 79 | El servidor de mundo escribe su estado (jugadores, hora) cada 30 s en un fichero montado; `orkhold-vigilar` (cron cada 5 min) lo lee y llama a `kit-estado`. | Desde dentro del contenedor no se puede llamar a `kit-estado`. |
+| 80 | Proyecto `deployment_orkhold` en `/home/codehive/codehive-app-state/deployments/orkhold/workspace`, API en 127.0.0.1:4152 detrás de Traefik, como aldea y poker. | Mismo patrón que los despliegues recientes de codehive. |
+| 81 | Los secretos de producción se generan en el servidor (`orkhold-secretos generar`) y se guardan en la bóveda con `orkhold-secretos guardar`. | Nadie los ve; la bóveda estaba bloqueada al preparar el despliegue. |
+| 82 | La copia diaria (04:15, 14 días) avisa al móvil con `kit-avisar juego-api` si falla, sin cambiar el estado del servicio. | `orkhold-vigilar` pondría el estado otra vez en verde a los 5 minutos y el fallo se perdería. |
+| 83 | En producción `PUEBLO_CLIENTE` va apagado: el botín del pueblo solo lo suma el servidor de mundo. | Con el servidor de mundo, el cliente no debe sumar nada por su cuenta (§3). |
