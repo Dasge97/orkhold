@@ -151,3 +151,8 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 107 | El servidor de mundo manda un latido con los jugadores del pueblo a la API cada 30 s. | Así el panel sabe cuántos hay sin leer ficheros del servidor. |
 | 108 | Versión del juego como número fijo en `Configuracion.VersionJuego` (empieza en 2); el panel pone la mínima. | Hace falta un número que compare la API; se sube con cada APK publicado. |
 | 109 | Árboles y rocas del pueblo reaparecen a los 300 s (antes 60) y lo marca el balance. | 08 §1.2 aprobado: "Árboles y rocas: cada 5 min". |
+| 110 | Una invitada registrada ya no entra con el token del dispositivo (`/sesion` responde `cuenta_registrada`); el móvil guarda su token de sesión de 30 días. | 14-cuentas: la cuenta no va atada al móvil; si alguien copia el token del dispositivo no entra en una cuenta con correo. |
+| 111 | Con servidor, el menú enseña "Cuenta" en vez de "Reiniciar partida". | Reiniciar solo tenía sentido con la partida guardada en el móvil. |
+| 112 | Lista de nombres prohibidos corta y solo con palabras que no forman parte de nombres normales. | Evitar rechazar nombres legítimos; la lista se amplía en `api/src/datos/nombres-prohibidos.txt`. |
+| 113 | `PUT /fuerte` reparte solo el contenido de los escondites (los que siguen en su casilla conservan lo suyo); `PUT /fuerte/escondites` es para recolocar a mano. | El jugador construye sin hacer cuentas; recolocar es una acción aparte (08 §3.1). |
+| 114 | El contenido de antes de la versión 2 pasa entero al cofre central aunque pase de 50; no entra más hasta que haya sitio. | No quitar nada a nadie al cambiar de modelo. |

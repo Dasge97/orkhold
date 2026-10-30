@@ -48,6 +48,13 @@ public static class MensajesApi
     [Serializable] public class FilaHistorial { public string id, rival; public bool ganado; public int segundos, muros_rotos, puntos; public string creado; }
     [Serializable] public class RespuestaHistorial { public List<FilaHistorial> hechos, recibidos; }
 
+    [Serializable] public class PeticionCuenta { public string correo, contrasena; }
+    [Serializable] public class Cuenta { public string tipo, correo, creado; public bool verificado; }
+    [Serializable] public class RespuestaCuenta { public string token; public Cuenta cuenta; public Jugador jugador; }
+    [Serializable] public class RespuestaCuentaSola { public Cuenta cuenta; }
+    [Serializable] public class PeticionBorrar { public string contrasena, confirmar; }
+    [Serializable] public class PeticionCorreo { public string correo; }
+
     [Serializable] public class AvisoApi { public string id, titulo, texto, creado; }
     [Serializable] public class Estado { public int version_minima; public string mantenimiento; public List<AvisoApi> avisos; }
 

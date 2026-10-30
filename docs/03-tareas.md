@@ -127,11 +127,12 @@ Leer antes: `10-panel-admin.md`.
 
 ## Fase 11 · Cuentas con registro
 Leer antes: `14-cuentas.md`.
-- [ ] 11.1 Tablas y rutas `/cuenta/...` de §4 con scrypt, sesiones, intentos, correo (SMTP o registro) y páginas de enlace.
+- [x] 11.1 Tablas y rutas `/cuenta/...` de §4 con scrypt, sesiones, intentos, correo (SMTP o registro) y páginas de enlace.
   Comprobar: tests de registro, entrada, verificación, recuperar, borrar y bloqueo.
-- [ ] 11.2 Filtro de nombres ofensivos. Comprobar: tests.
-- [ ] 11.3 Juego: entrar con cuenta, registrar la invitada, cerrar sesión y borrar cuenta (§5).
-  Comprobar: test PlayMode contra la API local; capturas en el emulador.
+- [x] 11.2 Filtro de nombres ofensivos. Comprobar: tests.
+- [x] 11.3 Juego: entrar con cuenta, registrar la invitada, cerrar sesión y borrar cuenta (§5).
+  Comprobar: test PlayMode contra la API local; capturas en el emulador. (2026-10-30: `PruebaRegistro` y capturas
+  `Revision/60-cuenta-invitada.png` y `61-entrar-con-cuenta.png` desde el test; el emulador queda para la prueba final de la versión 2.)
 
 ## Fase 12 · Saqueo
 Leer antes: `08-formato-y-pvp.md` entero.

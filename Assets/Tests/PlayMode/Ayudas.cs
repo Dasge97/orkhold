@@ -64,17 +64,30 @@ public static class Ayudas
         Assert.IsFalse(Transicion.Ocupada, "La transición no terminó");
     }
 
-    /// Foto de lo que ve la cámara del juego (sin la interfaz) en Revision/<nombre>.png.
-    public static void Foto(string nombre)
+    /// Foto de lo que ve la cámara del juego en Revision/<nombre>.png. Con "interfaz", también los lienzos
+    /// de pantalla (se ponen un momento delante de la cámara, porque los de pantalla no salen en su imagen).
+    public static void Foto(string nombre, bool interfaz = true)
     {
         var cam = Camera.main;
         if (!cam) return;
         System.IO.Directory.CreateDirectory("Revision");
         var rt = new RenderTexture(1280, 720, 24);
         var antes = cam.targetTexture;
+        var lienzos = interfaz
+            ? Object.FindObjectsByType<Canvas>().Where(c => c.isRootCanvas && c.renderMode == RenderMode.ScreenSpaceOverlay).OrderBy(c => c.sortingOrder).ToArray()
+            : new Canvas[0];
+        float cerca = cam.nearClipPlane;
+        for (int i = 0; i < lienzos.Length; i++)
+        {
+            lienzos[i].renderMode = RenderMode.ScreenSpaceCamera;
+            lienzos[i].worldCamera = cam;
+            lienzos[i].planeDistance = cerca + 0.05f + 0.01f * (lienzos.Length - i);   // los de más orden, más cerca
+        }
         cam.targetTexture = rt;
+        Canvas.ForceUpdateCanvases();
         cam.Render();
         cam.targetTexture = antes;
+        foreach (var c in lienzos) { c.renderMode = RenderMode.ScreenSpaceOverlay; c.worldCamera = null; }
         RenderTexture.active = rt;
         var tex = new Texture2D(1280, 720, TextureFormat.RGB24, false);
         tex.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0);

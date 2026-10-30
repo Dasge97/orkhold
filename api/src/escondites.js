@@ -21,12 +21,19 @@ export function limpiarContenido(c) {
   return l;
 }
 
+/** Deja "c" con solo recursos enteros y no negativos, sin cambiar de objeto (otros lo tienen apuntado). */
+function arreglar(dueno, campo) {
+  const c = dueno[campo] && typeof dueno[campo] === 'object' ? dueno[campo] : (dueno[campo] = {});
+  for (const k of Object.keys(c)) if (!RECURSOS.includes(k)) delete c[k];
+  for (const r of RECURSOS) c[r] = Math.max(0, Math.floor(Number(c[r] ?? 0)) || 0);
+  return c;
+}
+
 /** Los escondites de un diseño en orden de depósito: el central y luego las piezas escondite. */
 export function escondites(diseno) {
-  diseno.central = limpiarContenido(diseno.central);
-  const lista = [{ tipo: 'central', contenido: diseno.central, ref: diseno, clave: 'central' }];
+  const lista = [{ tipo: 'central', contenido: arreglar(diseno, 'central') }];
   for (const p of diseno.piezas ?? [])
-    if (esEscondite(p.tipo)) { p.contenido = limpiarContenido(p.contenido); lista.push({ tipo: p.tipo, contenido: p.contenido, ref: p, clave: 'contenido' }); }
+    if (esEscondite(p.tipo)) lista.push({ tipo: p.tipo, contenido: arreglar(p, 'contenido') });
   return lista;
 }
 

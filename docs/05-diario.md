@@ -148,3 +148,8 @@ Lo más reciente arriba.
 - Panel en `/admin/` (Vue desde CDN, sin compilar), capturas con Chrome sin ventana y puppeteer-core en la carpeta temporal: escritorio y móvil, claro y oscuro.
 - Aprendido: la imagen de la API copia `src` al construir; antes de `npm test` hay que `docker compose build api`.
 - 10.4: `Balance.cs` descarga `GET /balance` (en forma de lista: JsonUtility no lee diccionarios), lo guarda en el móvil y lo aplica a una copia en memoria del catálogo (cambiar el asset en Play Mode lo ensucia). Enemigos y árboles del pueblo toman su tiempo al arrancar, porque en el pueblo los crea la red después de cargar la escena.
+
+## 30-10-2026 — fase 11: cuentas con registro
+- API: `/cuenta/...` con scrypt, tabla `sesiones` (el token lleva su id y se puede anular), enlaces de un solo uso guardados con hash, 5 intentos y 15 min, filtro de nombres. Sin SMTP el enlace va al registro.
+- Juego: `Sesion` guarda el token en el móvil; `PantallaCuenta` para entrar, guardar el progreso, cerrar sesión y borrar. El menú cambia "Reiniciar partida" por "Cuenta" cuando hay servidor.
+- Aprendido: un 401 por contraseña mala no es una sesión caducada (`ApiCliente` solo cierra con `sin_sesion`). Las fotos de los tests ya sacan la interfaz: los lienzos se ponen un momento delante de la cámara.

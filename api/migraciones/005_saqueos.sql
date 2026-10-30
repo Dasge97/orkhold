@@ -40,3 +40,11 @@ CREATE TABLE temporadas (
   fin TIMESTAMPTZ NOT NULL,
   cerrada TIMESTAMPTZ
 );
+
+-- Todo lo que cada jugador tenía pasa a su cofre central (08 §3.1: todo lo que posees está escondido).
+-- Puede pasar de la capacidad del cofre: no se pierde nada, pero no entra más hasta que haya sitio.
+INSERT INTO fuertes (jugador_id, diseno_json) SELECT id, '{"version":1,"piezas":[]}' FROM jugadores ON CONFLICT DO NOTHING;
+UPDATE fuertes f SET diseno_json = f.diseno_json || jsonb_build_object('central', (
+  SELECT jsonb_object_agg(r.recurso, coalesce(i.cantidad, 0))
+    FROM unnest(ARRAY['moneda', 'madera', 'piedra', 'hierro', 'hueso']) AS r(recurso)
+    LEFT JOIN inventario i ON i.jugador_id = f.jugador_id AND i.recurso = r.recurso));

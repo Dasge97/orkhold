@@ -187,28 +187,34 @@ public class PruebaCuentas
         Assert.IsEmpty(Configuracion.Instancia.hostMundo, "Resources/Configuracion.asset tiene un servidor de mundo: debería ir vacío en git");
     }
 
-    /// La API tiene su copia de catálogo, mapa del fuerte y fuertes del sistema: tienen que coincidir con el cliente.
+    [System.Serializable] class ListaBalance { public System.Collections.Generic.List<Balance.Par> lista; }
+
+    /// La API tiene su copia de catálogo (los números en balance.json), mapa del fuerte y fuertes del sistema:
+    /// sin balance descargado, el cliente tiene que usar los mismos valores por defecto.
     [Test]
     public void ElServidorUsaLasMismasReglasQueElCliente()
     {
         string Leer(string ruta) => System.IO.File.ReadAllText(ruta).Replace("\r", "");
-        var json = Leer("api/src/datos/catalogo.json");
+        Balance.Olvidar();
+        var valores = JsonUtility.FromJson<ListaBalance>("{\"lista\":" + Leer("api/src/datos/balance.json") + "}").lista
+            .ToDictionary(p => p.clave, p => p.valor);
+        var catalogo = Leer("api/src/datos/catalogo.json");
         var cat = CatalogoPiezas.Instancia;
-        var lineas = json.Split('\n');
         foreach (var p in cat.piezas)
         {
-            var l = lineas.FirstOrDefault(x => x.Contains($"\"id\": \"{p.id}\""));
-            Assert.IsNotNull(l, "La API no tiene la pieza " + p.id);
-            StringAssert.Contains($"\"vida\": {p.vida},", l, p.id + ": vida distinta");
+            StringAssert.Contains($"\"id\": \"{p.id}\"", catalogo, "La API no tiene la pieza " + p.id);
+            string prefijo = (p.categoria == CatalogoPiezas.Categoria.Escondite ? "escondite." : "pieza.") + p.id;
+            if (p.categoria != CatalogoPiezas.Categoria.Escondite)
+                Assert.AreEqual(p.vida, (int)valores[prefijo + ".vida"], p.id + ": vida distinta");
             foreach (var c in p.costes)
-            {
-                string r = c.recurso.ToString().ToLowerInvariant();
-                StringAssert.Contains($"\"{r}\": {c.cantidad}", l, $"{p.id}: coste de {r} distinto");
-            }
+                Assert.AreEqual(c.cantidad, (int)valores[$"{prefijo}.coste.{Nombres.Clave(c.recurso)}"], $"{p.id}: coste de {c.recurso} distinto");
+            foreach (var r in new[] { Recurso.Moneda, Recurso.Madera, Recurso.Piedra, Recurso.Hierro, Recurso.Hueso })
+                if (valores.ContainsKey($"{prefijo}.coste.{Nombres.Clave(r)}") && string.IsNullOrEmpty(p.requiereUnidad))
+                    Assert.IsTrue(p.costes.Any(c => c.recurso == r), $"{p.id}: al cliente le falta el coste de {r}");
         }
-        StringAssert.Contains($"\"muro\": {cat.maxMuros}", json);
-        StringAssert.Contains($"\"trampa\": {cat.maxTrampas}", json);
-        StringAssert.Contains($"\"defensor\": {cat.maxDefensores}", json);
+        Assert.AreEqual(cat.maxMuros, (int)valores["fuerte.limite_muro"]);
+        Assert.AreEqual(cat.maxTrampas, (int)valores["fuerte.limite_trampa"]);
+        Assert.AreEqual(cat.maxDefensores, (int)valores["fuerte.limite_defensor"]);
         Assert.AreEqual(Leer("Assets/Mapas/fuerte-base.txt"), Leer("api/src/datos/fuerte-base.txt"), "fuerte-base.txt distinto en la API");
         foreach (var n in new[] { "facil", "medio", "dificil" })
             Assert.AreEqual(Leer($"Assets/Mapas/fuertes-prueba/{n}.json"), Leer($"api/src/datos/fuertes-sistema/{n}.json"), n + ".json distinto en la API");

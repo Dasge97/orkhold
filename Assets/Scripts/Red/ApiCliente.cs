@@ -47,6 +47,7 @@ public class ApiCliente : MonoBehaviour
     public static void Get(string ruta, Action<Respuesta> fin) => Enviar("GET", ruta, null, fin);
     public static void Post(string ruta, object cuerpo, Action<Respuesta> fin) => Enviar("POST", ruta, cuerpo, fin);
     public static void Put(string ruta, object cuerpo, Action<Respuesta> fin) => Enviar("PUT", ruta, cuerpo, fin);
+    public static void Borrar(string ruta, object cuerpo, Action<Respuesta> fin) => Enviar("DELETE", ruta, cuerpo, fin);
 
     public static void Enviar(string metodo, string ruta, object cuerpo, Action<Respuesta> fin)
     {
@@ -73,7 +74,8 @@ public class ApiCliente : MonoBehaviour
             cuerpo = req.downloadHandler?.text ?? "",
         };
         if (!r.Ok) Debug.LogWarning($"API {metodo} {ruta}: {r.codigo} {r.cuerpo}");
-        if (r.codigo == 401 && !string.IsNullOrEmpty(Sesion.Token)) Sesion.Caducada();
+        // Solo "sin_sesion" es una sesión caducada; un 401 por contraseña mala no la cierra.
+        if (r.codigo == 401 && r.CodigoError == "sin_sesion" && !string.IsNullOrEmpty(Sesion.Token)) Sesion.Caducada();
         fin?.Invoke(r);
     }
 }

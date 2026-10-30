@@ -29,7 +29,9 @@ public class Menu : MonoBehaviour
         Texto(_panel.transform, "Menú", 56, new Vector2(0f, 240f));
         _sonido = BotonTexto(_panel.transform, "", new Vector2(0f, 120f), () => { Ajustes.Sonido = !Ajustes.Sonido; Refrescar(); });
         _vibracion = BotonTexto(_panel.transform, "", new Vector2(0f, 10f), () => { Ajustes.Vibracion = !Ajustes.Vibracion; Refrescar(); });
-        BotonTexto(_panel.transform, "Reiniciar partida", new Vector2(0f, -100f), () => _confirmar.SetActive(true));
+        // Con servidor, la partida es la cuenta: en vez de reiniciar, la ventana de la cuenta (14-cuentas.md §5).
+        if (Configuracion.ModoLocal) BotonTexto(_panel.transform, "Reiniciar partida", new Vector2(0f, -100f), () => _confirmar.SetActive(true));
+        else BotonTexto(_panel.transform, "Cuenta", new Vector2(0f, -100f), () => { Cerrar(); PantallaCuenta.Abrir(PantallaCuenta.Modo.Cuenta); });
         BotonTexto(_panel.transform, "Cerrar", new Vector2(0f, -210f), Cerrar);
         _panel.SetActive(false);
 

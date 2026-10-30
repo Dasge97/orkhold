@@ -48,6 +48,10 @@ public class PantallaArranque : MonoBehaviour
         _nombre = Ui.Entrada(_crear.transform, "Tu nombre", new Vector2(-520f, -120f), new Vector2(620f, 100f), 16);
         Ui.Boton(_crear.transform, "Empezar", new Vector2(-520f, -270f), new Vector2(420f, 110f), Ui.Verde, Empezar, 48);
         _error = Ui.Texto(_crear.transform, "", 34, new Vector2(-520f, -380f), new Vector2(900f, 60f));
+        // Quien ya tiene cuenta en otro móvil entra con su correo en vez de crear otro personaje.
+        if (!Configuracion.ModoLocal)
+            Ui.Boton(_crear.transform, "Ya tengo cuenta", new Vector2(-520f, -470f), new Vector2(420f, 80f), Ui.Gris, () =>
+                PantallaCuenta.Abrir(PantallaCuenta.Modo.Entrar, () => { if (!string.IsNullOrEmpty(Partida.Actual.nombre)) Entrar(); }), 34);
         _error.color = new Color(1f, 0.55f, 0.5f);
         _crear.SetActive(false);
 
@@ -84,6 +88,18 @@ public class PantallaArranque : MonoBehaviour
             }
             Sesion.Iniciar((ok, error) =>
             {
+                if (!ok && Sesion.PideEntrar)
+                {
+                    // Cuenta registrada en este móvil sin sesión válida: correo y contraseña.
+                    _estado.text = "";
+                    PantallaCuenta.Abrir(PantallaCuenta.Modo.Entrar, () =>
+                    {
+                        if (Sesion.Conectado) Balance.Descargar(_ => Sincronizacion.Refrescar(__ => Siguiente()));
+                        else Conectar();
+                    });
+                    return;
+                }
+                if (!ok && Sesion.UltimoError == "cuenta_bloqueada") { Bloquear("Cuenta bloqueada", "Si crees que es un error, escribe a soporte desde orkhold.com."); return; }
                 if (!ok)
                 {
                     _estado.text = "Sin conexión: juegas sin servidor (fuerte y saqueo bloqueados)";

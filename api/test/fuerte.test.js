@@ -63,8 +63,9 @@ test('límites: 6 trampas y 4 defensores', async () => {
   assert.equal((await poner(a.cab, trampas(6))).statusCode, 200);
   assert.equal((await poner(a.cab, trampas(7))).statusCode, 400);
   const orcos = n => Array.from({ length: n }, (_, i) => muro(2 + i, 12, 'orco_defensor'));
-  assert.equal((await poner(a.cab, orcos(4))).statusCode, 200);
-  assert.equal((await poner(a.cab, orcos(5))).statusCode, 400);
+  // Las trampas se quedan: quitarlas devolvería hierro que ya no cabe en el cofre central lleno.
+  assert.equal((await poner(a.cab, [...trampas(6), ...orcos(4)])).statusCode, 200);
+  assert.equal((await poner(a.cab, [...trampas(6), ...orcos(5)])).statusCode, 400);
 });
 
 test('límite de 40 muros (las puertas cuentan)', async () => {

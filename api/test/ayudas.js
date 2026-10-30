@@ -26,12 +26,11 @@ export async function jugador(app, nombre, modelo = 'character-male-a') {
   return { token, id: jugador.id, cab };
 }
 
-/** Da recursos a un jugador directamente en la base de datos. */
+/** Da recursos a un jugador (en sus escondites; lo que no cabe, al cofre central igualmente). */
 export async function dar(pool, id, recursos) {
-  for (const [r, n] of Object.entries(recursos))
-    await pool.query(
-      `INSERT INTO inventario (jugador_id, recurso, cantidad) VALUES ($1,$2,$3)
-       ON CONFLICT (jugador_id, recurso) DO UPDATE SET cantidad = inventario.cantidad + EXCLUDED.cantidad`, [id, r, n]);
+  const { enTransaccion } = await import('../src/bd.js');
+  const { sumar } = await import('../src/inventario.js');
+  await enTransaccion(pool, c => sumar(c, id, recursos, { forzar: true }));
 }
 
 /** Crea un administrador y devuelve la cabecera con su sesión. */

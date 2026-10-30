@@ -50,10 +50,10 @@ export default async function (app) {
           await ponerProgreso(c, req.jugadorId, CLAVE_JEFE_DIA, hoy);
         } else delta.moneda = (delta.moneda ?? 0) + B('mazmorra.jefe_monedas');
       }
-      await sumar(c, req.jugadorId, delta);
+      const { perdido } = await sumar(c, req.jugadorId, delta);
       await c.query('INSERT INTO mazmorras (jugador_id, jefe_muerto, recursos_json) VALUES ($1, $2, $3)',
         [req.jugadorId, jefe_muerto, JSON.stringify(recursos)]);
-      return { primera_vez_jefe: primeraVez, jugador: await leerJugador(c, req.jugadorId) };
+      return { primera_vez_jefe: primeraVez, perdido, jugador: await leerJugador(c, req.jugadorId) };
     });
   });
 
@@ -68,9 +68,9 @@ export default async function (app) {
         const ya = previos.reduce((s, f) => s + (f.recursos_json[r] ?? 0), 0);
         if (ya + recursos[r] > maxPuebloMinuto(r)) throw new ErrorJuego('demasiado_botin', `Demasiado ${r} en un minuto`, 429);
       }
-      await sumar(c, req.jugadorId, recursos);
+      const { perdido } = await sumar(c, req.jugadorId, recursos);
       await c.query('INSERT INTO botin_pueblo (jugador_id, recursos_json) VALUES ($1, $2)', [req.jugadorId, JSON.stringify(recursos)]);
-      return { jugador: await leerJugador(c, req.jugadorId) };
+      return { perdido, jugador: await leerJugador(c, req.jugadorId) };
     });
   });
 
@@ -80,8 +80,8 @@ export default async function (app) {
     const { jugador, recurso, cantidad } = validar(Sumar, req.body);
     return enTransaccion(app.pool, async (c) => {
       await leerJugador(c, jugador);   // 404 si no existe
-      await sumar(c, jugador, { [recurso]: cantidad });
-      return { jugador: await leerJugador(c, jugador) };
+      const { perdido } = await sumar(c, jugador, { [recurso]: cantidad });
+      return { perdido, jugador: await leerJugador(c, jugador) };
     });
   });
 }
