@@ -132,3 +132,15 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 92 | La red de Docker de Orkhold usa la subred fija 10.96.0.0/24. | En codehive Docker ya no tiene subredes libres; otros proyectos usan 10.90-10.95. |
 | 93 | El servidor de mundo bajo Wine arranca Xvfb a mano, con `init: true`, y escribe su registro en `estado/mundo.log`. | Sin pantalla Wine no arranca; `xvfb-run` como primer proceso se queda colgado; con `-logFile -` el juego no arranca. |
 | 94 | La tarea 7.7 se cierra con el servidor de mundo bajo Wine en producción. | Funciona desde fuera (RED: OK contra app.orkhold.com); el módulo Linux de Unity no se ha podido instalar sin permisos. |
+
+## Versión 2
+| # | Decisión | Por qué |
+|---|---|---|
+| 95 | La versión 2 empieza sin esperar las comprobaciones de la 1 que dependen de Daniel (móvil, persona real, apagar la API). | Daniel lo aprobó todo el 30-10-2026 y pidió implementarlo. |
+| 96 | Orden: balance y panel (10), cuentas (11), saqueo (12), lore (13). Mazmorras 2-4, eventos y social esperan a sus documentos de diseño. | El orden de `09-plan-version-2.md`; el lore es pequeño e independiente. |
+| 97 | El panel de administración lo sirve la API en `app.orkhold.com/admin/`, con Vue desde CDN y sin compilar. | Sin otro dominio ni contenedor; el panel es pequeño. |
+| 98 | Los correos de cuenta salen por SMTP configurable; sin configurar, el enlace va al registro de la API. Sin verificar se juega igual. | No hay buzón de orkhold.com todavía; no bloquear a nadie por eso. |
+| 99 | Lo ganado se guarda en los escondites en cuanto llega a la API, no al tocar la Brasa. | Mismo efecto para el jugador (lo que llevas encima no se puede saquear) y una sola regla en el servidor. |
+| 100 | Orden de depósito: cofre central y luego los escondites en el orden en que se construyeron. Al gastar se saca en el mismo orden. | "Primer escondite con hueco" (08 §3.1); gastar del central primero lo vacía, que es lo más expuesto. |
+| 101 | El fuerte de prueba (sin rivales) no mueve botín, ni tasa, ni Elo. | 08 §4.1: "sin botín real ni tasa"; dar Elo contra un fuerte falso inflaría el ranking. |
+| 102 | "Mirar" es una petición al servidor; el móvil no conoce el contenido de los escondites del rival. | El servidor decide (08 §4.4) y así no se puede leer el contenido desde el cliente. |

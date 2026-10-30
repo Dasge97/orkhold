@@ -109,6 +109,51 @@ Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóve
   Comprobar: una persona que no ha visto el juego lo entiende en 2 minutos sin ayuda.
   (Pendiente de Daniel: hace falta una persona de verdad.)
 
-## Después de la primera versión (no empezar)
+## Versión 2 (aprobada el 30-10-2026, `09-plan-version-2.md`)
+Las fases 7, 8 y 9 tienen comprobaciones que dependen de Daniel (móvil, persona real, apagar la API);
+se siguen marcando cuando se hagan. La versión 2 empieza sin esperarlas (decisión 95).
+
+## Fase 10 · Balance y panel de administración
+Leer antes: `10-panel-admin.md`.
+- [ ] 10.1 Tablas `balance` y `balance_historial`, `balance.json` con los valores de §1.3, carga al arrancar y `GET /balance`.
+  Las reglas de la API (catálogo, límites, mazmorra, pueblo) leen el balance en vez de números fijos.
+  Comprobar: tests de la API; cambiar `pieza.muro_madera.coste.madera` en la tabla cambia el coste al guardar un fuerte.
+- [ ] 10.2 Administradores, `POST /admin/sesion` y todas las rutas `/admin` de §3, con tests.
+- [ ] 10.3 Web del panel en `/admin/` con las pestañas de §2.2. Script `orkhold-admin crear` en codehive.
+  Comprobar: capturas del panel en escritorio y móvil, modo claro y oscuro.
+- [ ] 10.4 Cliente y servidor de mundo leen `GET /balance` (costes del catálogo, tiempos de reaparición) y `GET /estado`
+  (versión mínima, mantenimiento, avisos). Comprobar: test PlayMode con un balance cambiado.
+
+## Fase 11 · Cuentas con registro
+Leer antes: `14-cuentas.md`.
+- [ ] 11.1 Tablas y rutas `/cuenta/...` de §4 con scrypt, sesiones, intentos, correo (SMTP o registro) y páginas de enlace.
+  Comprobar: tests de registro, entrada, verificación, recuperar, borrar y bloqueo.
+- [ ] 11.2 Filtro de nombres ofensivos. Comprobar: tests.
+- [ ] 11.3 Juego: entrar con cuenta, registrar la invitada, cerrar sesión y borrar cuenta (§5).
+  Comprobar: test PlayMode contra la API local; capturas en el emulador.
+
+## Fase 12 · Saqueo
+Leer antes: `08-formato-y-pvp.md` entero.
+- [ ] 12.1 API: escondites dentro del diseño con su contenido; todo el inventario de recursos vive en los escondites
+  (depositar al ganar, sacar al gastar, "Escondites llenos"). Migración de los jugadores actuales al cofre central.
+  Comprobar: tests (sumar, gastar, lleno, recolocar a mano).
+- [ ] 12.2 API: `/saqueo/preparar`, `/saqueo/empezar`, `/saqueo/mirar`, `/saqueo/resolver` e informes; rehacer la
+  exploración (velocidad, golpes, camino), tasa, Elo, escudo, rival sin repetir en 24 h, saqueos por día, fuerte de prueba.
+  Comprobar: tests con exploraciones buenas y tramposas.
+- [ ] 12.3 Modo construir: cofre, barril y enterrado; tocar un escondite para repartir el contenido; aviso de lleno.
+- [ ] 12.4 Saqueo en el juego: preparar (rival, herramientas), explorar 120 s (romper, mirar), marcar 3 escondites,
+  secuencia de resultado. Trampas y defensores quietos. Sustituye al asalto de 90 s.
+- [ ] 12.5 Informe para el defensor (rejilla con lo roto, mirado, marcado y encontrado) y aviso al entrar.
+- [ ] 12.6 Herramientas: farol y cuarta acción (Ferra fabrica el farol); el resto, bloqueadas hasta su mazmorra.
+- [ ] 12.7 Temporadas: tramo y estandarte, cierre cada 4 semanas con compresión hacia 1000.
+  Comprobar la fase: bot de saqueo en PlayMode contra la API local (preparar → explorar → marcar → resultado) y capturas.
+
+## Fase 13 · Lore en el juego
+Leer antes: `07-lore.md` §5-§7.
+- [ ] 13.1 Textos de carga del §6 y "Vado Gris" en la pantalla de carga.
+- [ ] 13.2 NPC con su sitio y frases: Maela, Tobin y Rook dicen el tutorial (sustituyen a los carteles); Gruk, Ferra y Ansel con frase.
+- [ ] 13.3 Urzog con sus tres frases. Comprobar la fase: capturas del pueblo con los NPC.
+
+## Después de la versión 2 (no empezar)
 Herramientas de asalto, repeticiones, tiempos de construcción, segunda mazmorra, más piezas y
 defensores, nivel de personaje, equipo, chat, iOS, tienda, más zonas del pueblo.
