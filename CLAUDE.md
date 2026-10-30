@@ -81,4 +81,4 @@ asaltan (el PvP). Daniel decide el diseño; el modelo implementa.
 - Decisiones tomadas sin Daniel: `docs/06-decisiones.md`.
 - En codehive Docker no tiene subredes libres: cada compose necesita una subred fija (Orkhold usa 10.96.0.0/24).
 - El servidor de mundo bajo Wine: Xvfb lanzado a mano (no `xvfb-run`) y `-logFile` a un fichero, nunca `-`.
-- El puerto UDP del servidor de mundo hay que abrirlo en el cortafuegos del panel de IONOS.
+- El puerto UDP del servidor de mundo va en el cortafuegos del panel de IONOS. Cada servidor tiene una sola política: los puertos nuevos se añaden a la que ya existe.

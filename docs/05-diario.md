@@ -141,3 +141,4 @@ Lo más reciente arriba.
 - Desplegado en https://app.orkhold.com (cambio de Daniel). API en verde en el Kit; secretos en la bóveda («juego - postgres», «juego - api secreto», «juego - clave servidor mundo»).
 - Tropiezos: Docker sin subredes libres (subred fija 10.96.0.0/24); Wine necesita Xvfb; `xvfb-run` se cuelga como PID 1; `-logFile -` impide arrancar; `orkhold-vigilar` tenía CRLF en la copia de trabajo.
 - Los bots desde el PC no llegan al servidor de mundo: tcpdump en codehive no ve ningún paquete UDP 7777. Hay que abrir el puerto en el cortafuegos de IONOS.
+- Puerto UDP 7777 abierto en IONOS: dos bots desde el PC contra app.orkhold.com se ven moverse (RED: OK).

@@ -96,8 +96,8 @@ Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóve
 - [ ] 8.3 Copia de seguridad diaria de PostgreSQL (cron) con aviso si falla.
   Comprobar: el Kit muestra los dos servicios en verde; apagar la API lo pone en rojo y llega el aviso.
   (Desplegado el 30-10-2026 en https://app.orkhold.com: API con HTTPS y base de datos, servidor de mundo
-  escuchando en UDP 7777, secretos en la bóveda, cron y Kit importado. Falta abrir UDP 7777 en el cortafuegos
-  de IONOS: los paquetes no llegan ni a la tarjeta de red del servidor. Falta también la prueba de apagar la API.)
+  escuchando en UDP 7777, secretos en la bóveda, cron y Kit importado. UDP 7777 abierto en IONOS por Daniel;
+  `pruebas/red-local.ps1 -Servidor app.orkhold.com:7777` da RED: OK. Falta la prueba de apagar la API.)
 
 ## Fase 9 · Pulido para enseñar
 - [x] 9.1 Icono de la app y pantalla de carga. (2026-10-30)
