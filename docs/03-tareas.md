@@ -157,6 +157,28 @@ Leer antes: `07-lore.md` §5-§7.
 - [x] 13.2 NPC con su sitio y frases: Maela, Tobin y Rook dicen el tutorial (sustituyen a los carteles); Gruk, Ferra y Ansel con frase.
 - [x] 13.3 Urzog con sus tres frases. Comprobar la fase: capturas del pueblo con los NPC. (2026-10-30: `PruebaLore`, `Revision/80-maela-tutorial.png`.)
 
+## Fase 14 · Mazmorra 2: la Forja Hundida
+Leer antes: `11-mazmorras.md` §1, §2, §5 y §6.
+- [ ] 14.1 Importar Graveyard Kit y Castle Kit de Kenney en `Assets/Kenney/` (sin tocarlos después).
+- [ ] 14.2 Puertas nuevas en el pueblo (mazmorras 2-4) que se abren al vencer al jefe anterior; API: botín y jefe por mazmorra (`mazmorra<N>.*` en el balance, progreso `jefe<N>_muerto`).
+- [ ] 14.3 Enemigos: orco herrero (escudo cada 3 golpes), bombardero (bomba con aviso), trampa de fuego.
+- [ ] 14.4 Mapa `forja.txt`, escena `Mazmorra2` y jefa Grimbra (golpe en área, llama a 2 herreros a media vida, frases).
+- [ ] 14.5 Desbloqueos: pico y bomba fabricables, doble fondo y muro de hierro, para quien venció a Grimbra.
+  Comprobar la fase: tests PlayMode (entrar, enemigos, jefa, botín en la API, desbloqueos) y la mazmorra jugada en el emulador.
+
+## Fase 15 · Mazmorra 3: la Torre del Vigía
+Leer antes: `11-mazmorras.md` §3.
+- [ ] 15.1 Tres plantas (`torre1.txt` a `torre3.txt`) unidas por escaleras; enemigos arquero de la torre, vigía (campana que avisa a la planta) y perro.
+- [ ] 15.2 Jefe Vigía Mayor (lluvia de flechas, salta de esquina y llama perros) y desbloqueos: sabueso, señuelo y campana.
+  Comprobar la fase: tests PlayMode y la torre jugada en el emulador.
+
+## Fase 16 · Mazmorra 4: el Pozo de los Clanes
+Leer antes: `11-mazmorras.md` §4 y `08-formato-y-pvp.md` §3.3 y §6.
+- [ ] 16.1 Arena `pozo.txt` con cuatro oleadas y descansos de 10 s; salir entre oleadas se lleva lo ganado.
+- [ ] 16.2 Jefe Kargash (dos fases) y desbloqueos: Kargash defensor, torre con arquero y perro guardián.
+- [ ] 16.3 Saqueo, versión siguiente para todos: trampas y defensores actúan al explorar (08 §3.3 y §6).
+  Comprobar la fase: tests PlayMode, el pozo jugado en el emulador y un saqueo con defensores.
+
 ## Después de la versión 2 (no empezar)
 Herramientas de asalto, repeticiones, tiempos de construcción, segunda mazmorra, más piezas y
 defensores, nivel de personaje, equipo, chat, iOS, tienda, más zonas del pueblo.

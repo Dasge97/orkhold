@@ -1,7 +1,8 @@
 # 11 · Mazmorras 2, 3 y 4
 
-Fecha: 2026-10-30. Bloque 3 de `09-plan-version-2.md`. **Propuesta** del modelo para que Daniel la apruebe o
-cambie. Las preguntas que solo puede decidir él están en §7, cada una con la propuesta.
+Fecha: 2026-10-30. Bloque 3 de `09-plan-version-2.md`. **Aprobado por Daniel el 30-10-2026**, con las seis
+propuestas de §7 tal cual (packs Graveyard Kit y Castle Kit, Torre en tres plantas, Pozo por oleadas,
+defensores y trampas del saqueo para todos con la mazmorra 4, una mazmorra por fase, mapa de Ansel después).
 
 ## 1. Reglas comunes
 
@@ -147,7 +148,7 @@ c: columna. Los enemigos de cada oleada salen por los bordes.
 | Vigía Mayor (M3) | Sabueso y señuelo fabricables | Campana |
 | Kargash (M4) | — | Kargash defensor, torre con arquero, perro guardián |
 
-## 7. Preguntas para Daniel
+## 7. Preguntas para Daniel (respondidas: sí a las seis propuestas)
 
 1. **Modelos.** Con lo que hay (orco, humano y Mini Characters, cambiando color y tamaño) salen todos los
    enemigos de arriba, pero se parecen entre sí. *Propuesta:* importar dos packs gratuitos de Kenney
