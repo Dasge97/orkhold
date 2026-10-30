@@ -951,6 +951,136 @@ MonoBehaviour:
     recursoFuente: 1
     unirColision: 0
     debajo: 0
+  - letra: 98
+    descripcion: brasero
+    modelos:
+    - {fileID: 919132149155446097, guid: 7d0b15435b1a71546a73da1948070b71, type: 3}
+    escala: 1.8
+    altura: 0
+    giroY: 0
+    giroAleatorio: 0
+    conSuelo: 1
+    colision: 2
+    tamano: {x: 0.3, y: 0.7, z: 0}
+    bloque: 1
+    marca: 0
+    union:
+      recto: {fileID: 0}
+      curva: {fileID: 0}
+      final: {fileID: 0}
+      te: {fileID: 0}
+      cruce: {fileID: 0}
+      aislado: {fileID: 0}
+      unidaCon: 
+      brazo: {fileID: 0}
+      brazoPosicion: {x: 0, y: 0, z: 0}
+      brazoGiro: {x: 0, y: 0, z: 0}
+      brazoEscala: {x: 1, y: 1, z: 1}
+    entidad: {fileID: 0}
+    combinar: 1
+    combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
+    unirColision: 0
+    debajo: 0
+  - letra: 99
+    descripcion: columna
+    modelos:
+    - {fileID: 919132149155446097, guid: 638c0c5b9d3ed084591f659b8d122bb8, type: 3}
+    escala: 1.6
+    altura: 0
+    giroY: 0
+    giroAleatorio: 0
+    conSuelo: 1
+    colision: 2
+    tamano: {x: 0.35, y: 1.5, z: 0}
+    bloque: 1
+    marca: 0
+    union:
+      recto: {fileID: 0}
+      curva: {fileID: 0}
+      final: {fileID: 0}
+      te: {fileID: 0}
+      cruce: {fileID: 0}
+      aislado: {fileID: 0}
+      unidaCon: 
+      brazo: {fileID: 0}
+      brazoPosicion: {x: 0, y: 0, z: 0}
+      brazoGiro: {x: 0, y: 0, z: 0}
+      brazoEscala: {x: 1, y: 1, z: 1}
+    entidad: {fileID: 0}
+    combinar: 1
+    combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
+    unirColision: 0
+    debajo: 0
+  - letra: 117
+    descripcion: urna
+    modelos:
+    - {fileID: 919132149155446097, guid: 2cc305f23cc043142999d88335a3085c, type: 3}
+    - {fileID: 919132149155446097, guid: f7295521ab504e643a38e2b98b658c32, type: 3}
+    escala: 1.6
+    altura: 0
+    giroY: 0
+    giroAleatorio: 1
+    conSuelo: 1
+    colision: 2
+    tamano: {x: 0.25, y: 0.5, z: 0}
+    bloque: 1
+    marca: 0
+    union:
+      recto: {fileID: 0}
+      curva: {fileID: 0}
+      final: {fileID: 0}
+      te: {fileID: 0}
+      cruce: {fileID: 0}
+      aislado: {fileID: 0}
+      unidaCon: 
+      brazo: {fileID: 0}
+      brazoPosicion: {x: 0, y: 0, z: 0}
+      brazoGiro: {x: 0, y: 0, z: 0}
+      brazoEscala: {x: 1, y: 1, z: 1}
+    entidad: {fileID: 0}
+    combinar: 1
+    combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
+    unirColision: 0
+    debajo: 0
+  - letra: 100
+    descripcion: escombros
+    modelos:
+    - {fileID: 919132149155446097, guid: aaabda177a340b44ba3971593d1517aa, type: 3}
+    - {fileID: 919132149155446097, guid: 1ad470dc82e01a844be68e9c3011ad18, type: 3}
+    escala: 1.4
+    altura: 0
+    giroY: 0
+    giroAleatorio: 1
+    conSuelo: 1
+    colision: 0
+    tamano: {x: 1, y: 1, z: 1}
+    bloque: 1
+    marca: 0
+    union:
+      recto: {fileID: 0}
+      curva: {fileID: 0}
+      final: {fileID: 0}
+      te: {fileID: 0}
+      cruce: {fileID: 0}
+      aislado: {fileID: 0}
+      unidaCon: 
+      brazo: {fileID: 0}
+      brazoPosicion: {x: 0, y: 0, z: 0}
+      brazoGiro: {x: 0, y: 0, z: 0}
+      brazoEscala: {x: 1, y: 1, z: 1}
+    entidad: {fileID: 0}
+    combinar: 1
+    combinarEnBorde: 0
+    esFuente: 0
+    recursoFuente: 1
+    unirColision: 0
+    debajo: 0
   - letra: 78
     descripcion: Grimbra la Fundidora
     modelos: []

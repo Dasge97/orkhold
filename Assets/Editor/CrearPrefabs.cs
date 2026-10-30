@@ -12,6 +12,8 @@ public static class CrearPrefabs
     public const string Carpeta = "Assets/Prefabs/";
     public const string Dungeon = "Assets/Kenney/MiniDungeon/";
     public const string Natura = "Assets/Kenney/NatureKit/";
+    public const string Cementerio = "Assets/Kenney/GraveyardKit/";
+    public const string Castillo = "Assets/Kenney/CastleKit/";
     public const string Controles = "Assets/Kenney/MobileControls/";
     public const string Anim = "Assets/Animacion/";
 

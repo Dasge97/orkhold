@@ -159,14 +159,13 @@ Leer antes: `07-lore.md` §5-§7.
 
 ## Fase 14 · Mazmorra 2: la Forja Hundida
 Leer antes: `11-mazmorras.md` §1, §2, §5 y §6.
-- [ ] 14.1 Importar Graveyard Kit y Castle Kit de Kenney en `Assets/Kenney/` (sin tocarlos después).
+- [x] 14.1 Importar Graveyard Kit y Castle Kit de Kenney en `Assets/Kenney/` (sin tocarlos después).
 - [x] 14.2 Puertas nuevas en el pueblo (mazmorras 2-4) que se abren al vencer al jefe anterior; API: botín y jefe por mazmorra (`mazmorra<N>.*` en el balance, progreso `jefe<N>_muerto`).
 - [x] 14.3 Enemigos: orco herrero (escudo cada 3 golpes), bombardero (bomba con aviso), trampa de fuego.
 - [x] 14.4 Mapa `forja.txt`, escena `Mazmorra2` y jefa Grimbra (golpe en área, llama a 2 herreros a media vida, frases).
 - [x] 14.5 Desbloqueos: pico y bomba fabricables, doble fondo y muro de hierro, para quien venció a Grimbra.
   Comprobar la fase: tests PlayMode (entrar, enemigos, jefa, botín en la API, desbloqueos) y la mazmorra jugada en el emulador.
-  (2026-10-30: `PruebaForja` y 58 tests de la API en verde. Falta 14.1 (Daniel descarga los packs: Kenney no deja descargar
-  sin navegador) y jugarla en el emulador: con gestos de adb un orco del pueblo me mató tres veces antes de llegar a la puerta.)
+  (2026-10-30: `PruebaForja` y 58 tests de la API en verde. 14.1 hecha con los packs que descargó Daniel. Falta jugarla en el emulador: con gestos de adb un orco del pueblo me mató tres veces antes de llegar a la puerta.)
 
 ## Fase 15 · Mazmorra 3: la Torre del Vigía
 Leer antes: `11-mazmorras.md` §3.

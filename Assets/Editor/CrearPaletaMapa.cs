@@ -97,6 +97,14 @@ public static class CrearPaletaMapa
         Agregar(p, 'H', "orco herrero", new GameObject[0], entidad: CrearPrefabs.Cargar("OrcoHerrero"));
         Agregar(p, 'Q', "bombardero", new GameObject[0], entidad: CrearPrefabs.Cargar("Bombardero"));
         Agregar(p, 'Z', "trampa de fuego", new GameObject[0], entidad: CrearPrefabs.Cargar("TrampaFuego"));
+        // Decoración de la Forja con el Graveyard Kit (14.1).
+        Agregar(p, 'b', "brasero", Modelos(CrearPrefabs.Cementerio, "fire-basket"), escala: 1.8f,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 0.7f, 0f));
+        Agregar(p, 'c', "columna", Modelos(CrearPrefabs.Cementerio, "column-large"), escala: 1.6f,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.35f, 1.5f, 0f));
+        Agregar(p, 'u', "urna", Modelos(CrearPrefabs.Cementerio, "urn-round", "urn-square"), giroAleatorio: true, escala: 1.6f,
+                colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.25f, 0.5f, 0f));
+        Agregar(p, 'd', "escombros", Modelos(CrearPrefabs.Cementerio, "debris", "debris-wood"), giroAleatorio: true, escala: 1.4f);
         Agregar(p, 'N', "Grimbra la Fundidora", new GameObject[0], entidad: CrearPrefabs.Cargar("Grimbra"));
         // Puertas de las mazmorras 2, 3 y 4 en el pueblo (se abren al vencer al jefe anterior).
         Agregar(p, 'Y', "puerta de la mazmorra 2", Modelos(Dungeon, "gate"), entidad: puerta);

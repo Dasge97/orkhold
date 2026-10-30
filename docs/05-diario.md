@@ -172,3 +172,4 @@ Lo más reciente arriba.
 - API: `/mazmorra/resultado` con `mazmorra` (1-4), la N exige el jefe N-1, recompensas y máximos por mazmorra en el balance, requisitos de jefe para herramientas y piezas, bomba en el saqueo (3x3 a los 2 s) y muro de hierro. 58 tests.
 - Juego: puertas Y, U y W en las ruinas del pueblo (`PuertaMazmorra`), `forja.txt` y escena `Mazmorra2`, orco herrero, bombardero, trampa de fuego, Grimbra con refuerzos; pico y bomba en el saqueo. `PruebaForja` en verde.
 - Pendiente: los packs de Kenney (la web devuelve 403 a las descargas automáticas y no se fuerza) y la prueba en el emulador: andar con gestos de adb hasta la puerta falló tres veces porque un orco del pueblo mata al personaje por el camino.
+- 14.1: Graveyard Kit (91 modelos) y Castle Kit (76) en `Assets/Kenney/`, descargados por Daniel. La Forja lleva braseros, columnas, urnas y escombros del cementerio (escala 1,4-1,8: son más pequeños que Mini Dungeon).
