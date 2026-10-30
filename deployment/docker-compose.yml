@@ -28,6 +28,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
   mundo:
+    init: true   # recoge los procesos de Wine y Xvfb que mueren
     build:
       context: ./mundo
       dockerfile: ${MUNDO_DOCKERFILE:-Dockerfile}
@@ -44,3 +45,9 @@ services:
     depends_on: [api]
 volumes:
   datos:
+# Subred fija: en codehive Docker ya no tiene redes libres (otros proyectos usan 10.90-10.95).
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.96.0.0/24

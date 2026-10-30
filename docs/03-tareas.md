@@ -91,13 +91,13 @@ Leer antes: `02-arquitectura.md` §1, §2.6, §3. Es la fase más difícil: si u
 
 ## Fase 8 · Despliegue y avisos
 Leer antes: `02-arquitectura.md` §5 y las reglas globales de Daniel sobre bóveda, ntfy y Kit.
-- [ ] 8.1 Desplegar `postgres`, `api` y `mundo` en codehive con el proxy existente. Credenciales en la bóveda.
-- [ ] 8.2 `kit-estado` para `juego-api` y `juego-mundo`; añadirlos a `kit-codehive/kit.json` e importar.
+- [x] 8.1 Desplegar `postgres`, `api` y `mundo` en codehive con el proxy existente. Credenciales en la bóveda. (30-10-2026)
+- [x] 8.2 `kit-estado` para `juego-api` y `juego-mundo`; añadirlos a `kit-codehive/kit.json` e importar. (30-10-2026)
 - [ ] 8.3 Copia de seguridad diaria de PostgreSQL (cron) con aviso si falla.
   Comprobar: el Kit muestra los dos servicios en verde; apagar la API lo pone en rojo y llega el aviso.
-  (Preparado y sin desplegar, 2026-10-30: `deployment/desplegar.sh` lo hace todo, pero el control de
-  permisos no dejó tocar codehive sin Daniel. Faltan además el registro DNS de `orkhold.code-hive.space`
-  en IONOS y desbloquear la bóveda para `orkhold-secretos guardar`. Servicios ya añadidos a `kit-codehive/kit.json`, sin importar.)
+  (Desplegado el 30-10-2026 en https://app.orkhold.com: API con HTTPS y base de datos, servidor de mundo
+  escuchando en UDP 7777, secretos en la bóveda, cron y Kit importado. Falta abrir UDP 7777 en el cortafuegos
+  de IONOS: los paquetes no llegan ni a la tarjeta de red del servidor. Falta también la prueba de apagar la API.)
 
 ## Fase 9 · Pulido para enseñar
 - [x] 9.1 Icono de la app y pantalla de carga. (2026-10-30)

@@ -3,7 +3,7 @@
 # servidor/ lleva Builds/Windows/ (CompilarEscritorio.WindowsEnBatch). Se usa con MUNDO_DOCKERFILE=Dockerfile.wine.
 FROM debian:bookworm-slim
 RUN apt-get update \
- && apt-get install -y --no-install-recommends wine wine64 ca-certificates \
+ && apt-get install -y --no-install-recommends wine wine64 ca-certificates xvfb xauth \
  && rm -rf /var/lib/apt/lists/* \
  && useradd --create-home mundo
 USER mundo
@@ -13,4 +13,8 @@ RUN wineboot --init && wineserver --wait
 WORKDIR /home/mundo/servidor
 COPY --chown=mundo servidor/ ./
 EXPOSE 7777/udp
-ENTRYPOINT ["wine", "Orkhold.exe", "-batchmode", "-nographics", "-servidor", "-puerto", "7777", "-logFile", "-"]
+# Wine no crea ni la ventana de batchmode sin pantalla: se le da una virtual con Xvfb. Sin xvfb-run,
+# que como primer proceso del contenedor se queda esperando a Xvfb y no lanza el juego.
+# Con "-logFile -" el juego no arranca bajo Wine: el registro va a /estado/mundo.log (se ve desde el servidor).
+ENV DISPLAY=:99
+ENTRYPOINT ["sh", "-c", "Xvfb :99 -nolisten tcp -screen 0 640x480x24 & sleep 2; exec wine Orkhold.exe -batchmode -nographics -servidor -puerto 7777 -logFile Z:/estado/mundo.log"]

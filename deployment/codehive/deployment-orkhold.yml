@@ -1,9 +1,9 @@
-# Traefik de codehive: la API de Orkhold en https://orkhold.code-hive.space (02-arquitectura.md §5).
+# Traefik de codehive: la API de Orkhold en https://app.orkhold.com (02-arquitectura.md §5).
 # El servidor de mundo no pasa por aquí: va directo por UDP 7777.
 http:
   routers:
     deploy-orkhold:
-      rule: Host(`orkhold.code-hive.space`)
+      rule: Host(`app.orkhold.com`)
       entryPoints:
         - websecure
       tls:

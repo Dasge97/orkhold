@@ -4,8 +4,8 @@
 #   pruebas/compilar-apk-firmado.sh [url-api] [host:puerto-mundo]
 set -euo pipefail
 cd "$(dirname "$0")/.."
-URL="${1:-https://orkhold.code-hive.space}"
-MUNDO="${2:-orkhold.code-hive.space:7777}"
+URL="${1:-https://app.orkhold.com}"
+MUNDO="${2:-app.orkhold.com:7777}"
 export ORKHOLD_KEYSTORE="$(cygpath -w "$USERPROFILE/.orkhold/orkhold.keystore")"
 [ -f "$USERPROFILE/.orkhold/orkhold.keystore" ] || { echo "Falta el almacén: pruebas/crear-keystore.sh" >&2; exit 1; }
 ORKHOLD_KEYSTORE_CLAVE=$(ssh codehive '/home/codehive/bin/vault-usar "orkhold - keystore" CLAVE -- printenv CLAVE') \

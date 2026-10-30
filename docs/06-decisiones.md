@@ -128,3 +128,6 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 88 | Capturas del README: arranque, carga, pueblo, tutorial y mazmorra nuevas del emulador; construir y asalto, del emulador en la fase 6 (no han cambiado). | El asalto necesita dos cuentas y la API; las de la fase 6 son reales y actuales. |
 | 89 | La firma del APK lee la contraseña del almacén de la bóveda por SSH y la pasa a Unity por el entorno; la ruta no se queda en ProjectSettings. El almacén vive en `%USERPROFILE%/.orkhold/`. | Regla de credenciales: nada en el repositorio ni en ficheros sueltos con la contraseña. |
 | 90 | El color cian del césped no se toca. | Es como se ven los materiales del pack de naturaleza desde la fase 0; cambiarlo es una decisión de aspecto para Daniel. |
+| 91 | Dominio: `app.orkhold.com` para la API y el servidor de mundo; `orkhold.com` queda libre para la landing. | Lo decidió Daniel el 30-10-2026; sustituye a `orkhold.code-hive.space`. |
+| 92 | La red de Docker de Orkhold usa la subred fija 10.96.0.0/24. | En codehive Docker ya no tiene subredes libres; otros proyectos usan 10.90-10.95. |
+| 93 | El servidor de mundo bajo Wine arranca Xvfb a mano, con `init: true`, y escribe su registro en `estado/mundo.log`. | Sin pantalla Wine no arranca; `xvfb-run` como primer proceso se queda colgado; con `-logFile -` el juego no arranca. |

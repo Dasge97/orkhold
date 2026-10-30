@@ -215,7 +215,7 @@ botin_pueblo(id, jugador_id, recursos_json, creado)                -- provisiona
   sale por el proxy existente (443) y el mundo por UDP 7777.
 - Credenciales en la bóveda Vaultwarden (`juego - postgres`, `juego - api secreto`, `juego - clave servidor mundo`).
 - `kit-estado juego-api` y `kit-estado juego-mundo`; añadir los dos al paquete `kit-codehive`.
-- Subdominio *propuesta*: `orkhold.code-hive.space` para la API (y el mismo host para UDP 7777). Dominio propio `orkhold.app` cuando se publique.
+- Dominio (30-10-2026, Daniel): `app.orkhold.com` para la API y el servidor de mundo (UDP 7777). `orkhold.com` queda para una landing más adelante.
 
 ## 6. Pruebas
 - Cliente: `RevisionPrototipo` (fotos + Play automático) se amplía con un caso por pantalla.

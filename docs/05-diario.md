@@ -136,3 +136,8 @@ Lo más reciente arriba.
 - Almacén creado con `pruebas/crear-keystore.sh`; contraseña en la bóveda («orkhold - keystore»). APK firmado comprobado con apksigner: CN=Orkhold.
 - `vault-usar` exige nombres de variable de dos letras o más (su patrón `[A-Za-z_][A-Za-z0-9_]*` en un `case`): «V» fallaba, ahora «CLAVE».
 - El módulo Linux de Unity sigue sin instalar (la ventana de permisos caducó otra vez) y el despliegue lo bloquea el modo automático: los lanza Daniel.
+
+## 30-10-2026 — fase 8: despliegue en codehive
+- Desplegado en https://app.orkhold.com (cambio de Daniel). API en verde en el Kit; secretos en la bóveda («juego - postgres», «juego - api secreto», «juego - clave servidor mundo»).
+- Tropiezos: Docker sin subredes libres (subred fija 10.96.0.0/24); Wine necesita Xvfb; `xvfb-run` se cuelga como PID 1; `-logFile -` impide arrancar; `orkhold-vigilar` tenía CRLF en la copia de trabajo.
+- Los bots desde el PC no llegan al servidor de mundo: tcpdump en codehive no ve ningún paquete UDP 7777. Hay que abrir el puerto en el cortafuegos de IONOS.

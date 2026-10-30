@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Orkhold/Configuración", fileName = "Configuracion")]
 public class Configuracion : ScriptableObject
 {
-    [Tooltip("Ej. https://orkhold.code-hive.space. Vacío = modo local sin servidor.")]
+    [Tooltip("Ej. https://app.orkhold.com. Vacío = modo local sin servidor.")]
     public string urlApi = "";
     [Tooltip("Servidor de mundo del pueblo (nombre o IP). Vacío = el pueblo se juega solo, sin red (modo anfitrión).")]
     public string hostMundo = "";
