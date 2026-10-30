@@ -68,10 +68,12 @@ public static class RevisionPrototipo
                           $"recogibles={Object.FindObjectsByType<Recogible>().Length} mapa={b.size}");
             foreach (var p in puertas)
                 sb.AppendLine($"   puerta id={p.id} destino={p.destino} llegarA={p.llegarA} alPisar={p.alPisar} en={p.transform.position} llegada={p.llegada}");
-            if (jugador)
+            // En el pueblo el jugador lo crea la red: se usa la aparición.
+            var gestor = Object.FindAnyObjectByType<GestorEscena>();
+            if (jugador || gestor)
             {
-                Vector3 p = jugador.transform.position + Vector3.up * 0.4f;
-                sb.AppendLine($"   jugador en {jugador.transform.position}");
+                Vector3 p = (jugador ? jugador.transform.position : gestor.aparicion) + Vector3.up * 0.4f;
+                sb.AppendLine($"   jugador en {p}");
                 Foto($"{++n:00}-{escena}-vista-juego", p + new Vector3(0f, 5.5f, -6.5f), p, 38f, Color.black);
             }
             float lado = Mathf.Max(b.size.x, b.size.z);

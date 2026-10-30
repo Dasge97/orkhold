@@ -21,14 +21,18 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: bced205216d9edb4f89f03424e7cfa25, type: 3}
   - {fileID: 919132149155446097, guid: d681bbc1cf119de4993a5bc9c4241e65, type: 3}
   flores:
-  - {fileID: 919132149155446097, guid: 9a8a788fa8be34644a9aca4b5c8a7213, type: 3}
-  - {fileID: 919132149155446097, guid: 286f5a82192b9094f8bb3565d9a26cae, type: 3}
-  - {fileID: 919132149155446097, guid: 210abc4333182aa4a8b0591dab8b32d7, type: 3}
   - {fileID: 919132149155446097, guid: 032eabd8f47d8bd4eb6f91b6cef4eb11, type: 3}
   - {fileID: 919132149155446097, guid: e70b9aeb2ff68c649b590dcd6eedd2e9, type: 3}
+  - {fileID: 919132149155446097, guid: 33a7b2ebea347d940a62a92049d4339c, type: 3}
   - {fileID: 919132149155446097, guid: a6fa4405f2bff5e4e82ecc0fc9b450cf, type: 3}
-  - {fileID: 919132149155446097, guid: 38fc71f75c567c540ac353bcab7a7ae9, type: 3}
-  densidadFlores: 0.06
+  - {fileID: 919132149155446097, guid: c3c6dd9d003420c42986f3afd5b5a067, type: 3}
+  - {fileID: 919132149155446097, guid: 1acb33e3776f031468dbca9068bcc52f, type: 3}
+  - {fileID: 919132149155446097, guid: c54c787b5d94bd349a4554883c6e49a9, type: 3}
+  - {fileID: 919132149155446097, guid: 4804b90c4cc3e9e458a47979df17114d, type: 3}
+  - {fileID: 919132149155446097, guid: 88b200f3a4f15254abbfc6dba3b93e0d, type: 3}
+  - {fileID: 919132149155446097, guid: adf13e24c0dc384459901bf71ebfac10, type: 3}
+  - {fileID: 919132149155446097, guid: 8e174d628ae7a914595a3daf0065bfa0, type: 3}
+  densidadFlores: 0.2
   entradas:
   - letra: 61
     descripcion: camino vertical
@@ -224,11 +228,12 @@ MonoBehaviour:
   - letra: 84
     descripcion: "\xE1rbol"
     modelos:
-    - {fileID: 919132149155446097, guid: 15866390204e1994fafb1472a4cdf223, type: 3}
+    - {fileID: 919132149155446097, guid: c3a6657b144c70249b63c5cd16ba6a8d, type: 3}
     - {fileID: 919132149155446097, guid: 59c38c86ad5ea2e4497a47bbfc9bedb2, type: 3}
-    - {fileID: 919132149155446097, guid: 9c6cf0a5158fe5b41af3d7de8b6de9b3, type: 3}
-    - {fileID: 919132149155446097, guid: 3512aa1e3ac42f949a91ac6a5ffe2971, type: 3}
-    - {fileID: 919132149155446097, guid: e3bcffa7135f8994eb6a73f516b29171, type: 3}
+    - {fileID: 919132149155446097, guid: 76ebab1eb2645ba4ba646123b2a937f8, type: 3}
+    - {fileID: 919132149155446097, guid: e11243802631b534895f3144bb7dbab0, type: 3}
+    - {fileID: 919132149155446097, guid: ccb8f2b329e518e4eb994a407c27abd9, type: 3}
+    - {fileID: 919132149155446097, guid: 411fe751066680d48bb78877a33be3b9, type: 3}
     escala: 1
     altura: 0
     giroY: 0

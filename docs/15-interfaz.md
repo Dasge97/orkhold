@@ -100,3 +100,35 @@ Los nombres se ven de lejos y se ocultan si hay demasiados a la vez (máximo 12 
    *Propuesta:* sí; sin ellos el HUD se puede mejorar, pero seguirá pareciendo hecho con cajas.
 2. ¿Qué entra de §8? *Propuesta:* 1, 3 y 4 ahora; 2 después; 5 al final, con Play Store.
 3. Orden. *Propuesta:* una fase de interfaz (§2-§7) antes de seguir con las mazmorras 3 y 4, y otra fase para §8.
+
+## 10. Aspecto del mundo (aclaración de Daniel, 30-10-2026)
+Daniel no pide funciones nuevas: quiere que **se vea** con ganas de jugar. Hoy se ve soso, con mucho espacio vacío y
+colores pastel demasiado alegres para un valle de orcos. El pueblo parece "una zona plana con dos recuadros" y la
+mazmorra "cuatro piedras". Los encargos, rachas y logros de §8 quedan fuera por ahora.
+
+### 10.1 Hecho como prueba (30-10-2026)
+- Luz de tarde (sol bajo y cálido), ambiente y niebla grises en vez de azul cielo.
+- Materiales de los packs copiados más oscuros y menos saturados al montar las escenas (`EstiloVisual`);
+  hierba verde oliva, caminos de tierra, agua oscura. Personajes, enemigos y botín conservan su color.
+- Árboles de la variante oscura del Nature Kit y el triple de relleno pequeño (hierba alta, arbustos, rocas, tocones).
+- Antes y después: `Revision/antes/` y `Revision/`.
+
+### 10.2 Pueblo de Vado Gris (por hacer)
+| Qué | Cómo |
+|---|---|
+| Que parezca un pueblo | Empalizada de madera alrededor con dos puertas, calles empedradas (Graveyard `road`), casas con tejado y puerta, no bloques. |
+| La plaza | Plaza empedrada en el centro con **la Brasa** de verdad: hoguera grande con llamas, chispas, humo y luz cálida que parpadea. Bancos, el tablón de Tobin, faroles. |
+| Oficios | La forja de Ferra con yunque, barriles y fuego; el puesto de Gruk con estandartes orcos; la mesa de mapas de Ansel. |
+| Ruinas del norte | La Orkhold caída con torres rotas del Castle Kit, columnas y las puertas de las mazmorras entre ellas. |
+| Tierras del Este | Vallas, caminos y estandartes en la entrada de la parcela. |
+| Vida | Humo de chimeneas, pájaros, polillas cerca de los faroles y orcos patrullando fuera de la empalizada (no junto a las puertas). |
+
+### 10.3 Mazmorras (por hacer)
+| Qué | Cómo |
+|---|---|
+| Catacumbas | Ataúdes, criptas, lápidas, velas, urnas y huesos del Graveyard Kit; suelo con losas distintas; telarañas de luz verde. |
+| Forja Hundida | Braseros con fuego vivo, yunques, cadenas, barriles y luz roja de las trampas de fuego. |
+| Todas | Antorchas en las paredes que iluminan a trozos, oscuridad en las esquinas, polvo flotando y paredes con columnas y variaciones, no un muro repetido. |
+
+### 10.4 Interfaz (§2-§7)
+Con los packs ya descargados (UI Pack RPG Expansion, Game Icons y Kenney Fonts): HUD, nombres, diálogos y avisos de §3-§6.

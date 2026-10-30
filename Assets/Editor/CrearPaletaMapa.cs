@@ -25,8 +25,9 @@ public static class CrearPaletaMapa
 
         p.sueloExterior = Modelos(Natura, "ground_grass");
         p.sueloInterior = Modelos(Dungeon, "floor", "floor", "floor", "floor", "floor-detail");
-        p.flores = Modelos(Natura, "flower_redA", "flower_yellowA", "flower_purpleA", "grass_large", "grass", "plant_bushSmall", "mushroom_redGroup");
-        p.densidadFlores = 0.06f;
+        p.flores = Modelos(Natura, "grass_large", "grass", "grass_leafs", "plant_bushSmall", "plant_bush", "rock_smallA", "rock_smallC",
+            "rock_smallFlatA", "stump_old", "mushroom_tanGroup", "log");
+        p.densidadFlores = 0.2f;   // más relleno: menos suelo vacío
         p.entradas.Clear();
         PaletaMapa.Entrada e;
 
@@ -51,7 +52,7 @@ public static class CrearPaletaMapa
         // Obstáculos.
         e = Agregar(p, '#', "muro", Modelos(Dungeon, "wall"), colision: PaletaMapa.Colision.Caja, tamano: new Vector3(1f, 1.1f, 1f));
         e.unirColision = true;
-        e = Agregar(p, 'T', "árbol", Modelos(Natura, "tree_default", "tree_pineRoundA", "tree_pineRoundB", "tree_oak", "tree_fat"),
+        e = Agregar(p, 'T', "árbol", Modelos(Natura, "tree_default_dark", "tree_pineRoundA", "tree_pineTallB", "tree_oak_dark", "tree_fat_darkh", "tree_thin_dark"),
                 giroAleatorio: true, colision: PaletaMapa.Colision.Capsula, tamano: new Vector3(0.3f, 2f, 0f));
         e.combinar = false;
         e.combinarEnBorde = 3;

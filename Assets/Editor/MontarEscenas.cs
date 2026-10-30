@@ -104,6 +104,8 @@ public static class MontarEscenas
         if (r.letrasDesconocidas.Count > 0) Debug.LogWarning($"{escena}: letras sin paleta: {new string(r.letrasDesconocidas.ToArray())}");
         CalcularLlegadas(r, paleta);
         extra?.Invoke(r);
+        // Colores más sobrios antes de unir las mallas (las une por material).
+        EstiloVisual.Aplicar(r.raiz, amb == Ambiente.Mazmorra);
         int trozos = CombinarMallas.Combinar(r.raiz.transform, escena, r.sueltas);
         MarcarEstatico(r.raiz, r.sueltas);
         PonerLod(r.sueltas);
@@ -205,19 +207,21 @@ public static class MontarEscenas
     {
         var luz = new GameObject("Sol").AddComponent<Light>();
         luz.type = LightType.Directional;
-        luz.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
+        // Sol bajo y de tarde: sombras largas y luz cálida (15-interfaz.md, ambiente).
+        luz.transform.rotation = Quaternion.Euler(38f, -40f, 0f);
         luz.shadows = LightShadows.Hard;
-        luz.shadowStrength = 0.6f;
+        luz.shadowStrength = 0.75f;
         RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
         RenderSettings.fog = true;
         RenderSettings.fogMode = FogMode.Linear;
         if (amb == Ambiente.Exterior)
         {
-            luz.intensity = 1.1f;
-            RenderSettings.ambientLight = new Color(0.55f, 0.6f, 0.65f);
-            RenderSettings.fogColor = new Color(0.72f, 0.85f, 0.95f);
-            RenderSettings.fogStartDistance = 14f;
-            RenderSettings.fogEndDistance = 30f;
+            luz.intensity = 1.15f;
+            luz.color = new Color(1f, 0.84f, 0.66f);
+            RenderSettings.ambientLight = new Color(0.36f, 0.37f, 0.4f);
+            RenderSettings.fogColor = new Color(0.33f, 0.34f, 0.36f);
+            RenderSettings.fogStartDistance = 12f;
+            RenderSettings.fogEndDistance = 28f;
         }
         else
         {

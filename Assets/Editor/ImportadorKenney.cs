@@ -39,7 +39,8 @@ public class ImportadorKenney : AssetPostprocessor
 
     void OnPreprocessTexture()
     {
-        if (!assetPath.Contains("/Kenney/MobileControls/")) return;
+        // Imágenes de interfaz: controles, paneles del UI Pack RPG e iconos.
+        if (!assetPath.Contains("/Kenney/MobileControls/") && !assetPath.Contains("/Kenney/UIPackRPG/") && !assetPath.Contains("/Kenney/GameIcons/")) return;
         var imp = (TextureImporter)assetImporter;
         imp.textureType = TextureImporterType.Sprite;
         imp.spriteImportMode = SpriteImportMode.Single;
