@@ -81,7 +81,7 @@ public static class RevisionPrototipo
         Debug.Log("Revisión: informe y fotos en " + Carpeta + "\n" + sb);
     }
 
-    static string NombreMapa(string escena) => escena == "Pueblo" ? "pueblo" : escena == "Mazmorra1" ? "catacumbas" : "fuerte-base";
+    static string NombreMapa(string escena) => escena == "Pueblo" ? "pueblo" : escena == "Mazmorra1" ? "catacumbas" : escena == "Mazmorra2" ? "forja" : "fuerte-base";
 
     static Bounds Limites(GameObject g)
     {

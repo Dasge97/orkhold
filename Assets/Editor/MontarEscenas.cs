@@ -16,7 +16,7 @@ public static class MontarEscenas
     public const string CarpetaEscenas = "Assets/Scenes/";
     public const string CarpetaMapas = "Assets/Mapas/";
     /// Escenas que salen de un mapa de texto. La de arranque va aparte y es la primera del APK.
-    public static readonly string[] Escenas = { "Pueblo", "Mazmorra1", "Fuerte", "Asalto" };
+    public static readonly string[] Escenas = { "Pueblo", "Mazmorra1", "Fuerte", "Asalto", "Mazmorra2" };
     public const string EscenaArranque = "Arranque";
 
     enum Ambiente { Exterior, Mazmorra }
@@ -43,6 +43,10 @@ public static class MontarEscenas
         Montar("Pueblo", "pueblo", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Hierba; g.esPueblo = true; }, r =>
         {
             Configurar(r, 'D', "mazmorra1", "Mazmorra1", "", true);
+            // Mazmorras 2-4 (11-mazmorras.md §1): se abren al vencer al jefe anterior.
+            Configurar(r, 'Y', "mazmorra2", "Mazmorra2", "", true, 2);
+            Configurar(r, 'U', "mazmorra3", "Mazmorra3", "", true, 3);
+            Configurar(r, 'W', "mazmorra4", "Mazmorra4", "", true, 4);
             Configurar(r, 'C', "asalto", "Asalto", "", false);
             PonerHuecoFuerte(r, paleta);
             PonerPatrullas(r, paleta);
@@ -54,6 +58,12 @@ public static class MontarEscenas
             g.puertaVuelta = "mazmorra1"; g.esMazmorra = true;
         }, r =>
             Configurar(r, 'E', "salida", "Pueblo", "mazmorra1", true));
+        Montar("Mazmorra2", "forja", Ambiente.Mazmorra, paleta, g =>
+        {
+            g.alMorir = GestorEscena.Muerte.SalirConMitad; g.suelo = GestorEscena.Suelo.Piedra;
+            g.puertaVuelta = "mazmorra2"; g.esMazmorra = true; g.numeroMazmorra = 2;
+        }, r =>
+            Configurar(r, 'E', "salida", "Pueblo", "mazmorra2", true));
         Montar("Fuerte", "fuerte-base", Ambiente.Exterior, paleta, g => { g.alMorir = GestorEscena.Muerte.Reaparecer; g.suelo = GestorEscena.Suelo.Piedra; }, r =>
         {
             Configurar(r, 'E', "salida", "Pueblo", "fuerte", true);
@@ -244,7 +254,7 @@ public static class MontarEscenas
     }
 
     /// Da id, destino y forma de uso a las puertas de una letra.
-    static void Configurar(CargadorMapa.Resultado r, char letra, string id, string destino, string llegarA, bool alPisar)
+    static void Configurar(CargadorMapa.Resultado r, char letra, string id, string destino, string llegarA, bool alPisar, int mazmorra = 0)
     {
         int n = 0;
         foreach (var m in r.marcas.Where(m => m.letra == letra && m.entidad))
@@ -257,6 +267,7 @@ public static class MontarEscenas
                 pu.alcance = 1.5f; pu.icono = Interactuable.Icono.Cofre;
                 if (destino == "Asalto" && !m.entidad.GetComponent<BuscarRival>()) m.entidad.AddComponent<BuscarRival>();
             }
+            if (mazmorra > 1 && !m.entidad.GetComponent<PuertaMazmorra>()) m.entidad.AddComponent<PuertaMazmorra>().numero = mazmorra;
             m.entidad.name = "Puerta " + id;
             EditorUtility.SetDirty(pu);
             n++;

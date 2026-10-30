@@ -1,16 +1,70 @@
 {
   "version": 2,
   "piezas": [
-    { "id": "muro_madera", "nombre": "Muro de madera", "categoria": "muro" },
-    { "id": "muro_piedra", "nombre": "Muro de piedra", "categoria": "muro" },
-    { "id": "puerta", "nombre": "Puerta", "categoria": "muro" },
-    { "id": "trampa", "nombre": "Trampa", "categoria": "trampa" },
-    { "id": "orco_defensor", "nombre": "Orco defensor", "categoria": "defensor" },
-    { "id": "esqueleto_defensor", "nombre": "Esqueleto defensor", "categoria": "defensor" },
-    { "id": "orco_jefe", "nombre": "Orco jefe", "categoria": "defensor", "requiere_unidad": "orco_jefe" },
-    { "id": "cofre", "nombre": "Cofre", "categoria": "escondite", "visible": true },
-    { "id": "barril", "nombre": "Barril", "categoria": "escondite", "visible": true },
-    { "id": "enterrado", "nombre": "Enterrado", "categoria": "escondite", "visible": false },
-    { "id": "doble_fondo", "nombre": "Doble fondo", "categoria": "escondite", "visible": false }
+    {
+      "id": "muro_madera",
+      "nombre": "Muro de madera",
+      "categoria": "muro"
+    },
+    {
+      "id": "muro_piedra",
+      "nombre": "Muro de piedra",
+      "categoria": "muro"
+    },
+    {
+      "id": "puerta",
+      "nombre": "Puerta",
+      "categoria": "muro"
+    },
+    {
+      "id": "muro_hierro",
+      "nombre": "Muro de hierro",
+      "categoria": "muro"
+    },
+    {
+      "id": "trampa",
+      "nombre": "Trampa",
+      "categoria": "trampa"
+    },
+    {
+      "id": "orco_defensor",
+      "nombre": "Orco defensor",
+      "categoria": "defensor"
+    },
+    {
+      "id": "esqueleto_defensor",
+      "nombre": "Esqueleto defensor",
+      "categoria": "defensor"
+    },
+    {
+      "id": "orco_jefe",
+      "nombre": "Orco jefe",
+      "categoria": "defensor",
+      "requiere_unidad": "orco_jefe"
+    },
+    {
+      "id": "cofre",
+      "nombre": "Cofre",
+      "categoria": "escondite",
+      "visible": true
+    },
+    {
+      "id": "barril",
+      "nombre": "Barril",
+      "categoria": "escondite",
+      "visible": true
+    },
+    {
+      "id": "enterrado",
+      "nombre": "Enterrado",
+      "categoria": "escondite",
+      "visible": false
+    },
+    {
+      "id": "doble_fondo",
+      "nombre": "Doble fondo",
+      "categoria": "escondite",
+      "visible": false
+    }
   ]
 }

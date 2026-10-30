@@ -30,6 +30,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: muro_piedra
     nombre: Muro de piedra
     categoria: 0
@@ -41,6 +42,21 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
+  - id: muro_hierro
+    nombre: Muro de hierro
+    categoria: 0
+    prefab: {fileID: 4189387847237915937, guid: ca711f2ee7ef9724bb36940d766ee706, type: 3}
+    costes:
+    - recurso: 2
+      cantidad: 2
+    - recurso: 3
+      cantidad: 2
+    vida: 10
+    requiereUnidad: 
+    capacidad: 0
+    limite: 0
+    mazmorra: 2
   - id: puerta
     nombre: Puerta
     categoria: 0
@@ -54,6 +70,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: trampa
     nombre: Trampa
     categoria: 1
@@ -65,6 +82,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: orco_defensor
     nombre: Orco defensor
     categoria: 2
@@ -76,6 +94,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: esqueleto_defensor
     nombre: Esqueleto defensor
     categoria: 2
@@ -87,6 +106,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: orco_jefe
     nombre: Orco jefe
     categoria: 2
@@ -96,6 +116,7 @@ MonoBehaviour:
     requiereUnidad: orco_jefe
     capacidad: 0
     limite: 0
+    mazmorra: 0
   - id: cofre
     nombre: Cofre
     categoria: 3
@@ -109,6 +130,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 30
     limite: 4
+    mazmorra: 0
   - id: barril
     nombre: Barril
     categoria: 3
@@ -120,6 +142,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 15
     limite: 6
+    mazmorra: 0
   - id: enterrado
     nombre: Enterrado
     categoria: 3
@@ -131,6 +154,7 @@ MonoBehaviour:
     requiereUnidad: 
     capacidad: 10
     limite: 8
+    mazmorra: 0
   - id: doble_fondo
     nombre: Doble fondo
     categoria: 3
@@ -143,4 +167,5 @@ MonoBehaviour:
     vida: 0
     requiereUnidad: 
     capacidad: 10
-    limite: 0
+    limite: 4
+    mazmorra: 2

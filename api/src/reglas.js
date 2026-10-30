@@ -13,7 +13,7 @@ const BASE = JSON.parse(readFileSync(join(datos, 'catalogo.json'), 'utf8'));
 export const RECURSOS = ['moneda', 'madera', 'piedra', 'hierro', 'hueso'];
 /** Herramientas de saqueo (08 §5): se fabrican, se guardan como unidades y se gastan al usarlas. */
 export const HERRAMIENTAS = ['farol', 'cuarta_accion', 'pico', 'bomba', 'sabueso', 'senuelo'];
-export const UNIDADES = ['orco_jefe', ...HERRAMIENTAS];
+export const UNIDADES = ['orco_jefe', 'kargash', ...HERRAMIENTAS];
 export const TODO = [...RECURSOS, ...UNIDADES];
 export const MATERIALES = ['madera', 'piedra', 'hierro', 'hueso'];
 export const maxSaqueosDia = () => B('saqueo.saqueos_dia');
@@ -36,7 +36,8 @@ export function catalogo() {
     piezas: BASE.piezas.map(p => p.categoria === 'escondite'
       ? { ...p, vida: 0, costes: costeDe(`escondite.${p.id}`), capacidad: B(`escondite.${p.id}.capacidad`),
           porcentaje: B(`escondite.${p.id}.porcentaje`), limite: B(`escondite.${p.id}.limite`) }
-      : { ...p, vida: B(`pieza.${p.id}.vida`), costes: costeDe(`pieza.${p.id}`) }),
+      : { ...p, vida: B(`pieza.${p.id}.vida`), costes: costeDe(`pieza.${p.id}`) })
+      .map(p => ({ ...p, mazmorra: requisito(`${p.categoria === 'escondite' ? 'escondite' : 'pieza'}.${p.id}`) })),
     central: { capacidad: B('escondite.central.capacidad'), porcentaje: B('escondite.central.porcentaje') },
   };
   _piezasPorId = new Map(_catalogo.piezas.map(p => [p.id, p]));
@@ -153,6 +154,11 @@ export function fuerteSistema(puntuacion) {
 // ---------- límites de botín ----------
 
 /** Máximo por entrada a la mazmorra (catacumbas: ~8 enemigos, 6 monedas sueltas y el jefe). 0 si no hay clave. */
-export const maxMazmorra = r => Bo(`mazmorra.max_${r}`, 0);
+export const maxMazmorra = (r, n = 1) => Bo(`${prefijoMazmorra(n)}.max_${r}`, 0);
+/** Las claves de la mazmorra 1 son "mazmorra.*" (de antes); las demás, "mazmorra<N>.*" (11-mazmorras.md §5). */
+export const prefijoMazmorra = n => (n === 1 ? 'mazmorra' : `mazmorra${n}`);
+export const MAZMORRAS = 4;
+/** Jefe que hay que haber vencido para usar algo con requisito en el balance ("<prefijo>.mazmorra"); 0 = ninguno. */
+export const requisito = prefijo => Bo(`${prefijo}.mazmorra`, 0);
 /** Máximo de botín del pueblo por minuto (cuando lo manda el cliente, sin servidor de mundo). */
 export const maxPuebloMinuto = r => B(`pueblo.max_${r}`);

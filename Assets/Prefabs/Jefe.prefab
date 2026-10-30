@@ -103,6 +103,11 @@ MonoBehaviour:
   recursoExtra: 3
   probabilidadExtra: 0
   animador: {fileID: 1595397129919891800}
+  numeroMazmorra: 1
+  fraseEntrar: "Cien a\xF1os. Nadie pas\xF3."
+  fraseCaer: "Eres m\xE1s fuerte. Entonces mandas. As\xED es la ley."
+  refuerzo: {fileID: 0}
+  cuantosRefuerzos: 0
   intervaloArea: 6
   avisoArea: 1
   radioArea: 2.2

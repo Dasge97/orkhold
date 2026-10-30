@@ -63,6 +63,7 @@ public class Saqueo : MonoBehaviour
     void OnDisable()
     {
         PiezaFuerte.AlGolpear -= Golpe;
+        PiezaFuerte.DanoGolpe = 1;
         if (ControlJugador.SinNadaQueUsar == MirarSuelo) ControlJugador.SinNadaQueUsar = null;
         if (Actual == this) Actual = null;
     }
@@ -90,8 +91,39 @@ public class Saqueo : MonoBehaviour
         foreach (var p in FindObjectsByType<Puerta>())
             if (p.destino == "Pueblo") p.antesDeIr = () => { if (Estado == Fase.Explorar) EmpezarMarcar(); return false; };
         Estado = Fase.Explorar;
+        _bombas = Datos.herramientas?.FindAll(h => h == "bomba").Count ?? 0;
         Apuntar(null);
         _ui.Refrescar();
+    }
+
+    // ---------- herramientas: pico y bomba (08 §5) ----------
+
+    int _bombas;
+    public int BombasQuedan => _bombas;
+    public bool TienePico => Datos != null && Datos.herramientas != null && Datos.herramientas.Contains("pico");
+    public float PicoQueda => TienePico ? Mathf.Max(0f, Balance.Real("herramienta.pico.segundos", 15f) - _t) : 0f;
+
+    /// Pone una bomba donde está el jugador: a los 2 s rompe los muros y puertas de alrededor (3x3).
+    public void LanzarBomba()
+    {
+        if (Estado != Fase.Explorar || _bombas <= 0 || !_jugador) return;
+        _bombas--;
+        var p = PosicionLocal();
+        _entradas.Add(new MensajesApi.EntradaSaqueo { t = (float)Math.Round(_t, 2), x = p.x, z = p.y, bomba = true, golpe = new MensajesApi.Casilla() });
+        var c = new Vector2Int(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y));
+        float retardo = Balance.Real("herramienta.bomba.retardo", 2f);
+        AvisoArea.Crear(_fuerte.Mundo(c.x, c.y), 1.5f, retardo);
+        StartCoroutine(Explotar(c, retardo));
+        _ui.Refrescar();
+    }
+
+    IEnumerator Explotar(Vector2Int c, float retardo)
+    {
+        yield return new WaitForSeconds(retardo);
+        Sonidos.Tocar("jefe", _fuerte.Mundo(c.x, c.y));
+        foreach (var pieza in _fuerte.Piezas.ToArray())
+            if (pieza && pieza.categoria == CatalogoPiezas.Categoria.Muro && Mathf.Abs(pieza.x - c.x) <= 1 && Mathf.Abs(pieza.z - c.y) <= 1)
+                pieza.RomperYa();
     }
 
     void Update()
@@ -100,6 +132,7 @@ public class Saqueo : MonoBehaviour
         if (Estado == Fase.Explorar || Estado == Fase.Mirando)
         {
             _t += Time.deltaTime;
+            PiezaFuerte.DanoGolpe = PicoQueda > 0f ? Balance.Entero("herramienta.pico.dano", 3) : 1;
             if (_t >= _siguienteEntrada) Apuntar(null);
             if (_t >= Duracion && Estado == Fase.Explorar) EmpezarMarcar();
         }

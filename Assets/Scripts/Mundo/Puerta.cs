@@ -44,7 +44,8 @@ public class Puerta : Interactuable
 
     public void Ir()
     {
-        if (antesDeIr != null && !antesDeIr()) return;
+        // Si no deja pasar (puerta cerrada, saqueo...), hay que salir de la puerta antes de volver a probar.
+        if (antesDeIr != null && !antesDeIr()) { _armada = false; return; }
         _armada = false;
         Sonidos.Tocar("puerta");
         Viaje.llegarA = llegarA ?? "";

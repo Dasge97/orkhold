@@ -94,7 +94,9 @@ public class PantallaConstruir : MonoBehaviour
             if (!_botones.TryGetValue(pieza.id, out var b)) continue;
             int usadas = d.Contar(q => q.tipo == pieza.id);
             string extra = string.IsNullOrEmpty(pieza.requiereUnidad) ? "" : $"\ntienes {Partida.Actual.unidades.FindAll(u => u.tipo == pieza.requiereUnidad).Count}";
-            if (pieza.categoria == CatalogoPiezas.Categoria.Escondite)
+            if (!pieza.Abierta)
+                b.texto.text = $"<b>{pieza.nombre}</b>\nvence al jefe\nde la mazmorra {pieza.mazmorra}";
+            else if (pieza.categoria == CatalogoPiezas.Categoria.Escondite)
                 b.texto.text = $"<b>{pieza.nombre}</b>\n{pieza.TextoCoste()}\ncabe {pieza.capacidad} · {usadas}/{pieza.limite}";
             else b.texto.text = $"<b>{pieza.nombre}</b>\n{pieza.TextoCoste()}{extra}\npuestas {usadas}";
             b.fondo.color = _editor.Seleccion == pieza.id ? Elegido : Fondo;

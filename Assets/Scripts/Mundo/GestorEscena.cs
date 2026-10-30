@@ -24,6 +24,8 @@ public class GestorEscena : MonoBehaviour
     public string puertaVuelta = "";
     [Tooltip("Es una mazmorra: lo recogido desde que se entra es el botín de la entrada.")]
     public bool esMazmorra;
+    [Tooltip("Número de la mazmorra (1 catacumbas, 2 Forja Hundida, 3 Torre del Vigía, 4 Pozo de los Clanes).")]
+    public int numeroMazmorra = 1;
     [Tooltip("Es el pueblo: lo recogido se manda a la API como botín del pueblo.")]
     public bool esPueblo;
 

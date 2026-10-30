@@ -172,3 +172,6 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 128 | Carteles: 1 Maela (fogata), 2 Rook (atacar), 3 Ferra (recoger; también abre la forja), 4 Ansel (mazmorra), 5 Tobin (fuerte y saqueo). Gruk, aparte, en la entrada de las Tierras del Este. | 07-lore §7 pide Maela, Tobin y Rook; los cinco sitios ya existían y Ansel y Ferra encajan donde están sus carteles. |
 | 129 | El jefe se llama "Urzog, Guardián de la Cripta" en su barra de vida. | 07-lore §5.7. |
 | 130 | Los correos de cuenta salen por `smtp.ionos.es:465` con el buzón `no-responder@orkhold.com` (contraseña en la bóveda: «ionos mail orkhold»). | Buzón creado por Daniel el 30-10-2026. |
+| 131 | Las puertas de las mazmorras 2, 3 y 4 están ya en las ruinas del pueblo; las que aún no tienen escena dicen "Ansel: Ahí hay una entrada, pero todavía no sé adónde lleva". | Se ven desde el principio y cada mazmorra nueva solo añade su escena. |
+| 132 | Lo de la primera vez de cada jefe: Urzog el orco jefe, Grimbra una bomba, el Vigía nada extra (sus desbloqueos), Kargash su unidad. | 11-mazmorras §6; la bomba de regalo deja probar la herramienta. |
+| 133 | Las claves de balance de la mazmorra 1 siguen siendo `mazmorra.*`; las nuevas, `mazmorra<N>.*`. | No romper el balance ya desplegado. |

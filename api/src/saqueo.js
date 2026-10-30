@@ -61,7 +61,7 @@ function tramoLibre(desde, x, z, piezas, rotos) {
  * Una entrada se descarta si va más rápido de lo posible, está dentro de un muro en pie o fuera del fuerte,
  * o golpea algo que no es un muro en pie a su alcance. "danoExtra(t)" da el daño de cada golpe en t (pico).
  */
-export function rehacer(diseno, entradas, { duracion, velocidad = B('saqueo.velocidad_max'), danoGolpe = () => 1 } = {}) {
+export function rehacer(diseno, entradas, { duracion, velocidad = B('saqueo.velocidad_max'), danoGolpe = () => 1, bombas = 0 } = {}) {
   const piezas = porCasilla(diseno);
   const rotos = new Set();
   const golpes = new Map();
@@ -69,14 +69,33 @@ export function rehacer(diseno, entradas, { duracion, velocidad = B('saqueo.velo
   let pos = LLEGADA ? { t: 0, x: LLEGADA.x, z: LLEGADA.z } : { t: 0, x: 1, z: 1 };
   const posiciones = [pos];
   let ultimoGolpe = -10;
+  // Bombas (08 §5): a los "retardo" segundos rompen todos los muros y puertas de un 3x3. Una por herramienta.
+  const pendientes = [];
+  let bombasUsadas = 0;
+  const explotar = hasta => {
+    while (pendientes.length && pendientes[0].t <= hasta) {
+      const b = pendientes.shift();
+      for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) {
+        const q = piezas.get(clave(b.x + dx, b.z + dz));
+        if (q && esMuro(q.tipo)) rotos.add(clave(b.x + dx, b.z + dz));
+      }
+    }
+  };
   for (const e of entradas) {
     const t = Number(e.t), x = Number(e.x), z = Number(e.z);
+    explotar(t);
     if (![t, x, z].every(Number.isFinite) || t < pos.t || t > duracion + 2) { descartadas++; continue; }
     const dt = Math.max(t - pos.t, 0.05);
     const d = Math.hypot(x - pos.x, z - pos.z);
     if (d > velocidad * dt + 0.5 || !tramoLibre(pos, x, z, piezas, rotos)) { descartadas++; continue; }
     pos = { t, x, z };
     posiciones.push(pos);
+    if (e.bomba) {
+      if (bombasUsadas >= bombas) { descartadas++; continue; }
+      bombasUsadas++;
+      pendientes.push({ t: t + B('herramienta.bomba.retardo'), x: Math.round(x), z: Math.round(z) });
+      pendientes.sort((a, b) => a.t - b.t);
+    }
     if (e.golpe) {
       const gx = Math.round(Number(e.golpe.x)), gz = Math.round(Number(e.golpe.z));
       const q = piezas.get(clave(gx, gz));
@@ -84,11 +103,13 @@ export function rehacer(diseno, entradas, { duracion, velocidad = B('saqueo.velo
       // Un golpe cada 0,5 s como mucho (el ataque dura 0,6 s).
       if (!q || !esMuro(q.tipo) || rotos.has(clave(gx, gz)) || !cerca || t - ultimoGolpe < 0.5) { descartadas++; continue; }
       ultimoGolpe = t;
-      const n = (golpes.get(clave(gx, gz)) ?? 0) + danoGolpe(t);
+      // El pico no hace daño de más al muro de hierro (08 §6).
+      const n = (golpes.get(clave(gx, gz)) ?? 0) + (q.tipo === 'muro_hierro' ? 1 : danoGolpe(t));
       golpes.set(clave(gx, gz), n);
       if (n >= vidaMuro(q)) rotos.add(clave(gx, gz));
     }
   }
+  explotar(duracion + 2);
   return { rotos, descartadas, posiciones, ultimo: pos };
 }
 

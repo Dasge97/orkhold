@@ -39,7 +39,7 @@ public static class MensajesApi
     [Serializable] public class PeticionReparto { public Contenido central; public List<EsconditeReparto> escondites; }
 
     [Serializable] public class Recursos { public int moneda, madera, piedra, hierro, hueso; }
-    [Serializable] public class PeticionMazmorra { public bool jefe_muerto; public Recursos recursos; }
+    [Serializable] public class PeticionMazmorra { public bool jefe_muerto; public Recursos recursos; public int mazmorra = 1; }
     [Serializable] public class RespuestaMazmorra { public bool primera_vez_jefe; public int perdido; public Jugador jugador; }
     [Serializable] public class PeticionPueblo { public Recursos recursos; }
 
@@ -71,7 +71,7 @@ public static class MensajesApi
     [Serializable] public class Casilla { public int x, z; }
     /// Una entrada de la exploración: posición (en casillas, con decimales) y, si golpeó, el muro.
     /// "golpea" dice si "golpe" va de verdad (JsonUtility no puede dejar "golpe" sin mandar).
-    [Serializable] public class EntradaSaqueo { public float t, x, z; public bool golpea; public Casilla golpe; }
+    [Serializable] public class EntradaSaqueo { public float t, x, z; public bool golpea, bomba; public Casilla golpe; }
     [Serializable] public class PeticionResolver { public string saqueo_id; public List<Casilla> marcas; public List<EntradaSaqueo> entradas; }
     [Serializable] public class MarcaResultado { public int x, z; public string resultado, tipo; public Recursos botin; }
     [Serializable]

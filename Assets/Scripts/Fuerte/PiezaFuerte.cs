@@ -56,12 +56,19 @@ public class PiezaFuerte : MonoBehaviour, IGolpeable
     {
         if (!PuedeRecibirGolpe) return;
         AlGolpear?.Invoke(this);
-        vida.Danar(1, desde);
-        Sonidos.Tocar(tipo == "muro_piedra" ? "golpe_roca" : "golpe_madera", transform.position);
+        // Con el pico, más daño; el muro de hierro no lo nota (08 §5 y §6).
+        vida.Danar(tipo == "muro_hierro" ? 1 : DanoGolpe, desde);
+        Sonidos.Tocar(tipo == "muro_madera" ? "golpe_madera" : "golpe_roca", transform.position);
         if (vida.Muerto) { Romper(); return; }
         StopAllCoroutines();
         StartCoroutine(Temblar());
     }
+
+    /// Daño de cada golpe a muros y puertas en el saqueo (1; con el pico, el del balance).
+    public static int DanoGolpe = 1;
+
+    /// La bomba: se rompe sin golpes.
+    public void RomperYa() { if (PuedeRecibirGolpe) Romper(); }
 
     void Romper()
     {

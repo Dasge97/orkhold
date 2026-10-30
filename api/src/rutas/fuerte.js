@@ -6,7 +6,8 @@ import { z } from 'zod';
 import { validar } from '../servidor.js';
 import { enTransaccion } from '../bd.js';
 import { leerJugador, leerInventario, leerDisenoParaCambiar, guardarDiseno, sumar, ErrorJuego } from '../inventario.js';
-import { catalogo, TODO, coste, errorDiseno, limpiarDiseno } from '../reglas.js';
+import { catalogo, TODO, coste, errorDiseno, limpiarDiseno, pieza } from '../reglas.js';
+import { jefeVencido } from './botin.js';
 import { RECURSOS, esEscondite, vacio, meter, sacar, totales, unidades, errorReparto } from '../escondites.js';
 
 const Pieza = z.object({ x: z.number().int(), z: z.number().int(), tipo: z.string().max(40), vida_extra: z.number().int().min(0).max(10).default(0) });
@@ -39,6 +40,12 @@ export default async function (app) {
     if (error) throw new ErrorJuego('diseno_no_valido', error);
     return enTransaccion(app.pool, async (c) => {
       await c.query('SELECT id FROM jugadores WHERE id = $1 FOR UPDATE', [req.jugadorId]);
+      // Piezas que abre un jefe (11-mazmorras.md §6).
+      for (const tipo of new Set(nuevo.piezas.map(q => q.tipo))) {
+        const n = pieza(tipo)?.mazmorra ?? 0;
+        if (n && !(await jefeVencido(c, req.jugadorId, n)))
+          throw new ErrorJuego('pieza_bloqueada', `${pieza(tipo).nombre}: se consigue al vencer al jefe de la mazmorra ${n}`, 403);
+      }
       const viejo = await leerDisenoParaCambiar(c, req.jugadorId);
       // El contenido sigue en los escondites que no se mueven; el de los quitados queda suelto.
       const antes = new Map(viejo.piezas.filter(q => esEscondite(q.tipo)).map(q => [clave(q), q.contenido]));

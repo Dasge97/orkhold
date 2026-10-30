@@ -10,8 +10,8 @@ cartel5: Tobin: Al este está tu parcela: todo lo que tienes se guarda en sus es
 ---
 TTTTTTTTT~TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 TTTTTTTTT~TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-TT.T.T.T.~..T.T..TTT#######T.T...TT.TT..TTTT.TTT
-TTT......~..........###D###..................TTT
+TT.T.T.T.~..T.T###TT#######T.###.T###T..TTTT.TTT
+TTT......~.....#Y#..###D###..#U#..#W#........TTT
 TTT......~.............=..............T.......TT
 TTT......~...r.........=..............TpT.TT.TTT
 TT.......~.............=...........o.TT.T..TT.TT

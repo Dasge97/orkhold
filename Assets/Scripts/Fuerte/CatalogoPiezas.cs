@@ -33,6 +33,11 @@ public class CatalogoPiezas : ScriptableObject
         public int capacidad;
         [Tooltip("Cuántos se pueden construir. 0 = todavía bloqueado.")]
         public int limite;
+        [Tooltip("Jefe que hay que vencer para construirla (número de mazmorra; 0 = ninguno).")]
+        public int mazmorra;
+
+        /// Este jugador ya puede construirla (11-mazmorras.md §6).
+        public bool Abierta => mazmorra <= 0 || Partida.Actual.Progreso($"jefe{mazmorra}_muerto") == "1";
         public bool EsPuerta => id == "puerta";
 
         public string TextoCoste()
@@ -91,6 +96,7 @@ public class CatalogoPiezas : ScriptableObject
         capacidadCentral = Balance.Entero("escondite.central.capacidad", capacidadCentral);
         foreach (var p in piezas)
         {
+            p.mazmorra = Balance.Entero($"{PrefijoBalance(p)}.mazmorra", p.mazmorra);
             if (p.categoria != Categoria.Escondite) p.vida = Balance.Entero($"pieza.{p.id}.vida", p.vida);
             else
             {

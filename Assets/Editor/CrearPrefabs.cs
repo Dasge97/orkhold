@@ -35,6 +35,7 @@ public static class CrearPrefabs
         CrearJugador();
         CrearEnemigos();
         CrearTrampa();
+        CrearForja();
         CrearPiezasFuerte();
         CrearNpcs();
         CrearPrefabsRed();
@@ -200,6 +201,74 @@ public static class CrearPrefabs
     }
 
     /// Material del esqueleto: la textura de Kenney con un tono azul grisáceo de mazmorra.
+    /// Material teñido de un modelo de Mini Dungeon (guardado una vez en Prefabs/Materiales).
+    static Material MaterialTenido(string nombre, string fbx, Color color)
+    {
+        string ruta = Carpeta + "Materiales/" + nombre + ".mat";
+        Directory.CreateDirectory(Carpeta + "Materiales");
+        var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
+        if (!m)
+        {
+            var original = AssetDatabase.LoadAssetAtPath<GameObject>(fbx).GetComponentInChildren<Renderer>().sharedMaterial;
+            m = new Material(original);
+            AssetDatabase.CreateAsset(m, ruta);
+        }
+        m.color = color;
+        EditorUtility.SetDirty(m);
+        return m;
+    }
+
+    /// Mazmorra 2, la Forja Hundida (11-mazmorras.md §2): orco herrero, bombardero, trampa de fuego y Grimbra.
+    static void CrearForja()
+    {
+        var ctrlOrco = AssetDatabase.LoadAssetAtPath<AnimatorController>(Anim + "orco.controller");
+        string orc = Dungeon + "character-orc.fbx";
+
+        // Orco herrero: oscuro, con escudo; vida 6, daño 2, lento. 2 monedas + 60 % hierro.
+        var herrero = CrearEnemigo<OrcoHerrero>("OrcoHerrero", orc, ctrlOrco, 1.05f, MaterialTenido("Herrero", orc, new Color(0.45f, 0.42f, 0.4f)), e =>
+        {
+            e.nombre = "Orco herrero"; e.distanciaVer = 5f; e.distanciaPegar = 1f; e.velocidad = 1.5f; e.cadenciaAtaque = 1.5f; e.dano = 2;
+            e.monedasMin = 2; e.monedasMax = 2; e.recursoExtra = Recurso.Hierro; e.probabilidadExtra = 0.6f;
+        }, 6);
+        var brazo = herrero.GetComponentsInChildren<Transform>().FirstOrDefault(x => x.name == "arm-left");
+        var escudo = Poner(Dungeon + "shield-rectangle.fbx", brazo ? brazo : herrero.transform, brazo ? new Vector3(0f, -0.1f, 0.08f) : new Vector3(-0.25f, 0.35f, 0.1f), 0f);
+        escudo.transform.localScale = Vector3.one * 0.8f;
+        Guardar(herrero, "OrcoHerrero");
+
+        // Bombardero: rojizo; vida 3, daño 3 en área, lanza una bomba cada 3 s desde lejos. 1 moneda + 40 % hierro.
+        var bomba = CrearEnemigo<Bombardero>("Bombardero", orc, ctrlOrco, 0.95f, MaterialTenido("Bombardero", orc, new Color(0.85f, 0.45f, 0.35f)), e =>
+        {
+            e.nombre = "Bombardero"; e.distanciaVer = 7f; e.distanciaPegar = 1f; e.velocidad = 1.8f; e.dano = 3;
+            e.distanciaIdeal = 4.5f; e.cadenciaBomba = 3f; e.radioBomba = 1.2f; e.avisoBomba = 1.2f;
+            e.monedasMin = 1; e.monedasMax = 1; e.recursoExtra = Recurso.Hierro; e.probabilidadExtra = 0.4f;
+        }, 3);
+        Guardar(bomba, "Bombardero");
+
+        // Trampa de fuego: la de pinchos, visible y más lenta (2 s arriba de cada 4) y con más daño.
+        var ctrlTrampa = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(Anim + "trampa.controller");
+        var tf = new GameObject("TrampaFuego");
+        var m = Poner(Dungeon + "trap.fbx", tf.transform, Vector3.zero, 0f);
+        foreach (var r in m.GetComponentsInChildren<Renderer>()) r.sharedMaterial = MaterialTenido("Fuego", Dungeon + "trap.fbx", new Color(1f, 0.45f, 0.2f));
+        var an = Animador(m);
+        an.runtimeAnimatorController = ctrlTrampa;
+        an.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+        var trampa = tf.AddComponent<Trampa>();
+        trampa.animador = an; trampa.periodo = 4f; trampa.arriba = 2f; trampa.dano = 2;
+        Guardar(tf, "TrampaFuego");
+
+        // Grimbra la Fundidora: orca al 150 %, color cobre; vida 25 (balance), golpe en área y 2 herreros a media vida.
+        var grimbra = CrearEnemigo<Jefe>("Grimbra", orc, ctrlOrco, 1.5f, MaterialTenido("Grimbra", orc, new Color(0.85f, 0.55f, 0.3f)), e =>
+        {
+            e.nombre = "Grimbra la Fundidora"; e.distanciaVer = 7f; e.distanciaPegar = 1.3f; e.velocidad = 1.8f; e.cadenciaAtaque = 1.5f; e.dano = 2;
+            e.distanciaPerder = 12f; e.reaparecerSegundos = 0f; e.monedasMin = 6; e.monedasMax = 6;
+            e.numeroMazmorra = 2; e.puertaVuelta = "mazmorra2"; e.danoArea = 3;
+            e.fraseEntrar = "La forja no se apaga. Yo tampoco.";
+            e.fraseCaer = "Golpea más fuerte que el martillo. Bien.";
+            e.refuerzo = Cargar("OrcoHerrero"); e.cuantosRefuerzos = 2;
+        }, 25);
+        Guardar(grimbra, "Grimbra");
+    }
+
     static Material MaterialOscuro()
     {
         const string ruta = Carpeta + "Materiales/Esqueleto.mat";
@@ -284,6 +353,11 @@ public static class CrearPrefabs
         var mp = new GameObject("PiezaMuroPiedra");
         Poner(Dungeon + "wall.fbx", mp.transform, Vector3.zero, 0f);
         var muroPiedra = Guardar(mp, "PiezaMuroPiedra");
+        var mh = new GameObject("PiezaMuroHierro");
+        var paredHierro = Poner(Dungeon + "wall.fbx", mh.transform, Vector3.zero, 0f);
+        foreach (var r in paredHierro.GetComponentsInChildren<Renderer>())
+            r.sharedMaterial = MaterialTenido("Hierro", Dungeon + "wall.fbx", new Color(0.45f, 0.5f, 0.58f));
+        var muroHierro = Guardar(mh, "PiezaMuroHierro");
 
         // Escondites (08-formato-y-pvp.md §3.2): cofre, barril, tierra removida (solo la ve el dueño) y doble fondo.
         var co = new GameObject("PiezaCofre");
@@ -314,6 +388,8 @@ public static class CrearPrefabs
             => c.piezas.Add(new CatalogoPiezas.Pieza { id = id, nombre = nombre, categoria = cat, prefab = prefab, vida = vida, requiereUnidad = unidad, costes = costes.ToList() });
         Pieza("muro_madera", "Muro de madera", CatalogoPiezas.Categoria.Muro, muroMadera, 5, "", K(Recurso.Madera, 2));
         Pieza("muro_piedra", "Muro de piedra", CatalogoPiezas.Categoria.Muro, muroPiedra, 10, "", K(Recurso.Piedra, 3));
+        Pieza("muro_hierro", "Muro de hierro", CatalogoPiezas.Categoria.Muro, muroHierro, 10, "", K(Recurso.Piedra, 2), K(Recurso.Hierro, 2));
+        c.piezas.Last().mazmorra = 2;
         Pieza("puerta", "Puerta", CatalogoPiezas.Categoria.Muro, puerta, 6, "", K(Recurso.Madera, 2), K(Recurso.Hierro, 1));
         Pieza("trampa", "Trampa", CatalogoPiezas.Categoria.Trampa, Cargar("Trampa"), 0, "", K(Recurso.Hierro, 2));
         Pieza("orco_defensor", "Orco defensor", CatalogoPiezas.Categoria.Defensor, Cargar("Orco"), 3, "", K(Recurso.Moneda, 10));
@@ -325,7 +401,8 @@ public static class CrearPrefabs
         Escondite("cofre", "Cofre", cofre, 30, 4, K(Recurso.Madera, 4), K(Recurso.Hierro, 1));
         Escondite("barril", "Barril", barril, 15, 6, K(Recurso.Madera, 2));
         Escondite("enterrado", "Enterrado", enterrado, 10, 8, K(Recurso.Piedra, 1));
-        Escondite("doble_fondo", "Doble fondo", dobleFondo, 10, 0, K(Recurso.Piedra, 3), K(Recurso.Hierro, 1));
+        Escondite("doble_fondo", "Doble fondo", dobleFondo, 10, 4, K(Recurso.Piedra, 3), K(Recurso.Hierro, 1));
+        c.piezas.Last().mazmorra = 2;
         c.capacidadCentral = 50;
         EditorUtility.SetDirty(c);
     }

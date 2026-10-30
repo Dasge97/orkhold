@@ -305,7 +305,7 @@
  },
  {
   "clave": "escondite.doble_fondo.limite",
-  "valor": 0,
+  "valor": 4,
   "grupo": "Escondites",
   "descripcion": "Máximo de doble fondo por fuerte",
   "minimo": 0,
@@ -377,7 +377,7 @@
  },
  {
   "clave": "herramienta.pico.disponible",
-  "valor": 0,
+  "valor": 1,
   "grupo": "Herramientas",
   "descripcion": "pico: 1 si se puede fabricar",
   "minimo": 0,
@@ -417,7 +417,7 @@
  },
  {
   "clave": "herramienta.bomba.disponible",
-  "valor": 0,
+  "valor": 1,
   "grupo": "Herramientas",
   "descripcion": "bomba: 1 si se puede fabricar",
   "minimo": 0,
@@ -449,7 +449,7 @@
  },
  {
   "clave": "herramienta.sabueso.disponible",
-  "valor": 0,
+  "valor": 1,
   "grupo": "Herramientas",
   "descripcion": "sabueso: 1 si se puede fabricar",
   "minimo": 0,
@@ -481,7 +481,7 @@
  },
  {
   "clave": "herramienta.senuelo.disponible",
-  "valor": 0,
+  "valor": 1,
   "grupo": "Herramientas",
   "descripcion": "senuelo: 1 si se puede fabricar",
   "minimo": 0,
@@ -806,5 +806,309 @@
   "descripcion": "% de la distancia a 1000 que se conserva al cerrar la temporada",
   "minimo": 0,
   "maximo": 100
+ },
+ {
+  "clave": "mazmorra2.max_moneda",
+  "valor": 60,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Monedas máximas por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra2.max_hierro",
+  "valor": 25,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Hierro máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra2.max_hueso",
+  "valor": 10,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Hueso máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra2.jefe_hueso",
+  "valor": 2,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Hueso del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra2.jefe_hierro",
+  "valor": 6,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Hierro del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra2.jefe_moneda_dia",
+  "valor": 0,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Monedas extra del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 200
+ },
+ {
+  "clave": "mazmorra2.jefe_monedas",
+  "valor": 10,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Monedas del jefe las demás veces",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra2.multiplicador_vida",
+  "valor": 1.3,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Multiplicador de vida de los enemigos",
+  "minimo": 0.5,
+  "maximo": 5
+ },
+ {
+  "clave": "mazmorra2.vida_jefe",
+  "valor": 25,
+  "grupo": "Mazmorra 2",
+  "descripcion": "Vida del jefe",
+  "minimo": 1,
+  "maximo": 500
+ },
+ {
+  "clave": "mazmorra3.max_moneda",
+  "valor": 70,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Monedas máximas por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra3.max_hierro",
+  "valor": 10,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Hierro máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra3.max_hueso",
+  "valor": 25,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Hueso máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra3.jefe_hueso",
+  "valor": 6,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Hueso del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra3.jefe_hierro",
+  "valor": 2,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Hierro del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra3.jefe_moneda_dia",
+  "valor": 0,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Monedas extra del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 200
+ },
+ {
+  "clave": "mazmorra3.jefe_monedas",
+  "valor": 10,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Monedas del jefe las demás veces",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra3.multiplicador_vida",
+  "valor": 1.5,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Multiplicador de vida de los enemigos",
+  "minimo": 0.5,
+  "maximo": 5
+ },
+ {
+  "clave": "mazmorra3.vida_jefe",
+  "valor": 22,
+  "grupo": "Mazmorra 3",
+  "descripcion": "Vida del jefe",
+  "minimo": 1,
+  "maximo": 500
+ },
+ {
+  "clave": "mazmorra4.max_moneda",
+  "valor": 120,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Monedas máximas por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra4.max_hierro",
+  "valor": 20,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Hierro máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra4.max_hueso",
+  "valor": 20,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Hueso máximo por entrada",
+  "minimo": 0,
+  "maximo": 1000
+ },
+ {
+  "clave": "mazmorra4.jefe_hueso",
+  "valor": 5,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Hueso del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra4.jefe_hierro",
+  "valor": 5,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Hierro del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra4.jefe_moneda_dia",
+  "valor": 20,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Monedas extra del jefe la primera vez del día",
+  "minimo": 0,
+  "maximo": 200
+ },
+ {
+  "clave": "mazmorra4.jefe_monedas",
+  "valor": 15,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Monedas del jefe las demás veces",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "mazmorra4.multiplicador_vida",
+  "valor": 1.8,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Multiplicador de vida de los enemigos",
+  "minimo": 0.5,
+  "maximo": 5
+ },
+ {
+  "clave": "mazmorra4.vida_jefe",
+  "valor": 40,
+  "grupo": "Mazmorra 4",
+  "descripcion": "Vida del jefe",
+  "minimo": 1,
+  "maximo": 500
+ },
+ {
+  "clave": "herramienta.farol.mazmorra",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "farol: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "herramienta.cuarta_accion.mazmorra",
+  "valor": 0,
+  "grupo": "Herramientas",
+  "descripcion": "cuarta_accion: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "herramienta.pico.mazmorra",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "pico: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "herramienta.bomba.mazmorra",
+  "valor": 2,
+  "grupo": "Herramientas",
+  "descripcion": "bomba: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "herramienta.sabueso.mazmorra",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "sabueso: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "herramienta.senuelo.mazmorra",
+  "valor": 3,
+  "grupo": "Herramientas",
+  "descripcion": "senuelo: jefe que hay que vencer para fabricarla (0 = ninguno)",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "escondite.doble_fondo.mazmorra",
+  "valor": 2,
+  "grupo": "Escondites",
+  "descripcion": "Doble fondo: jefe que hay que vencer para construirlo",
+  "minimo": 0,
+  "maximo": 4
+ },
+ {
+  "clave": "pieza.muro_hierro.vida",
+  "valor": 10,
+  "grupo": "Fuerte",
+  "descripcion": "Vida de muro_hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_hierro.coste.hierro",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de muro_hierro en hierro",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_hierro.coste.piedra",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Coste de muro_hierro en piedra",
+  "minimo": 0,
+  "maximo": 100
+ },
+ {
+  "clave": "pieza.muro_hierro.mazmorra",
+  "valor": 2,
+  "grupo": "Fuerte",
+  "descripcion": "Muro de hierro: jefe que hay que vencer para construirlo",
+  "minimo": 0,
+  "maximo": 4
  }
 ]

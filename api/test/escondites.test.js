@@ -81,5 +81,5 @@ test('límites de escondites y doble fondo bloqueado', async () => {
   const r = await pedir('PUT', '/fuerte', { diseno: { piezas: barriles } }, a.cab);
   assert.equal(r.statusCode, 400); assert.match(r.json().mensaje, /Límite de barril: 6/);
   const d = await pedir('PUT', '/fuerte', { diseno: { piezas: [{ x: 2, z: 2, tipo: 'doble_fondo' }] } }, a.cab);
-  assert.equal(d.statusCode, 400); assert.match(d.json().mensaje, /todavía no se puede/);
+  assert.equal(d.statusCode, 403); assert.match(d.json().mensaje, /mazmorra 2/);
 });

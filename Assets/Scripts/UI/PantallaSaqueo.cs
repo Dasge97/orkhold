@@ -8,7 +8,8 @@ public class PantallaSaqueo : MonoBehaviour
 {
     Saqueo _saqueo;
     Text _reloj, _ayuda, _mirada;
-    GameObject _saquear, _confirmar, _resultado;
+    GameObject _saquear, _confirmar, _resultado, _bomba;
+    Text _pico;
     Text _titulo, _detalle;
     float _miradaHasta;
 
@@ -32,6 +33,10 @@ public class PantallaSaqueo : MonoBehaviour
         _reloj.gameObject.AddComponent<Outline>().effectDistance = new Vector2(2f, -2f);
         _saquear = Ui.Boton(transform, "Saquear", new Vector2(0f, -150f), new Vector2(300f, 90f), Ui.Rojo, () => _saqueo.EmpezarMarcar(), 42).gameObject;
         Anclar((RectTransform)_saquear.transform, new Vector2(0.62f, 1f));
+        _bomba = Ui.Boton(transform, "Bomba", new Vector2(-180f, 230f), new Vector2(240f, 90f), Ui.Rojo, () => _saqueo.LanzarBomba(), 36).gameObject;
+        Anclar((RectTransform)_bomba.transform, new Vector2(1f, 0f));
+        _pico = Ui.Texto(transform, "", 32, new Vector2(0f, -205f), new Vector2(500f, 50f));
+        Anclar(_pico.rectTransform, new Vector2(0.62f, 1f));
         _ayuda = Ui.Texto(transform, "", 36, new Vector2(0f, -150f), new Vector2(1500f, 60f));
         Anclar(_ayuda.rectTransform, new Vector2(0.5f, 1f));
         _ayuda.gameObject.AddComponent<Outline>().effectDistance = new Vector2(2f, -2f);
@@ -58,6 +63,8 @@ public class PantallaSaqueo : MonoBehaviour
         bool explorar = e == Saqueo.Fase.Explorar || e == Saqueo.Fase.Mirando;
         _reloj.gameObject.SetActive(explorar);
         _saquear.SetActive(e == Saqueo.Fase.Explorar);
+        _bomba.SetActive(e == Saqueo.Fase.Explorar && _saqueo.BombasQuedan > 0);
+        if (_bomba.activeSelf) _bomba.GetComponentInChildren<Text>().text = $"Bomba ({_saqueo.BombasQuedan})";
         _confirmar.SetActive(e == Saqueo.Fase.Marcar);
         _ayuda.gameObject.SetActive(e == Saqueo.Fase.Marcar || e == Saqueo.Fase.Resolviendo || e == Saqueo.Fase.Sin);
         if (e == Saqueo.Fase.Marcar)
@@ -79,6 +86,8 @@ public class PantallaSaqueo : MonoBehaviour
             _reloj.color = s <= 10 ? new Color(1f, 0.4f, 0.35f) : Color.white;
         }
         if (_mirada.text.Length > 0 && Time.time > _miradaHasta) _mirada.text = "";
+        float pico = _saqueo.PicoQueda;
+        _pico.text = pico > 0f && _reloj.gameObject.activeSelf ? $"Pico: {Mathf.CeilToInt(pico)} s" : "";
     }
 
     void Panel(string titulo, string texto, Color color)

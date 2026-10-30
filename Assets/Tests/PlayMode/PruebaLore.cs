@@ -38,7 +38,7 @@ public class PruebaLore
         StringAssert.Contains("Gruk", Avisos.Ultimo);
 
         // Junto a la fogata, Maela.
-        GestorEscena.Colocar(j.transform, carteles[0].transform.position + Vector3.back * 1.3f, 0f);
+        GestorEscena.Colocar(j.transform, carteles[0].transform.position + Vector3.left * 1.3f, 90f);   // al oeste: Tobin está al este
         yield return new WaitForSeconds(0.6f);
         Ayudas.Foto("80-maela-tutorial");
         StringAssert.StartsWith("Maela:", Cartel.Visible);

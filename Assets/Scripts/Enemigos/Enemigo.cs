@@ -80,11 +80,21 @@ public class Enemigo : MonoBehaviour, IGolpeable
         // En el pueblo, el tiempo de reaparecer sale del balance (los defensores del fuerte no reaparecen).
         if (reaparecerSegundos > 0f && GestorEscena.Actual && GestorEscena.Actual.esPueblo && Balance.Cargado)
             reaparecerSegundos = Balance.Real("mundo.enemigos_reaparecer", reaparecerSegundos);
+        // Mazmorras 2-4: más vida (11-mazmorras.md §5). El jefe pone la suya aparte.
+        var g = GestorEscena.Actual;
+        if (g && g.esMazmorra && g.numeroMazmorra > 1 && !(this is Jefe))
+        {
+            float mult = Balance.Real($"mazmorra{g.numeroMazmorra}.multiplicador_vida", MultiplicadorPorDefecto(g.numeroMazmorra));
+            Vida.maxima = Mathf.Max(1, Mathf.RoundToInt(Vida.maxima * mult));
+            Vida.actual = Vida.maxima;
+        }
         _casa = transform.position;
         _giroCasa = transform.rotation;
         EstadoActual = patrulla ? Estado.Patrulla : Estado.Quieto;
         BuscarJugador();
     }
+
+    public static float MultiplicadorPorDefecto(int mazmorra) => mazmorra == 2 ? 1.3f : mazmorra == 3 ? 1.5f : mazmorra == 4 ? 1.8f : 1f;
 
     /// El jugador vivo más cercano (en el pueblo online hay varios).
     void BuscarJugador()

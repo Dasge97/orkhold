@@ -123,20 +123,27 @@ public class Sincronizacion : MonoBehaviour
     static void AlCambiarDeEscena(string escena)
     {
         if (Viaje.escenaAnterior == "Pueblo") EnviarPueblo();
-        if (Viaje.escenaAnterior == "Mazmorra1") EnviarMazmorra();
+        if (NumeroMazmorra(Viaje.escenaAnterior) > 0) EnviarMazmorra(NumeroMazmorra(Viaje.escenaAnterior));
         if (escena == "Pueblo" && Sesion.Conectado) { Balance.Descargar(); PedirInformes(); }
         if (escena == "Fuerte" && Sesion.Conectado) PedirInformes();
         // Antes de construir, lo último de la API (inventario y fuerte).
         if (escena == "Fuerte") Refrescar(_ => { if (Fuerte.Actual) Fuerte.Actual.Reconstruir(); });
     }
 
-    static void EnviarMazmorra()
+    /// "Mazmorra2" → 2; 0 si no es una mazmorra. Las plantas de la torre son "Mazmorra3", "Mazmorra3b" y "Mazmorra3c".
+    public static int NumeroMazmorra(string escena)
+    {
+        if (string.IsNullOrEmpty(escena) || !escena.StartsWith("Mazmorra") || escena.Length < 9) return 0;
+        return char.IsDigit(escena[8]) ? escena[8] - '0' : 0;
+    }
+
+    static void EnviarMazmorra(int numero)
     {
         if (!Sesion.Conectado || Partida.InventarioAlEntrar == null) return;
         var ganado = new DatosInventario();
         foreach (var r in DatosInventario.Todos) ganado[r] = Mathf.Max(0, Partida.Inventario[r] - Partida.InventarioAlEntrar[r]);
         ganado.pociones = 0;
-        var pet = new MensajesApi.PeticionMazmorra { jefe_muerto = Partida.JefeMuertoEnEntrada, recursos = MensajesApi.DeInventario(ganado) };
+        var pet = new MensajesApi.PeticionMazmorra { jefe_muerto = Partida.JefeMuertoEnEntrada, recursos = MensajesApi.DeInventario(ganado), mazmorra = numero };
         Partida.TerminarEntrada();
         ApiCliente.Post("/mazmorra/resultado", pet, r =>
         {

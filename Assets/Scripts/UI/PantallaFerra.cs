@@ -12,10 +12,10 @@ public class PantallaFerra : MonoBehaviour
     {
         ["farol"] = "Al mirar el suelo, dice si hay algo enterrado cerca",
         ["cuarta_accion"] = "Una marca más al saquear",
-        ["pico"] = "15 s golpeando muros a triple daño (mazmorra 2)",
-        ["bomba"] = "Rompe los muros de un 3x3 (mazmorra 2)",
-        ["sabueso"] = "Ladra cerca del escondite más lleno (mazmorra 3)",
-        ["senuelo"] = "Un defensor no pelea (mazmorra 3)",
+        ["pico"] = "15 s golpeando muros a triple daño (vence a Grimbra)",
+        ["bomba"] = "Rompe los muros de un 3x3 a los 2 s (vence a Grimbra)",
+        ["sabueso"] = "Ladra cerca del escondite más lleno (vence al Vigía Mayor)",
+        ["senuelo"] = "Un defensor no pelea (vence al Vigía Mayor)",
     };
 
     public static PantallaFerra Abierta { get; private set; }

@@ -93,6 +93,15 @@ public static class CrearPaletaMapa
         Agregar(p, '$', "moneda", new GameObject[0], entidad: CrearPrefabs.Cargar("Moneda"));
         Agregar(p, 'p', "poción", new GameObject[0], entidad: CrearPrefabs.Cargar("Pocion"));
         Agregar(p, 'X', "trampa", new GameObject[0], entidad: CrearPrefabs.Cargar("Trampa"));
+        // Mazmorra 2, la Forja Hundida (11-mazmorras.md §2).
+        Agregar(p, 'H', "orco herrero", new GameObject[0], entidad: CrearPrefabs.Cargar("OrcoHerrero"));
+        Agregar(p, 'Q', "bombardero", new GameObject[0], entidad: CrearPrefabs.Cargar("Bombardero"));
+        Agregar(p, 'Z', "trampa de fuego", new GameObject[0], entidad: CrearPrefabs.Cargar("TrampaFuego"));
+        Agregar(p, 'N', "Grimbra la Fundidora", new GameObject[0], entidad: CrearPrefabs.Cargar("Grimbra"));
+        // Puertas de las mazmorras 2, 3 y 4 en el pueblo (se abren al vencer al jefe anterior).
+        Agregar(p, 'Y', "puerta de la mazmorra 2", Modelos(Dungeon, "gate"), entidad: puerta);
+        Agregar(p, 'U', "puerta de la mazmorra 3", Modelos(Dungeon, "gate"), entidad: puerta);
+        Agregar(p, 'W', "puerta de la mazmorra 4", Modelos(Dungeon, "gate"), entidad: puerta);
         // Carteles del tutorial (tarea 9.2 y 07-lore.md §7): el texto va en la cabecera del mapa (cartel1 ... cartel5)
         // y lo dice un personaje del pueblo que pone MontarEscenas. 'G': Gruk, el orco mercenario.
         for (char n = '1'; n <= '5'; n++)

@@ -166,7 +166,7 @@ test('farol: Ferra lo fabrica y la tierra con algo enterrado dice "Tierra removi
   const f = await pedir('POST', '/herramientas/fabricar', { id: 'farol' }, a.cab);
   assert.equal(f.statusCode, 200, f.body);
   assert.equal(f.json().jugador.inventario.farol, 1);
-  assert.equal((await pedir('POST', '/herramientas/fabricar', { id: 'bomba' }, a.cab)).statusCode, 400, 'La bomba está bloqueada');
+  assert.equal((await pedir('POST', '/herramientas/fabricar', { id: 'bomba' }, a.cab)).statusCode, 403, 'La bomba necesita vencer a Grimbra');
   const p = (await pedir('POST', '/saqueo/preparar', {}, a.cab)).json();
   assert.deepEqual(p.herramientas, [{ id: 'farol', cantidad: 1 }]);
   const e = (await pedir('POST', '/saqueo/empezar', { saqueo_id: p.saqueo_id, herramientas: ['farol'] }, a.cab)).json();
@@ -200,4 +200,22 @@ test('temporada: al cerrar, estandarte por tramo y puntuación hacia 1000', asyn
   const j = (await pedir('GET', '/jugador', undefined, a.cab)).json().jugador;
   assert.equal(j.estandarte, 'hierro_orco');
   assert.equal(j.puntuacion, 1150);
+});
+
+test('bomba: rompe los muros de un 3x3 a los 2 s y abre camino; sin bomba elegida no cuenta', async () => {
+  await defensor('Bombardeada');
+  const a = await atacante('Artificiero');
+  await ctx.pool.query(`INSERT INTO progreso (jugador_id, clave, valor) VALUES ($1, 'jefe2_muerto', '1')`, [a.id]);
+  await dar(ctx.pool, a.id, { bomba: 1 });
+  const p = (await pedir('POST', '/saqueo/preparar', {}, a.cab)).json();
+  const e = await pedir('POST', '/saqueo/empezar', { saqueo_id: p.saqueo_id, herramientas: ['bomba'] }, a.cab);
+  assert.equal(e.statusCode, 200, e.body);
+  await ctx.pool.query(`UPDATE saqueos SET empezado = now() - interval '60 seconds' WHERE id = $1`, [p.saqueo_id]);
+  const ir = camino([[8, 10]]);
+  const t = ir[ir.length - 1].t;
+  const entradas = [...ir, { t: t + 0.25, x: 8, z: 10, bomba: true }, { t: t + 0.5, x: 8, z: 10, bomba: true }, { t: t + 3, x: 8, z: 10 }];
+  const r = (await pedir('POST', '/saqueo/resolver', { saqueo_id: p.saqueo_id, marcas: [{ x: 10, z: 10 }], entradas }, a.cab)).json();
+  assert.equal(r.rotos.length, 3, JSON.stringify(r.rotos));     // (9,9), (9,10) y (9,11)
+  assert.equal(r.marcas[0].resultado, 'botin');
+  assert.equal(r.descartadas, 1, 'La segunda bomba no estaba elegida');
 });

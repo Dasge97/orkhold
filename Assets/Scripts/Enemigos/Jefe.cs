@@ -1,13 +1,29 @@
 using System.Collections;
 using UnityEngine;
 
-/// Orco jefe de la mazmorra 1 (01-diseno.md §4.3): vida 15, daño 2, golpe en área cada 6 s con
-/// aviso de 1 s (círculo rojo). La primera vez suelta la unidad "Orco jefe defensor"; después,
-/// 3 huesos. Al morir, vuelta al pueblo con transición.
+/// Jefe de una mazmorra (01-diseno.md §4.3 y 11-mazmorras.md): golpe en área cada 6 s con aviso de 1 s
+/// (círculo rojo), frases al empezar y al caer y, si se dice, refuerzos al llegar a media vida. La recompensa
+/// la da la API al salir (la primera vez, la del §6 de 11-mazmorras.md). Al morir, vuelta al pueblo.
+/// Urzog (mazmorra 1), Grimbra (2), el Vigía Mayor (3) y Kargash (4) son esta clase con otros números.
 public class Jefe : Enemigo
 {
     public const string ClaveProgreso = "jefe1_muerto";
     public const string TipoUnidad = "orco_jefe";
+
+    [Header("Mazmorra")]
+    [Tooltip("Mazmorra de este jefe: decide la clave de progreso (jefe<N>_muerto) y su vida en el balance.")]
+    public int numeroMazmorra = 1;
+    public string fraseEntrar = "Cien años. Nadie pasó.";
+    public string fraseCaer = "Eres más fuerte. Entonces mandas. Así es la ley.";
+    [Tooltip("Enemigo que llama al llegar a media vida (vacío = ninguno).")]
+    public GameObject refuerzo;
+    public int cuantosRefuerzos;
+
+    bool _refuerzosLlamados;
+
+    public string Clave => $"jefe{numeroMazmorra}_muerto";
+    /// Refuerzos llamados (para los tests).
+    public int Refuerzos { get; private set; }
 
     public float intervaloArea = 6f;
     public float avisoArea = 1f;
@@ -30,6 +46,12 @@ public class Jefe : Enemigo
     {
         base.Start();
         reaparecerSegundos = 0f;
+        if (deMazmorra && numeroMazmorra > 1)
+        {
+            Vida.maxima = Balance.Entero($"mazmorra{numeroMazmorra}.vida_jefe", Vida.maxima);
+            Vida.actual = Vida.maxima;
+        }
+        Vida.AlCambiar += MirarRefuerzos;
         _siguienteArea = float.MaxValue;
     }
 
@@ -39,7 +61,7 @@ public class Jefe : Enemigo
         {
             _enCombate = true;
             _siguienteArea = Time.time + intervaloArea;
-            if (deMazmorra) Avisos.Mostrar("Urzog: \"Cien años. Nadie pasó.\"", 3f);
+            if (deMazmorra) Avisos.Mostrar($"{NombreCorto}: \"{fraseEntrar}\"", 3f);
             BarraVidaJefe.Mostrar(Vida, nombre);
         }
         if (_enCombate && d <= distanciaCombate && Time.time >= _siguienteArea)
@@ -48,6 +70,26 @@ public class Jefe : Enemigo
             return;
         }
         base.Pensar(d, aJugador);
+    }
+
+    /// "Urzog, Guardián de la Cripta" → "Urzog".
+    public string NombreCorto => nombre.Split(',')[0];
+
+    /// A media vida, los refuerzos (Grimbra llama a 2 herreros).
+    void MirarRefuerzos()
+    {
+        if (_refuerzosLlamados || !refuerzo || cuantosRefuerzos <= 0 || Vida.Muerto || Vida.actual * 2 > Vida.maxima) return;
+        _refuerzosLlamados = true;
+        for (int i = 0; i < cuantosRefuerzos; i++)
+        {
+            Vector3 lado = Quaternion.Euler(0f, 360f * i / cuantosRefuerzos, 0f) * Vector3.forward * 1.8f;
+            var g = Instantiate(refuerzo, transform.position + lado, transform.rotation);
+            g.SetActive(true);
+            var e = g.GetComponent<Enemigo>();
+            if (e) { e.reaparecerSegundos = 0f; e.distanciaVer = 12f; }
+            Refuerzos++;
+        }
+        Avisos.Mostrar($"{NombreCorto} llama a los suyos", 2f);
     }
 
     IEnumerator GolpeArea()
@@ -74,10 +116,15 @@ public class Jefe : Enemigo
         var p = Partida.Actual;
         if (!Configuracion.ModoLocal)
         {
-            // Con servidor, la unidad o los huesos los da la API al salir de la mazmorra.
-            Avisos.Mostrar(p.Progreso(ClaveProgreso) != "1"
-                ? "Urzog: \"Eres más fuerte. Entonces mandas. Así es la ley.\" Urzog defenderá tu fuerte"
-                : "Urzog: \"Eres más fuerte. Entonces mandas.\" Su botín te espera al salir", 4f);
+            // Con servidor, la recompensa la da la API al salir de la mazmorra.
+            Avisos.Mostrar($"{NombreCorto}: \"{fraseCaer}\"" + (p.Progreso(Clave) != "1" ? " Algo nuevo te espera al salir" : " Su botín te espera al salir"), 4f);
+            if (p.Progreso(Clave) != "1") p.PonerProgreso(Clave, "1");
+            return;
+        }
+        if (numeroMazmorra > 1)
+        {
+            if (p.Progreso(Clave) != "1") { p.PonerProgreso(Clave, "1"); Partida.Cambiado(); }
+            Avisos.Mostrar($"{NombreCorto}: \"{fraseCaer}\"", 4f);
             return;
         }
         if (p.Progreso(ClaveProgreso) != "1")

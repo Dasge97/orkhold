@@ -50,6 +50,7 @@ public static class ReglasFuerte
     {
         motivo = "";
         if (p == null) { motivo = "Pieza desconocida"; return false; }
+        if (!p.Abierta) { motivo = $"{p.nombre}: se consigue al vencer al jefe de la mazmorra {p.mazmorra}"; return false; }
         if (!CasillaConstruible(mapa, x, z)) { motivo = "Ahí no se puede construir"; return false; }
         if (d.En(x, z) != null) { motivo = "Casilla ocupada"; return false; }
         if (p.categoria == CatalogoPiezas.Categoria.Escondite)

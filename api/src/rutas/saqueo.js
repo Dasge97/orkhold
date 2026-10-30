@@ -22,6 +22,7 @@ const Entrada = z.object({
   golpe: Casilla.optional(),
   // El móvil (JsonUtility) siempre manda "golpe"; "golpea" dice si va de verdad.
   golpea: z.boolean().optional(),
+  bomba: z.boolean().optional(),
 }).transform(e => (e.golpea === false ? { ...e, golpe: undefined } : e));
 const MINUTOS_PARA_RESOLVER = 10;
 
@@ -114,6 +115,7 @@ export default async function (app) {
       if (await saqueosHoy(c, req.jugadorId) >= maxSaqueosDia()) throw new ErrorJuego('limite_diario', 'Ya has hecho todos los saqueos de hoy', 429);
       for (const h of usadas)
         if (!B(`herramienta.${h}.disponible`)) throw new ErrorJuego('herramienta_bloqueada', `${h}: todavía no se puede usar`);
+      // Las que tiene, las fabricó con el jefe vencido: no hace falta volver a mirarlo aquí.
       // La tasa se paga de los escondites; las herramientas se gastan.
       const delta = Object.fromEntries(usadas.map(h => [h, -1]));
       if (s.tasa) delta.moneda = -s.tasa;
@@ -180,6 +182,7 @@ export default async function (app) {
       const picoHasta = B('herramienta.pico.segundos');
       const r = rehacer(diseno, tarde ? [] : entradas.filter(e => e.t <= limite + 2), {
         duracion: limite, danoGolpe: t => (usarPico && t <= picoHasta ? B('herramienta.pico.dano') : 1),
+        bombas: s.herramientas.filter(h => h === 'bomba').length,
       });
       let descartadas = r.descartadas + entradas.filter(e => e.t > limite + 2).length;
       // Las miradas tienen que haberse hecho al lado de lo mirado.

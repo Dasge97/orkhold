@@ -106,7 +106,8 @@ public class Transicion : MonoBehaviour
         _grupo.blocksRaycasts = true;
         _consejo.text = Consejos[Random.Range(0, Consejos.Length)];
         // Al pueblo: su nombre debajo del título (07-lore.md §7).
-        if (_lugar) _lugar.text = escena == "Pueblo" ? "Vado Gris" : escena == "Mazmorra1" ? "Las catacumbas" : "";
+        if (_lugar) _lugar.text = escena == "Pueblo" ? "Vado Gris" : escena == "Mazmorra1" ? "Las catacumbas" : escena == "Mazmorra2" ? "La Forja Hundida"
+            : escena.StartsWith("Mazmorra3") ? "La Torre del Vigía" : escena == "Mazmorra4" ? "El Pozo de los Clanes" : "";
         _carga.SetActive(true);
         yield return Fundir(0f, 1f);
         if (espera > 0f) yield return new WaitForSecondsRealtime(espera);
