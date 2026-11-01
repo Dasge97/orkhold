@@ -15,7 +15,7 @@
 ![Node](https://img.shields.io/badge/Node-22-5FA04E?logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 ![Licencia](https://img.shields.io/badge/licencia-todos_los_derechos_reservados-lightgrey)
-![Último cambio](https://img.shields.io/badge/%C3%BAltimo_cambio-2026--10--30-informational)
+![Último cambio](https://img.shields.io/badge/%C3%BAltimo_cambio-2026--11--01-informational)
 
 ![La plaza de Vado Gris en el emulador de Android: el héroe junto a la Brasa encendida, sobre el empedrado; alrededor, Ferra, Maela, Tobin y Gruk con su nombre y oficio en dorado encima; arriba a la izquierda el retrato, la vida y los escondites; arriba a la derecha los botones del inventario y del menú](docs/img/portada.png)
 

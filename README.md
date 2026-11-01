@@ -15,7 +15,7 @@
 ![Node](https://img.shields.io/badge/Node-22-5FA04E?logo=nodedotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 ![License](https://img.shields.io/badge/license-all_rights_reserved-lightgrey)
-![Last change](https://img.shields.io/badge/last_change-2026--10--30-informational)
+![Last change](https://img.shields.io/badge/last_change-2026--11--01-informational)
 
 ![The Vado Gris square on the Android emulator: the hero next to the lit Brasa fire on the paving; around, Ferra, Maela, Tobin and Gruk with their name and trade in gold above; top left the portrait, health and hideouts; top right the inventory and menu buttons](docs/img/portada.png)
 
