@@ -57,8 +57,8 @@ The code, comments and docs are in Spanish.
 <td><img src="docs/img/forja.png" alt="The Sunken Forge: Grimbra the Smelter, with her health bar at the top, calls her kin; a red circle on the floor warns of her area attack; braziers and a bomber in the background"></td>
 </tr>
 <tr>
-<td><img src="docs/img/construir.png" alt="Fort editor: tile grid seen from above with two wooden wall sections and the chest; at the bottom, the piece bar with costs"></td>
-<td><img src="docs/img/asalto.png" alt="Raiding a fort: the hero inside the rival's fence, with the timer at 1:26 and the distance-to-chest bar at the top"></td>
+<td><img src="docs/img/fuerte.png" alt="Fort editor with the Your fort banner: tile grid seen from above with a wooden wall section and the chest; at the top, the walls, traps and defenders placed; at the bottom, the piece bar with costs"></td>
+<td><img src="docs/img/saqueo.png" alt="Raiding a rival fort: the hero next to a chest marked with the golden ring, which reads Heavy when looked at; at the top, the timer at 1:58 and the Raid button"></td>
 </tr>
 <tr>
 <td><img src="docs/img/arranque.png" alt="Create-character screen: the name ORKHOLD at the top, model selector, name field, Start button and the chosen character on the right"></td>

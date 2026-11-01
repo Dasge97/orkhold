@@ -56,8 +56,8 @@ llegar a su cofre antes de 90 segundos.
 <td><img src="docs/img/forja.png" alt="La Forja Hundida: Grimbra la Fundidora, con su barra de vida arriba, llama a los suyos; un círculo rojo en el suelo avisa de su golpe en área; al fondo, braseros y un bombardero"></td>
 </tr>
 <tr>
-<td><img src="docs/img/construir.png" alt="Editor del fuerte: rejilla de casillas vista desde arriba con dos tramos de muro de madera y el cofre; abajo, la barra de piezas con su coste"></td>
-<td><img src="docs/img/asalto.png" alt="Asalto a un fuerte: el héroe dentro de la valla del rival, con el reloj a 1:26 y la barra de distancia al cofre arriba"></td>
+<td><img src="docs/img/fuerte.png" alt="Editor del fuerte con el cartel Tu fuerte: rejilla de casillas vista desde arriba con un tramo de muro de madera y el cofre; arriba, los muros, trampas y defensores puestos; abajo, la barra de piezas con su coste"></td>
+<td><img src="docs/img/saqueo.png" alt="Saqueo de un fuerte rival: el héroe junto a un cofre marcado con el aro dorado, que al mirarlo dice Pesa; arriba, el reloj a 1:58 y el botón Saquear"></td>
 </tr>
 <tr>
 <td><img src="docs/img/arranque.png" alt="Pantalla de crear personaje: el nombre ORKHOLD arriba, selector de modelo, campo para el nombre, botón Empezar y el personaje elegido a la derecha"></td>

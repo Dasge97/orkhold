@@ -81,7 +81,8 @@ public static class Ayudas
         var rt = new RenderTexture(1280, 720, 24);
         var antes = cam.targetTexture;
         var lienzos = interfaz
-            ? Object.FindObjectsByType<Canvas>().Where(c => c.isRootCanvas && c.renderMode == RenderMode.ScreenSpaceOverlay).OrderBy(c => c.sortingOrder).ToArray()
+            // Sin el lienzo de Avisos: un aviso que queda de una prueba anterior tapaba la foto.
+            ? Object.FindObjectsByType<Canvas>().Where(c => c.isRootCanvas && c.renderMode == RenderMode.ScreenSpaceOverlay && c.name != "Avisos").OrderBy(c => c.sortingOrder).ToArray()
             : new Canvas[0];
         float cerca = cam.nearClipPlane;
         for (int i = 0; i < lienzos.Length; i++)
