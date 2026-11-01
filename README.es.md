@@ -17,7 +17,7 @@
 ![Licencia](https://img.shields.io/badge/licencia-todos_los_derechos_reservados-lightgrey)
 ![Último cambio](https://img.shields.io/badge/%C3%BAltimo_cambio-2026--10--30-informational)
 
-![El pueblo en el emulador de Android: el héroe anda por un camino de tierra entre dos casas con estandartes; un orco y monedas al fondo; joystick a la izquierda y botones de correr, atacar y recoger a la derecha](docs/img/portada.png)
+![La plaza de Vado Gris en el emulador de Android: el héroe junto a la Brasa encendida, sobre el empedrado; alrededor, Ferra, Maela, Tobin y Gruk con su nombre y oficio en dorado encima; arriba a la izquierda el retrato, la vida y los escondites; arriba a la derecha los botones del inventario y del menú](docs/img/portada.png)
 
 [![Instalar](https://img.shields.io/badge/Instalar-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#instalación)
 [![Cómo funciona](https://img.shields.io/badge/C%C3%B3mo_funciona-docs-5C6BC0?style=for-the-badge)](docs/02-arquitectura.md)
@@ -48,8 +48,12 @@ llegar a su cofre antes de 90 segundos.
 
 <table>
 <tr>
-<td><img src="docs/img/tutorial.png" alt="Cartel del tutorial en el pueblo: un recuadro oscuro arriba explica que el personaje se mueve con el joystick de la izquierda y que se corre manteniendo pulsado el botón de correr"></td>
-<td><img src="docs/img/mazmorra.png" alt="Sala de la mazmorra con suelo de piedra: el héroe pelea con dos orcos verdes; arriba, la vida marca 3 de 6"></td>
+<td><img src="docs/img/dialogo.png" alt="Diálogo con Maela en la plaza: caja de pergamino abajo con su retrato, su nombre, su oficio (Guardiana de la Brasa), el texto del tutorial y una X para cerrar; un aro dorado marca a Maela"></td>
+<td><img src="docs/img/mazmorra.png" alt="Las catacumbas en penumbra: el héroe pelea con orcos junto a la salida; un aro rojo marca al orco que va a recibir el golpe; al fondo, la luz de las antorchas"></td>
+</tr>
+<tr>
+<td><img src="docs/img/inventario.png" alt="Pantalla de inventario sobre la plaza: seis casillas de pergamino con el icono, el nombre y la cantidad de monedas, madera, piedra, hierro, huesos y pociones, y un botón Cerrar"></td>
+<td><img src="docs/img/forja.png" alt="La Forja Hundida: Grimbra la Fundidora, con su barra de vida arriba, llama a los suyos; un círculo rojo en el suelo avisa de su golpe en área; al fondo, braseros y un bombardero"></td>
 </tr>
 <tr>
 <td><img src="docs/img/construir.png" alt="Editor del fuerte: rejilla de casillas vista desde arriba con dos tramos de muro de madera y el cofre; abajo, la barra de piezas con su coste"></td>

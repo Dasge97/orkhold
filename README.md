@@ -17,7 +17,7 @@
 ![License](https://img.shields.io/badge/license-all_rights_reserved-lightgrey)
 ![Last change](https://img.shields.io/badge/last_change-2026--10--30-informational)
 
-![The village on the Android emulator: the hero walks along a dirt path between two houses with banners; an orc and coins in the background; joystick on the left and run, attack and pick-up buttons on the right](docs/img/portada.png)
+![The Vado Gris square on the Android emulator: the hero next to the lit Brasa fire on the paving; around, Ferra, Maela, Tobin and Gruk with their name and trade in gold above; top left the portrait, health and hideouts; top right the inventory and menu buttons](docs/img/portada.png)
 
 [![Install](https://img.shields.io/badge/Install-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#installation)
 [![How it works](https://img.shields.io/badge/How_it_works-docs-5C6BC0?style=for-the-badge)](docs/02-arquitectura.md)
@@ -49,8 +49,12 @@ The code, comments and docs are in Spanish.
 
 <table>
 <tr>
-<td><img src="docs/img/tutorial.png" alt="Tutorial sign in the village: a dark box at the top explains that the character moves with the left joystick and runs while the run button is held"></td>
-<td><img src="docs/img/mazmorra.png" alt="Dungeon room with stone floor: the hero fights two green orcs; at the top, health reads 3 of 6"></td>
+<td><img src="docs/img/dialogo.png" alt="Dialogue with Maela in the square: parchment box at the bottom with her portrait, name, trade (Keeper of the Brasa), the tutorial text and an X to close; a golden ring marks Maela"></td>
+<td><img src="docs/img/mazmorra.png" alt="The catacombs in half-light: the hero fights orcs near the exit; a red ring marks the orc that will take the hit; torchlight in the background"></td>
+</tr>
+<tr>
+<td><img src="docs/img/inventario.png" alt="Inventory screen over the square: six parchment slots with the icon, name and amount of coins, wood, stone, iron, bones and potions, and a Close button"></td>
+<td><img src="docs/img/forja.png" alt="The Sunken Forge: Grimbra the Smelter, with her health bar at the top, calls her kin; a red circle on the floor warns of her area attack; braziers and a bomber in the background"></td>
 </tr>
 <tr>
 <td><img src="docs/img/construir.png" alt="Fort editor: tile grid seen from above with two wooden wall sections and the chest; at the bottom, the piece bar with costs"></td>
