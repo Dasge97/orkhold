@@ -17,7 +17,7 @@
 ![License](https://img.shields.io/badge/license-all_rights_reserved-lightgrey)
 ![Last change](https://img.shields.io/badge/last_change-2026--11--01-informational)
 
-![The Vado Gris square on the Android emulator: the hero next to the lit Brasa fire on the paving; around, Ferra, Maela, Tobin and Gruk with their name and trade in gold above; top left the portrait, health and hideouts; top right the inventory and menu buttons](docs/img/portada.png)
+![The Vado Gris square on the Android emulator: the hero next to the lit Brasa fire on the paving; around, Ferra, Maela, Tobin and Gruk with their name and trade in gold above; top left the portrait, health and hideouts; top right the inventory and menu buttons](docs/img/plaza.png)
 
 [![Install](https://img.shields.io/badge/Install-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#installation)
 [![How it works](https://img.shields.io/badge/How_it_works-docs-5C6BC0?style=for-the-badge)](docs/02-arquitectura.md)
@@ -50,7 +50,7 @@ The code, comments and docs are in Spanish.
 <table>
 <tr>
 <td><img src="docs/img/dialogo.png" alt="Dialogue with Maela in the square: parchment box at the bottom with her portrait, name, trade (Keeper of the Brasa), the tutorial text and an X to close; a golden ring marks Maela"></td>
-<td><img src="docs/img/mazmorra.png" alt="The catacombs in half-light: the hero fights orcs near the exit; a red ring marks the orc that will take the hit; torchlight in the background"></td>
+<td><img src="docs/img/catacumbas.png" alt="The catacombs in half-light: the hero fights orcs near the exit; a red ring marks the orc that will take the hit; torchlight in the background"></td>
 </tr>
 <tr>
 <td><img src="docs/img/inventario.png" alt="Inventory screen over the square: six parchment slots with the icon, name and amount of coins, wood, stone, iron, bones and potions, and a Close button"></td>
