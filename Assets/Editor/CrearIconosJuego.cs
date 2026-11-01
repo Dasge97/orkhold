@@ -27,6 +27,8 @@ public static class CrearIconosJuego
         foreach (var (prefab, nombre) in new[] { ("Moneda", "moneda"), ("Madera", "madera"), ("Piedra", "piedra"),
                                                  ("Hierro", "hierro"), ("Hueso", "hueso"), ("Pocion", "pocion") })
             Fotografiar(CrearPrefabs.Cargar(prefab), nombre, entero: true);
+        // El botón del inventario: el cofre de Mini Dungeon.
+        Fotografiar(AssetDatabase.LoadAssetAtPath<GameObject>(CrearPrefabs.Dungeon + "chest.fbx"), "cofre", entero: true);
         // Retratos: la cabeza de cada personaje, de frente.
         foreach (var n in new[] { "Maela", "Tobin", "Ferra", "Ansel", "Rook", "Gruk" })
             Fotografiar(CrearPrefabs.Cargar("Npc" + n), "retrato-" + n, entero: false);

@@ -179,3 +179,7 @@ Lo más reciente arriba.
 - Interfaz: letra Kenney Future y paneles del UI Pack RPG; HUD con retrato, vida, escondites, monedas y recursos con icono, cartel del sitio al llegar y avisos de botín; nombres sobre jugadores, personajes (con oficio y "!") y enemigos (rojo, con barra al pegarles); caja de diálogo con retrato y opciones (Ferra "Fabricar", Tobin "Clasificación"); botón de interactuar con su verbo y aro en el suelo; carteles de destino en las puertas; sacudida al recibir golpes y cámara lenta al vencer a un jefe. Iconos y retratos fotografiados de los modelos (`CrearIconosJuego`).
 - Aprendido: las letras de Kenney con tildes solo tienen mayúsculas; el texto largo va en la letra de Unity. Las fotos de las pruebas no colocan bien los nombres (pasan la interfaz a otro modo); en el móvil salen bien. En el emulador, el golpe de un orco junto a la salida de la mazmorra empujaba al jugador fuera: la salida se arma ahora a 2,4 m. La puerta norte de una casilla atascaba al personaje: ahora mide tres.
 - 45 tests de Unity en verde. APK local probado en el emulador (pueblo, diálogos, catacumbas, combate). La API no cambió.
+
+## 31-10-2026 — inventario
+- Petición de Daniel: los recursos salen del HUD. Botón con un cofre junto al menú (salta al recoger algo) que abre `PantallaInventario` con seis casillas: icono, nombre y cantidad. `PruebaInventario` en verde; 46 tests.
+- El octavo orco del pueblo pasa a (10,32): en (8,34) tenía árboles al este y `ElOrcoPersigueYPega` fallaba a veces.

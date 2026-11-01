@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// HUD (15-interfaz.md §3): arriba a la izquierda tu retrato, tu nombre, la vida y lo guardado en los escondites;
-/// arriba a la derecha las monedas y los recursos con su icono; arriba en el centro el nombre del sitio al entrar;
+/// arriba a la derecha el botón del inventario (lo que llevas, en PantallaInventario); arriba en el centro el nombre del sitio al entrar;
 /// abajo, los avisos de botín ("+3 Madera"). Se monta solo desde código sobre su RectTransform.
 public class HUD : MonoBehaviour
 {
@@ -13,14 +13,13 @@ public class HUD : MonoBehaviour
     public Vida vida;
     public Inventario inventario;
 
-    static readonly Recurso[] Orden = { Recurso.Madera, Recurso.Piedra, Recurso.Hierro, Recurso.Hueso, Recurso.Pocion };
     static readonly Recurso[] TodosRecursos = { Recurso.Moneda, Recurso.Madera, Recurso.Piedra, Recurso.Hierro, Recurso.Hueso, Recurso.Pocion };
 
     Image _retrato, _barraVida, _barraEscondites;
-    Text _nombre, _textoVida, _textoEscondites, _monedas;
+    Text _nombre, _textoVida, _textoEscondites;
     GameObject _filaEscondites;
-    readonly Dictionary<Recurso, Text> _contadores = new Dictionary<Recurso, Text>();
-    readonly Dictionary<Recurso, float> _salto = new Dictionary<Recurso, float>();
+    RectTransform _mochila;
+    float _salto = -9f;
     readonly int[] _antes = new int[6];
     float _desde;
     RectTransform _cartelLugar, _avisos;
@@ -94,24 +93,10 @@ public class HUD : MonoBehaviour
         _textoEscondites = Ui.Texto(_filaEscondites.transform, "", 20, Vector2.zero, new Vector2(360f, 26f));
         Ui.Contorno(_textoEscondites, 1.5f);
 
-        // Arriba a la derecha (a la izquierda del botón de menú): monedas grandes y recursos.
-        var bolsa = Ui.Marco(raiz, "Recursos", "panel_brown", new Vector2(-170f, -20f), new Vector2(560f, 180f), new Vector2(1f, 1f));
-        bolsa.pivot = new Vector2(1f, 1f);
-        var moneda = Ui.Icono(bolsa, "Iconos/moneda", new Vector2(-470f, -52f), new Vector2(76f, 76f), new Vector2(1f, 1f));
-        _monedas = Ui.Titulo(bolsa, "0", 52, new Vector2(-250f, -52f), new Vector2(330f, 64f), TextAnchor.MiddleLeft);
-        Derecha(_monedas.rectTransform);
-        _monedas.rectTransform.anchoredPosition = new Vector2(-420f, -52f);
-        _contadores[Recurso.Moneda] = _monedas;
-        for (int i = 0; i < Orden.Length; i++)
-        {
-            float x = -520f + i * 104f;
-            Ui.Icono(bolsa, "Iconos/" + NombreIcono(Orden[i]), new Vector2(x + 26f, -128f), new Vector2(50f, 50f), new Vector2(1f, 1f));
-            var t = Ui.Texto(bolsa, "0", 30, new Vector2(x + 54f, -128f), new Vector2(60f, 40f), TextAnchor.MiddleLeft);
-            Derecha(t.rectTransform);
-            t.rectTransform.anchoredPosition = new Vector2(x + 54f, -128f);
-            t.font = Ui.FuenteTitulo; Ui.Contorno(t, 1.5f);
-            _contadores[Orden[i]] = t;
-        }
+        // Arriba a la derecha, junto al menú: el botón del inventario (cofre). Salta cuando entra botín.
+        _mochila = Ui.Marco(raiz, "BotonInventario", "buttonSquare_brown", new Vector2(-230f, -80f), new Vector2(120f, 120f), new Vector2(1f, 1f));
+        _mochila.gameObject.AddComponent<Button>().onClick.AddListener(PantallaInventario.Abrir);
+        Ui.Icono(_mochila, "Iconos/cofre", new Vector2(0f, 4f), new Vector2(96f, 96f));
 
         // Arriba en el centro: el nombre del sitio al llegar.
         _cartelLugar = Ui.Marco(raiz, "Cartel lugar", "panel_brown", new Vector2(0f, 200f), new Vector2(700f, 110f), new Vector2(0.5f, 1f));
@@ -151,7 +136,7 @@ public class HUD : MonoBehaviour
             for (int i = 0; i < TodosRecursos.Length; i++)
             {
                 int d = inv[TodosRecursos[i]] - _antes[i];
-                if (d > 0) { Botin(TodosRecursos[i], d); _salto[TodosRecursos[i]] = Time.unscaledTime; }
+                if (d > 0) { Botin(TodosRecursos[i], d); _salto = Time.unscaledTime; }
             }
         Instantanea();
         Refrescar();
@@ -191,8 +176,6 @@ public class HUD : MonoBehaviour
             _barraEscondites.sprite = Ui.Sprite(f >= 1f ? "barRed_horizontalMid" : f >= 0.8f ? "barYellow_horizontalMid" : "barGreen_horizontalMid");
             _textoEscondites.text = f >= 1f ? "Escondites llenos" : $"Escondites {p.guardado} / {p.capacidad}";
         }
-        var inv = Partida.Inventario;
-        foreach (var kv in _contadores) kv.Value.text = inv[kv.Key].ToString();
     }
 
     // ---------- animación ----------
@@ -200,12 +183,8 @@ public class HUD : MonoBehaviour
     void Animar()
     {
         float ahora = Time.unscaledTime;
-        foreach (var kv in _contadores)
-        {
-            float t = _salto.TryGetValue(kv.Key, out var s) ? ahora - s : 9f;
-            float e = t < 0.3f ? 1f + 0.35f * Mathf.Sin(t / 0.3f * Mathf.PI) : 1f;
-            kv.Value.rectTransform.localScale = Vector3.one * e;
-        }
+        float t = ahora - _salto;
+        _mochila.localScale = Vector3.one * (t < 0.3f ? 1f + 0.2f * Mathf.Sin(t / 0.3f * Mathf.PI) : 1f);
         // Cartel del sitio: baja en 0,4 s, se queda 2,2 s y sube.
         if (_cartelT >= 0f)
         {

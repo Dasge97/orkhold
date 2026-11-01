@@ -184,3 +184,4 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 140 | La muralla del pueblo tiene puertas de tres casillas; el cofre del saqueo pasa a (26,21), lejos de Ferra y de la aparición; el octavo orco del pueblo, que se perdió al mover los de dentro de la muralla, vuelve en (8,34). | Atascos en la puerta norte; tarea 1.3 pide 8 orcos. |
 | 141 | La decoración de las mazmorras no toca las marcas: una casilla libre alrededor de cada enemigo y dos alrededor de puertas y arqueros. Las antorchas sí se ponen junto a enemigos (van en la pared y no chocan). | Los arqueros necesitan sitio para huir (`PruebaMazmorra`). |
 | 142 | Sacudida de cámara al recibir daño (0,07 m + 0,04 por punto) y cámara lenta al 30 % durante 0,6 s al vencer a un jefe. Los golpes que das no sacuden. | 15-interfaz §7: "solo en golpes fuertes". |
+| 143 | El botón del inventario lleva el cofre de Mini Dungeon. | No hay mochila ni saco en los packs de Kenney. |
