@@ -48,7 +48,14 @@ public static class Ayudas
         yield return null;
         yield return null;
         GestorEscena.Colocar(j, p.transform.position, 0f);
+        // La puerta solo cruza si el jugador anda hacia ella: joystick hacia dentro unos fotogramas
+        // (la cámara mira al norte: mover.y es el norte).
+        var control = j.GetComponent<ControlJugador>();
+        Vector3 dentro = -fuera.normalized;
+        control.leerEntrada = () => new ControlJugador.Entrada { mover = new Vector2(dentro.x, dentro.z) };
         yield return null;
+        yield return null;
+        if (control) control.leerEntrada = ControlJugador.LeerEntradaLocal;
     }
 
     /// Espera a que la escena activa sea la indicada y la transición haya terminado.

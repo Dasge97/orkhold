@@ -185,3 +185,6 @@ Aquí queda cada una, con el porqué, para que se puedan revisar y cambiar. Lo m
 | 141 | La decoración de las mazmorras no toca las marcas: una casilla libre alrededor de cada enemigo y dos alrededor de puertas y arqueros. Las antorchas sí se ponen junto a enemigos (van en la pared y no chocan). | Los arqueros necesitan sitio para huir (`PruebaMazmorra`). |
 | 142 | Sacudida de cámara al recibir daño (0,07 m + 0,04 por punto) y cámara lenta al 30 % durante 0,6 s al vencer a un jefe. Los golpes que das no sacuden. | 15-interfaz §7: "solo en golpes fuertes". |
 | 143 | El botón del inventario lleva el cofre de Mini Dungeon. | No hay mochila ni saco en los packs de Kenney. |
+| 144 | El diálogo se cierra con una X arriba a la derecha (sin botón "Adiós") y al alejarse 2,4 m. | Pedido de Daniel (01-11-2026). |
+| 145 | Objetivo de ataque: enemigos hasta 1,7 m (lo que llega el golpe), árboles, rocas y piezas hasta 1,6 m; un enemigo siempre gana; se cambia empujando el joystick hacia otro. Aro rojo para enemigos, blanco para el resto. | Pedido de Daniel: "atacas al árbol y casi no te das cuenta". |
+| 146 | Las puertas de pisar solo cruzan si el jugador anda hacia ellas con el joystick. | Los empujones de los golpes sacaban al jugador de la mazmorra. |

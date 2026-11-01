@@ -25,8 +25,10 @@ public class ControlJugador : MonoBehaviour
     public float alcanceAtaque = 0.9f;
     public int danoAtaque = 1;
     public float duracionAtaque = 0.6f;
-    [Tooltip("Al atacar, se gira solo hacia lo golpeable más cercano dentro de esta distancia.")]
+    [Tooltip("Al atacar, se gira solo hacia lo golpeable elegido dentro de esta distancia (árboles, rocas, piezas).")]
     public float alcanceAutoApuntar = 1.6f;
+    [Tooltip("Los enemigos se eligen hasta esta distancia (lo que llega el golpe contando su cuerpo); tienen prioridad sobre árboles y rocas.")]
+    public float alcanceEnemigos = 1.7f;
     public Animator animador;
     public Transform cameraRef;
 
@@ -58,6 +60,13 @@ public class ControlJugador : MonoBehaviour
     string _estado = "";
     Vector3 _empuje;
     float _siguientePaso;
+    IGolpeable _objetivo;
+
+    /// Hacia dónde anda por el joystick en este fotograma (cero si está quieto). Los empujones no cuentan.
+    public Vector3 Andando { get; private set; }
+
+    /// A qué pegaría si atacara ahora (el aro rojo lo marca); null si no hay nada al alcance.
+    public IGolpeable Objetivo => _objetivo;
 
     public static Entrada LeerEntradaLocal()
     {
@@ -103,6 +112,7 @@ public class ControlJugador : MonoBehaviour
         Vector3 derecha = Vector3.Cross(Vector3.up, adelante);
         Vector3 dir = adelante * mover.y + derecha * mover.x;
 
+        Andando = dir;
         bool corre = entrada.correr && mover.magnitude > 0.5f;
         float vel = corre ? velocidadCorrer : velocidadAndar;
 
@@ -123,6 +133,10 @@ public class ControlJugador : MonoBehaviour
             Sonidos.Tocar(gestor && gestor.suelo == GestorEscena.Suelo.Piedra ? "pasos_piedra" : "pasos_hierba", null, 0.35f);
         }
 
+        // Objetivo de ataque: se elige siempre (también sin atacar) para poder enseñarlo antes del golpe.
+        _objetivo = ElegirObjetivo(dir);
+        if (this == Local) AroInteraccion.MarcarObjetivo(_objetivo?.Transform, _objetivo is Enemigo);
+
         if (!ocupado)
         {
             if (entrada.ataque) { Atacar(); return; }
@@ -139,20 +153,35 @@ public class ControlJugador : MonoBehaviour
         if (TieneAutoridad) Invoke(nameof(AplicarGolpe), duracionAtaque * 0.4f);
     }
 
-    /// Se gira hacia lo golpeable más cercano: en el móvil es difícil apuntar con el joystick.
+    /// Se gira hacia el objetivo elegido: en el móvil es difícil apuntar con el joystick.
     void Apuntar()
     {
-        IGolpeable mejor = null; float dMejor = float.MaxValue;
-        foreach (var c in Physics.OverlapSphere(transform.position + Vector3.up * 0.4f, alcanceAutoApuntar))
+        if (_objetivo == null || !_objetivo.PuedeRecibirGolpe) return;
+        Vector3 a = _objetivo.Transform.position - transform.position; a.y = 0f;
+        if (a.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(a);
+    }
+
+    /// Elige a qué pegar. Un enemigo siempre gana a árboles, rocas y piezas del fuerte. Entre los del mismo tipo,
+    /// cuenta la distancia y hacia dónde mira el personaje: empujar el joystick hacia otro enemigo lo cambia.
+    /// Sin mover el joystick, se queda con el que ya tenía mientras siga al alcance.
+    IGolpeable ElegirObjetivo(Vector3 direccion)
+    {
+        bool mueve = direccion.sqrMagnitude > 0.01f;
+        Vector3 mira = mueve ? direccion.normalized : transform.forward;
+        IGolpeable mejor = null; float puntosMejor = float.MaxValue;
+        foreach (var c in Physics.OverlapSphere(transform.position + Vector3.up * 0.4f, alcanceEnemigos))
         {
             var g = c.GetComponentInParent<IGolpeable>();
             if (g == null || !g.PuedeRecibirGolpe || ReferenceEquals(g.Transform, transform)) continue;
             Vector3 d = g.Transform.position - transform.position; d.y = 0f;
-            if (d.magnitude < dMejor) { dMejor = d.magnitude; mejor = g; }
+            bool enemigo = g is Enemigo;
+            if (!enemigo && d.magnitude > alcanceAutoApuntar) continue;
+            if (!mueve && ReferenceEquals(g, _objetivo)) return g;   // sin joystick, el de antes sigue
+            float angulo = d.sqrMagnitude > 0.001f ? Vector3.Angle(mira, d) : 0f;
+            float puntos = d.magnitude + angulo / 60f + (enemigo ? 0f : 100f);
+            if (puntos < puntosMejor) { puntosMejor = puntos; mejor = g; }
         }
-        if (mejor == null) return;
-        Vector3 a = mejor.Transform.position - transform.position; a.y = 0f;
-        if (a.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(a);
+        return mejor;
     }
 
     void AplicarGolpe()

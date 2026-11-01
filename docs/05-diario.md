@@ -183,3 +183,8 @@ Lo más reciente arriba.
 ## 31-10-2026 — inventario
 - Petición de Daniel: los recursos salen del HUD. Botón con un cofre junto al menú (salta al recoger algo) que abre `PantallaInventario` con seis casillas: icono, nombre y cantidad. `PruebaInventario` en verde; 46 tests.
 - El octavo orco del pueblo pasa a (10,32): en (8,34) tenía árboles al este y `ElOrcoPersigueYPega` fallaba a veces.
+
+## 01-11-2026 — diálogo, objetivo de ataque y salida de la mazmorra
+- Diálogo (Daniel): letra de tamaño fijo (el ajuste automático la encogía al escribir), las letras que faltan se escriben transparentes para que las palabras no salten de línea, X arriba a la derecha en vez de "Adiós", opciones junto a la X. Se cierra al alejarse 2,4 m (antes 3,2).
+- Objetivo de ataque (Daniel): `ControlJugador.ElegirObjetivo` da prioridad a los enemigos sobre árboles y rocas, cuenta distancia y hacia dónde se empuja el joystick, y conserva el objetivo si no se mueve. Aro rojo bajo el enemigo elegido (blanco si es árbol o roca). `PruebaObjetivo` en verde.
+- La salida de las catacumbas seguía sacando al jugador cuando los orcos lo empujaban: ahora una puerta de pisar solo cruza si el jugador anda hacia ella con el joystick. La ayuda `Pisar` de las pruebas simula el joystick. 47 tests en verde; probado en el emulador.

@@ -45,10 +45,22 @@ public class Puerta : Interactuable
         float dist = Mathf.Max(Mathf.Abs(d.x), Mathf.Abs(d.z));
         // Se arma al alejarse de verdad: un empujón de un golpe junto a la salida no te saca de la mazmorra.
         if (dist > radioPisar + 1.6f) _armada = true;
-        else if (_armada && dist <= radioPisar) Ir();
+        // Solo si anda hacia la puerta: el empujón de un golpe no saca al jugador de la mazmorra.
+        else if (_armada && dist <= radioPisar && HaciaLaPuerta(d)) Ir();
     }
 
     public override void Usar(ControlJugador jugador) { Ir(); }
+
+    /// El jugador local anda con el joystick hacia la puerta (o no hay jugador local que mirar, como en los tests).
+    bool HaciaLaPuerta(Vector3 jugadorMenosPuerta)
+    {
+        var j = ControlJugador.Local;
+        if (!j || j.transform != _jugador) return true;
+        Vector3 anda = j.Andando; anda.y = 0f;
+        if (anda.sqrMagnitude < 0.0001f) return false;
+        Vector3 hacia = -jugadorMenosPuerta; hacia.y = 0f;
+        return hacia.sqrMagnitude < 0.04f || Vector3.Dot(anda.normalized, hacia.normalized) > 0f;
+    }
 
     public void Ir()
     {

@@ -37,7 +37,7 @@ public class Dialogo : MonoBehaviour
     {
         var d = Instancia;
         d._quien = quien;
-        d._alejarse = 3.2f;
+        d._alejarse = 2.4f;   // se habla a 1,8 m; un par de pasos atrás y se cierra
         d._nombre.text = nombre;
         d._oficio.text = oficio;
         d._retrato.sprite = Ui.Sprite("Iconos/retrato-" + retrato);
