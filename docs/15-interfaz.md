@@ -61,15 +61,16 @@ Los nombres se ven de lejos y se ocultan si hay demasiados a la vez (máximo 12 
   - "!" amarillo: tiene algo nuevo que contarte (la primera vez, el tutorial, algo nuevo que fabricar).
   - Su icono de oficio en gris: ya hablaste; puedes volver.
 - Al acercarte, el personaje te mira y el botón dice **"Hablar"**.
-- Al hablar, **caja de diálogo** abajo: retrato, nombre, el texto letra a letra (tocar lo completa) y botones:
+- Al hablar, **caja de diálogo** abajo: retrato, nombre, el texto letra a letra con tamaño fijo (tocar lo completa),
+  una X arriba a la derecha para cerrar (pedido de Daniel, 01-11-2026) y botones de opciones junto a la X:
   | Personaje | Opciones |
   |---|---|
-  | Maela | "Cuéntame" (tutorial, por partes) · "Adiós" |
-  | Rook | "¿Cómo se pelea?" · "Mi parcela" (lleva a construir) · "Adiós" |
-  | Ferra | "Fabricar" (su tienda) · "Adiós" |
-  | Ansel | "¿Qué hay al norte?" (qué mazmorras están abiertas) · "Adiós" |
-  | Tobin | "Clasificación" · "Mis saqueos" · "La Ley del Vado" · "Adiós" |
-  | Gruk | "¿Qué vendes?" · "Adiós" |
+  | Maela | "Cuéntame" (tutorial, por partes) |
+  | Rook | "¿Cómo se pelea?" · "Mi parcela" (lleva a construir) |
+  | Ferra | "Fabricar" (su tienda) |
+  | Ansel | "¿Qué hay al norte?" (qué mazmorras están abiertas) |
+  | Tobin | "Clasificación" · "Mis saqueos" · "La Ley del Vado" |
+  | Gruk | "¿Qué vendes?" |
 - El tutorial deja de ser cinco carteles: Maela lo cuenta paso a paso y te manda a hablar con los demás.
 
 ## 6. Que se entienda qué se puede usar
